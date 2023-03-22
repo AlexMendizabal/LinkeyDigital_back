@@ -1,0 +1,3 @@
+from .customer_user_contact_service import ContactService
+from .customer_user_profile_service import ProfileService
+from .customer_user_socialmedia_service import SocialMediaService

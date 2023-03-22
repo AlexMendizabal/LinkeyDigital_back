@@ -1,0 +1,1787 @@
+[
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 4,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 4,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 4,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 4,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 5,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 5,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 5,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 5,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 6,
+      "codename": "add_customeruser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 6,
+      "codename": "change_customeruser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 6,
+      "codename": "delete_customeruser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 6,
+      "codename": "view_customeruser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add currencies",
+      "content_type": 7,
+      "codename": "add_currencies"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change currencies",
+      "content_type": 7,
+      "codename": "change_currencies"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete currencies",
+      "content_type": 7,
+      "codename": "delete_currencies"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view currencies",
+      "content_type": 7,
+      "codename": "view_currencies"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add customer",
+      "content_type": 8,
+      "codename": "add_customer"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change customer",
+      "content_type": 8,
+      "codename": "change_customer"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete customer",
+      "content_type": 8,
+      "codename": "delete_customer"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view customer",
+      "content_type": 8,
+      "codename": "view_customer"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add customer subscription",
+      "content_type": 9,
+      "codename": "add_customersubscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change customer subscription",
+      "content_type": 9,
+      "codename": "change_customersubscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete customer subscription",
+      "content_type": 9,
+      "codename": "delete_customersubscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view customer subscription",
+      "content_type": 9,
+      "codename": "view_customersubscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add customer type",
+      "content_type": 10,
+      "codename": "add_customertype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change customer type",
+      "content_type": 10,
+      "codename": "change_customertype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete customer type",
+      "content_type": 10,
+      "codename": "delete_customertype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view customer type",
+      "content_type": 10,
+      "codename": "view_customertype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add customer user devices",
+      "content_type": 11,
+      "codename": "add_customeruserdevices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change customer user devices",
+      "content_type": 11,
+      "codename": "change_customeruserdevices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete customer user devices",
+      "content_type": 11,
+      "codename": "delete_customeruserdevices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view customer user devices",
+      "content_type": 11,
+      "codename": "view_customeruserdevices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add devices",
+      "content_type": 12,
+      "codename": "add_devices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change devices",
+      "content_type": 12,
+      "codename": "change_devices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete devices",
+      "content_type": 12,
+      "codename": "delete_devices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view devices",
+      "content_type": 12,
+      "codename": "view_devices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add subscription",
+      "content_type": 13,
+      "codename": "add_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change subscription",
+      "content_type": 13,
+      "codename": "change_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete subscription",
+      "content_type": 13,
+      "codename": "delete_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view subscription",
+      "content_type": 13,
+      "codename": "view_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add design profile",
+      "content_type": 14,
+      "codename": "add_designprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change design profile",
+      "content_type": 14,
+      "codename": "change_designprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete design profile",
+      "content_type": 14,
+      "codename": "delete_designprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view design profile",
+      "content_type": 14,
+      "codename": "view_designprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add social media",
+      "content_type": 15,
+      "codename": "add_socialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change social media",
+      "content_type": 15,
+      "codename": "change_socialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete social media",
+      "content_type": 15,
+      "codename": "delete_socialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view social media",
+      "content_type": 15,
+      "codename": "view_socialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add customer user whatsapp",
+      "content_type": 16,
+      "codename": "add_customeruserwhatsapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change customer user whatsapp",
+      "content_type": 16,
+      "codename": "change_customeruserwhatsapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete customer user whatsapp",
+      "content_type": 16,
+      "codename": "delete_customeruserwhatsapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view customer user whatsapp",
+      "content_type": 16,
+      "codename": "view_customeruserwhatsapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+      "name": "Can add customer user social media",
+      "content_type": 17,
+      "codename": "add_customerusersocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+      "name": "Can change customer user social media",
+      "content_type": 17,
+      "codename": "change_customerusersocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+      "name": "Can delete customer user social media",
+      "content_type": 17,
+      "codename": "delete_customerusersocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+      "name": "Can view customer user social media",
+      "content_type": 17,
+      "codename": "view_customerusersocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+      "name": "Can add customer user profile",
+      "content_type": 18,
+      "codename": "add_customeruserprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+      "name": "Can change customer user profile",
+      "content_type": 18,
+      "codename": "change_customeruserprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+      "name": "Can delete customer user profile",
+      "content_type": 18,
+      "codename": "delete_customeruserprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+      "name": "Can view customer user profile",
+      "content_type": 18,
+      "codename": "view_customeruserprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+      "name": "Can add customer user phone",
+      "content_type": 19,
+      "codename": "add_customeruserphone"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+      "name": "Can change customer user phone",
+      "content_type": 19,
+      "codename": "change_customeruserphone"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+      "name": "Can delete customer user phone",
+      "content_type": 19,
+      "codename": "delete_customeruserphone"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+      "name": "Can view customer user phone",
+      "content_type": 19,
+      "codename": "view_customeruserphone"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+      "name": "Can add customer user map",
+      "content_type": 20,
+      "codename": "add_customerusermap"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+      "name": "Can change customer user map",
+      "content_type": 20,
+      "codename": "change_customerusermap"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+      "name": "Can delete customer user map",
+      "content_type": 20,
+      "codename": "delete_customerusermap"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+      "name": "Can view customer user map",
+      "content_type": 20,
+      "codename": "view_customerusermap"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+      "name": "Can add customer user email",
+      "content_type": 21,
+      "codename": "add_customeruseremail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+      "name": "Can change customer user email",
+      "content_type": 21,
+      "codename": "change_customeruseremail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+      "name": "Can delete customer user email",
+      "content_type": 21,
+      "codename": "delete_customeruseremail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+      "name": "Can view customer user email",
+      "content_type": 21,
+      "codename": "view_customeruseremail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+      "name": "Can add customer user design profile",
+      "content_type": 22,
+      "codename": "add_customeruserdesignprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+      "name": "Can change customer user design profile",
+      "content_type": 22,
+      "codename": "change_customeruserdesignprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+      "name": "Can delete customer user design profile",
+      "content_type": 22,
+      "codename": "delete_customeruserdesignprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+      "name": "Can view customer user design profile",
+      "content_type": 22,
+      "codename": "view_customeruserdesignprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+      "name": "Can add customer user custom social media",
+      "content_type": 23,
+      "codename": "add_customerusercustomsocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+      "name": "Can change customer user custom social media",
+      "content_type": 23,
+      "codename": "change_customerusercustomsocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+      "name": "Can delete customer user custom social media",
+      "content_type": 23,
+      "codename": "delete_customerusercustomsocialmedia"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+      "name": "Can view customer user custom social media",
+      "content_type": 23,
+      "codename": "view_customerusercustomsocialmedia"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "authentication",
+      "model": "customeruser"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "administration",
+      "model": "currencies"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "administration",
+      "model": "customer"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "administration",
+      "model": "customersubscription"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "administration",
+      "model": "customertype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "administration",
+      "model": "customeruserdevices"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "administration",
+      "model": "devices"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "administration",
+      "model": "subscription"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "profile",
+      "model": "designprofile"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "profile",
+      "model": "socialmedia"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+      "app_label": "profile",
+      "model": "customeruserwhatsapp"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+      "app_label": "profile",
+      "model": "customerusersocialmedia"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "profile",
+      "model": "customeruserprofile"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+      "app_label": "profile",
+      "model": "customeruserphone"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "profile",
+      "model": "customerusermap"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+      "app_label": "profile",
+      "model": "customeruseremail"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+      "app_label": "profile",
+      "model": "customeruserdesignprofile"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+      "app_label": "profile",
+      "model": "customerusercustomsocialmedia"
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 1,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-11-11T06:13:16.099Z",
+      "password": null,
+      "uid": "5DkexFSPtQRoJ6p1iOzvrfF9GiH2",
+      "public_id": "f69e553e-1708-46db-b1ce-ac52a65a9d7f",
+      "created_at": "2022-11-11T06:13:16.100Z",
+      "update_at": "2022-11-11T06:13:16.100Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "robertperezlino",
+      "email": "robertperezlino@gmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 2,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-11-14T10:13:59.891Z",
+      "password": null,
+      "uid": "xGFUBTbwu5P1cPobzCS7XbiPE4J3",
+      "public_id": "974ceb24-3cbf-455c-87e9-dfc82cebe66f",
+      "created_at": "2022-11-14T10:13:59.891Z",
+      "update_at": "2022-11-14T10:13:59.891Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "workvia99",
+      "email": "workvia99@gmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 3,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-01T14:16:31.308Z",
+      "password": null,
+      "uid": "VOuiuXj7WbgVNe8YTizUo6V5Wxl1",
+      "public_id": "071003db-d035-43ab-86a7-29a7d66ce71b",
+      "created_at": "2022-12-01T14:16:31.308Z",
+      "update_at": "2022-12-01T17:28:29.786Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "asdsadd",
+      "email": "robertperezlino99@gmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 4,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-15T16:16:23.351Z",
+      "password": null,
+      "uid": "jBsrsDW5NsPjOjkVjtL7cXld30l1",
+      "public_id": "38d87487-4ba9-490c-8a10-681c259a64a6",
+      "created_at": "2022-12-15T16:16:23.352Z",
+      "update_at": "2022-12-15T16:16:23.352Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "kpmg1000",
+      "email": "kpmg1000@yopmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 5,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-15T16:19:39.013Z",
+      "password": null,
+      "uid": "Io65dr2ZtXSWpqQj7IWtOyX7zN82",
+      "public_id": "14d360be-6efc-4bf9-b486-81ea1b69b6a5",
+      "created_at": "2022-12-15T16:19:39.013Z",
+      "update_at": "2022-12-15T16:19:39.013Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "kpmg1001",
+      "email": "kpmg1001@yopmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 6,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-15T16:20:15.020Z",
+      "password": null,
+      "uid": "8r8EwnE9ADNQxd8U4LXQcrt67I33",
+      "public_id": "d5f237fe-112c-40d5-80f2-c5b80dd80e39",
+      "created_at": "2022-12-15T16:20:15.020Z",
+      "update_at": "2022-12-15T16:20:15.020Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "kpmg1002",
+      "email": "kpmg1002@yopmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 7,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-15T16:20:35.333Z",
+      "password": null,
+      "uid": "CQKOrtfAqHRz6iMben2ERVpHBK72",
+      "public_id": "fb710a74-0899-46f5-b898-b42970a5fded",
+      "created_at": "2022-12-15T16:20:35.333Z",
+      "update_at": "2022-12-15T16:20:35.333Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "kpmg1003",
+      "email": "kpmg1003@yopmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 8,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-15T16:21:05.152Z",
+      "password": null,
+      "uid": "TF9S262EwtaS8agmg53zzvZk4AF2",
+      "public_id": "215a4ec4-1f0a-4567-807a-1ed6da02733f",
+      "created_at": "2022-12-15T16:21:05.152Z",
+      "update_at": "2022-12-15T16:21:05.152Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "kpmg1004",
+      "email": "kpmg1004@yopmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.customeruser",
+    "pk": 9,
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2022-12-15T16:21:21.296Z",
+      "password": null,
+      "uid": "eyKjP5BNqTcIfkPUCqTrWSTtavL2",
+      "public_id": "53009385-dd7e-4d04-81a2-5993893f0910",
+      "created_at": "2022-12-15T16:21:21.296Z",
+      "update_at": "2022-12-15T16:21:21.296Z",
+      "is_admin": false,
+      "customer_user_admin": null,
+      "is_active": true,
+      "username": "kpmg1005",
+      "email": "kpmg1005@yopmail.com",
+      "phone_number": "",
+      "first_name": "",
+      "paternal_surname": "",
+      "maternal_surname": "",
+      "birth_genre": "",
+      "identification_genre": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "profile.socialmedia",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "title": "Facebook",
+      "url_base": "www.facebook.com",
+      "image": "base_social_media/icon_facebook.png",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.socialmedia",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "title": "LinkedIn",
+      "url_base": "www.linkedin.com",
+      "image": "base_social_media/icon_linkedin.png",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.socialmedia",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "title": "Instagram",
+      "url_base": "www.instagram.com",
+      "image": "base_social_media/icon_instagram.png",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.socialmedia",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "title": "Tiktok",
+      "url_base": "www.tiktok.com",
+      "image": "base_social_media/icon_tiktok.png",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.socialmedia",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "title": "Twitch",
+      "url_base": "www.twitch.tv",
+      "image": "base_social_media/icon_twitch.png",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.socialmedia",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "title": "Twitter",
+      "url_base": "www.twitter.com",
+      "image": "base_social_media/icon_twitter.png",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#FFD$00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#FFBDEC",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#BF8EB1",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#F3911A",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#D12F2F",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#2196F3",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 7,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#EACCAD",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 8,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#8D31A3",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 9,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#50215A",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 10,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#961E1F",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 11,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#003174",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 12,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#2B9951",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 13,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#BFBFBF",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 14,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#6D6D6D",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.designprofile",
+    "pk": 15,
+    "fields": {
+      "created_at": "2022-10-10T15:52:01.876Z",
+      "update_at": "2022-10-10T15:52:01.876Z",
+      "code": "#961E1F",
+      "is_active": true
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-11-11T06:13:16.128Z",
+      "update_at": "2022-12-19T00:09:39.943Z",
+      "customer_user": 1,
+      "career": "a",
+      "public_name": "adasdasd",
+      "description": "",
+      "image": "profile/Captura_de_pantalla_20221022_153925.png",
+      "counter": 6
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-11-14T10:13:59.913Z",
+      "update_at": "2022-11-14T10:14:30.542Z",
+      "customer_user": 2,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/Captura_de_pantalla_20221022_154735.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-12-01T14:16:31.347Z",
+      "update_at": "2022-12-01T17:28:16.020Z",
+      "customer_user": 3,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/Captura_de_pantalla_20221023_162412_LQ57YgY.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-12-15T16:16:23.362Z",
+      "update_at": "2022-12-15T16:16:23.362Z",
+      "customer_user": 4,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/icon_perfil.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-12-15T16:19:39.030Z",
+      "update_at": "2022-12-15T16:19:39.031Z",
+      "customer_user": 5,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/icon_perfil.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-12-15T16:20:15.026Z",
+      "update_at": "2022-12-15T16:20:15.026Z",
+      "customer_user": 6,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/icon_perfil.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 7,
+    "fields": {
+      "created_at": "2022-12-15T16:20:35.357Z",
+      "update_at": "2022-12-15T16:20:35.357Z",
+      "customer_user": 7,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/icon_perfil.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 8,
+    "fields": {
+      "created_at": "2022-12-15T16:21:05.183Z",
+      "update_at": "2022-12-15T16:21:05.183Z",
+      "customer_user": 8,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/icon_perfil.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserprofile",
+    "pk": 9,
+    "fields": {
+      "created_at": "2022-12-15T16:21:21.312Z",
+      "update_at": "2022-12-15T16:21:21.312Z",
+      "customer_user": 9,
+      "career": "",
+      "public_name": "",
+      "description": "",
+      "image": "profile/icon_perfil.png",
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-11-11T08:54:28.657Z",
+      "update_at": "2022-11-11T08:54:28.657Z",
+      "customer_user": 1,
+      "title": "asdsad",
+      "url": "https://asdasda",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-11-11T08:57:33.680Z",
+      "update_at": "2022-11-11T08:57:33.680Z",
+      "customer_user": 1,
+      "title": "\"prueba\"",
+      "url": "\"prueba\"",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": false,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-11-11T09:00:01.660Z",
+      "update_at": "2022-11-11T09:00:01.660Z",
+      "customer_user": 1,
+      "title": "22",
+      "url": "22",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": false,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-11-11T09:04:12.990Z",
+      "update_at": "2022-11-11T09:04:12.990Z",
+      "customer_user": 1,
+      "title": "22s",
+      "url": "22s",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": false,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 7,
+    "fields": {
+      "created_at": "2022-11-11T09:15:02.562Z",
+      "update_at": "2022-11-11T09:15:02.562Z",
+      "customer_user": 1,
+      "title": "Yahoo",
+      "url": "pinterest/sss",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 8,
+    "fields": {
+      "created_at": "2022-11-14T15:06:54.855Z",
+      "update_at": "2022-11-14T15:06:54.855Z",
+      "customer_user": 1,
+      "title": "",
+      "url": "https://",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusercustomsocialmedia",
+    "pk": 9,
+    "fields": {
+      "created_at": "2022-11-14T15:09:22.969Z",
+      "update_at": "2022-11-14T15:09:22.969Z",
+      "customer_user": 1,
+      "title": "",
+      "url": "https://",
+      "image": "custom_social_media/undefined.png",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruseremail",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-11-14T00:45:33.281Z",
+      "update_at": "2022-11-14T00:47:12.973Z",
+      "customer_user": 1,
+      "email": "ssss",
+      "subject": "fd",
+      "body": "s",
+      "image": "contact/icon_correo.png",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusermap",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-11-11T07:49:51.357Z",
+      "update_at": "2022-11-15T05:44:46.254Z",
+      "customer_user": 1,
+      "longitude": "123123",
+      "latitude": "12133",
+      "image": "contact/icon_ubicacion.png",
+      "is_active": true,
+      "is_visible": false,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customeruserphone",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-11-14T00:20:48.899Z",
+      "update_at": "2022-11-14T00:44:13.839Z",
+      "customer_user": 1,
+      "phone": "dsf",
+      "image": "contact/icon_telefono.png",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  },
+  {
+    "model": "profile.customerusersocialmedia",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-11-15T05:27:20.982Z",
+      "update_at": "2022-11-15T05:27:20.993Z",
+      "customer_user": 1,
+      "social_media": 3,
+      "url_complete": "sds",
+      "is_active": true,
+      "is_visible": true,
+      "counter": 0
+    }
+  }
+]

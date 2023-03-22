@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4ad999c9-09be-4f4a-b680-41a60dda1da4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="heroku" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2GJr4He3gG0nWcu6Tgk16AYbBNO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lenovo/Downloads/MTCORP/Soy Yo/App/Backend/soyyo_api/media&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\media" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\static" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\profile\migrations" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\media\contact" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\media\base_social_media" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\fixture" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\profile\fixture" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\media" />
+      <recent name="C:\Users\lenovo\Downloads\MTCORP\Soy Yo\App\Backend\soyyo_api\statics" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="soyyo_api" type="Python.DjangoServer" factoryName="Django server">
+      <module name="soyyo_api" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="soyyo_api.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4ad999c9-09be-4f4a-b680-41a60dda1da4" name="Changes" comment="" />
+      <created>1666117341279</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666117341279</updated>
+      <workItem from="1666117344418" duration="48000" />
+      <workItem from="1666118006395" duration="19724000" />
+      <workItem from="1666274036718" duration="15466000" />
+      <workItem from="1666586457113" duration="23173000" />
+      <workItem from="1666723494168" duration="6421000" />
+      <workItem from="1666790683411" duration="28047000" />
+      <workItem from="1666970714880" duration="2340000" />
+      <workItem from="1666981449369" duration="7063000" />
+      <workItem from="1667223161941" duration="646000" />
+      <workItem from="1667408692247" duration="1008000" />
+      <workItem from="1667445830682" duration="35130000" />
+      <workItem from="1667830902266" duration="8714000" />
+      <workItem from="1667974652058" duration="41736000" />
+      <workItem from="1668112770205" duration="31629000" />
+      <workItem from="1668378430053" duration="16991000" />
+      <workItem from="1668516981153" duration="1126000" />
+      <workItem from="1668557314462" duration="3769000" />
+      <workItem from="1669155955565" duration="20000" />
+      <workItem from="1669243755202" duration="3978000" />
+      <workItem from="1669839392997" duration="16310000" />
+      <workItem from="1670507731496" duration="1230000" />
+      <workItem from="1671048477784" duration="4844000" />
+      <workItem from="1671186552540" duration="1451000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,46 @@
+from rest_framework.generics import get_object_or_404
+
+from profile.models import CustomerUserSocialMedia, CustomerUserCustomSocialMedia
+
+
+class SocialMediaService:
+    def create_or_update_social_media(self, dto):
+        customer_user_social_media, created = CustomerUserSocialMedia.objects.update_or_create(
+            customer_user=dto.customer_user, social_media=dto.social_media)
+        customer_user_social_media.url_complete = dto.url_complete
+        customer_user_social_media.is_active = dto.is_active
+        customer_user_social_media.is_visible = dto.is_visible
+        customer_user_social_media.save()
+        return customer_user_social_media
+
+    def get_social_media(self, pk=None, customer_user=None):
+        if pk and customer_user:
+            customer_user_social_media = get_object_or_404(CustomerUserSocialMedia, pk=pk, customer_user=customer_user)
+        elif customer_user:
+            customer_user_social_media = CustomerUserSocialMedia.objects.all().filter(customer_user_id=customer_user)
+        else:
+            customer_user_social_media = CustomerUserSocialMedia.objects.all()
+        return customer_user_social_media
+
+    def create_custom_social_media(self, dto):
+        customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.create(
+            customer_user=dto.customer_user, url=dto.url, title=dto.title, is_active=dto.is_active,
+            is_visible=dto.is_visible)
+        return customer_user_custom_social_media
+
+    def get_custom_social_media(self, pk=None, customer_user=None):
+        if pk and customer_user:
+            customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, pk=pk,
+                                                                  customer_user=customer_user)
+        elif customer_user:
+            customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().filter(
+                customer_user_id=customer_user)
+        else:
+            customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all()
+        return customer_user_custom_social_media
+
+    def delete_custom_social_media(self, pk=None, customer_user=None):
+
+        customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.filter(id=pk,
+                                                                                         customer_user_id=customer_user).delete()
+        return customer_user_custom_social_media
