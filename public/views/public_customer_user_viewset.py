@@ -14,9 +14,8 @@ class PublicCustomerUserViewSet(APIView):
     permission_classes = []
     authentication_classes = []
 
-    def get(self, request, public_id):
-        char_public_id = public_id.replace('-', "")
-        customer_user = get_object_or_404(CustomerUser, public_id=char_public_id)
+    def get(self, request, username):
+        customer_user = get_object_or_404(CustomerUser, username=username)
         customer_user_public_service = PublicCustomerUserService()
 
         customer_profile_serializers = self.get_profile(customer_user_public_service, customer_user)

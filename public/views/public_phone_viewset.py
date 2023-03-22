@@ -11,9 +11,8 @@ class PublicCustomerUserPhoneViewSet(APIView):
     permission_classes = []
     authentication_classes = []
 
-    def post(self, request, public_id):
-        char_public_id = public_id.replace('-', "")
-        customer_user = get_object_or_404(CustomerUser, public_id=char_public_id)
+    def post(self, request, username):
+        customer_user = get_object_or_404(CustomerUser, username=username)
 
         customer_user_public_contact_service = PublicContactService()
 
