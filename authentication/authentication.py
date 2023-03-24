@@ -54,9 +54,9 @@ class FirebaseAuthentication(BaseAuthentication):
             if user_exists:
                 user = User.objects.filter(uid=uid)[0]
                 
-            elif User.objects.filter(username=username).count > 0:
+            elif User.objects.filter(username=username).count() > 0:
                 
-                username = username+user.uid[0,4]
+                username = username+user.uid[0:4]
             else:
                 user, created = User.objects.create(uid=uid, email=email, username=username)
         except Exception as e:

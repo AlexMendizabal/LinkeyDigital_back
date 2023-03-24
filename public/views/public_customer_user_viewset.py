@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,8 +15,17 @@ class PublicCustomerUserViewSet(APIView):
     permission_classes = []
     authentication_classes = []
 
-    def get(self, request, username):
-        customer_user = get_object_or_404(CustomerUser, username=username)
+    def get(self, request, param):
+        
+        try:
+            customer_user = CustomerUser.objects.get(username=param)
+        except:
+            try:
+                customer_user = CustomerUser.objects.get(public_id=param)
+            except:
+                raise Http404
+                
+        
         customer_user_public_service = PublicCustomerUserService()
 
         customer_profile_serializers = self.get_profile(customer_user_public_service, customer_user)
