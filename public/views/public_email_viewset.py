@@ -12,7 +12,8 @@ class PublicCustomerUserEmailViewSet(APIView):
     authentication_classes = []
 
     def post(self, request, public_id):
-        customer_user = get_object_or_404(CustomerUser, public_id=public_id)
+        char_public_id = public_id.replace('-', "")
+        customer_user = get_object_or_404(CustomerUser, public_id=char_public_id)
 
         customer_user_public_contact_service = PublicContactService()
 
