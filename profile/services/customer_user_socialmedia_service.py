@@ -1,3 +1,5 @@
+import os
+
 from rest_framework.generics import get_object_or_404
 
 from profile.models import CustomerUserSocialMedia, CustomerUserCustomSocialMedia
@@ -25,7 +27,7 @@ class SocialMediaService:
     def create_custom_social_media(self, dto):
         customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.create(
             customer_user=dto.customer_user, url=dto.url, title=dto.title, is_active=dto.is_active,
-            is_visible=dto.is_visible)
+            is_visible=dto.is_visible, type=dto.type)
         return customer_user_custom_social_media
 
     def get_custom_social_media(self, pk=None, customer_user=None):
@@ -40,7 +42,18 @@ class SocialMediaService:
         return customer_user_custom_social_media
 
     def delete_custom_social_media(self, pk=None, customer_user=None):
-
-        customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.filter(id=pk,
-                                                                                         customer_user_id=customer_user).delete()
-        return customer_user_custom_social_media
+        # esta parte queda censurada *******************
+        # customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.filter(id=pk,
+        #                                                                                  customer_user_id=customer_user).delete()
+        # return customer_user_custom_social_media
+        #*******************************************
+    
+        # busca el objeto y si lo encuentra lo borra 
+        cusm = get_object_or_404(CustomerUserCustomSocialMedia, id=pk, customer_user_id=customer_user)
+        if cusm.image != "custom_social_media/undefined.png":
+            try:
+                os.remove(cusm.image.path)
+            except Exception as e:
+                pass
+        # Borra el objeto de la base de datos
+        cusm.delete()

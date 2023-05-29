@@ -14,6 +14,7 @@ class SocialMediaDto:
     url_complete: str
     is_active: bool
     is_visible: bool
+    
 
 
 class CustomerUserSocialMedia(models.Model):
