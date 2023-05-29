@@ -7,4 +7,6 @@ from .customer_user_whatsapp import CustomerUserWhatsapp, WhatsappDto
 from .customer_user_map import CustomerUserMap, MapDto
 from .customer_user_phonenumber import CustomerUserPhone, PhoneDto
 from .customer_user_social_media import CustomerUserSocialMedia, SocialMediaDto
+from .customer_user_custom_image import CustomerUserCustomImage, CustomImageDto
+from .customer_user_reserva import CustomerUserReserva, ReservaDto
 

@@ -1,3 +1,4 @@
 from .public_customer_user_service import PublicCustomerUserService
 from .public_contact_service import PublicContactService
 from .public_social_media_service import PublicSocialMediaService
+from .public_reserva_service import ReservaService

@@ -5,3 +5,4 @@ from .public_whatsapp_viewset import PublicCustomerUserWhatsappViewSet
 from .public_map_viewset import PublicCustomerUserMapViewSet
 from .public_social_media_viewset import PublicCustomerUserSocialMediaViewSet
 from .public_custom_social_media import PublicCustomerUserCustomSocialMediaViewSet
+from .public_reserva_viewset import CustomerUserReservaViewSet
