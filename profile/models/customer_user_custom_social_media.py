@@ -13,6 +13,7 @@ class CustomSocialMediaDto:
     url: str
     is_active: bool
     is_visible: bool
+    type : str
 
 
 class CustomerUserCustomSocialMedia(models.Model):
@@ -25,6 +26,7 @@ class CustomerUserCustomSocialMedia(models.Model):
     is_active = models.BooleanField(default=True)
     is_visible = models.BooleanField(default=True)
     counter = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    type = models.CharField(max_length=50, blank=True, default='socialMedia')
 
     def save(self, **kwargs):
         super().save()
