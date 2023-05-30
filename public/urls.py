@@ -8,7 +8,7 @@ from public.views import PublicCustomerUserViewSet, PublicCustomerUserEmailViewS
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('user/<str:param>', PublicCustomerUserViewSet.as_view(), name="get_user_public_app"),
+    path('user/<str:public_id>', PublicCustomerUserViewSet.as_view(), name="get_user_public_app"),
 
     path('user/<str:public_id>/email', PublicCustomerUserEmailViewSet.as_view(), name="visit_email_public_app"),
     path('user/<str:public_id>/phone', PublicCustomerUserPhoneViewSet.as_view(), name="visit_phone_public_app"),
