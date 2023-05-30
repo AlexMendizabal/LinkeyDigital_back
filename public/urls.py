@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from public.views import PublicCustomerUserViewSet, PublicCustomerUserEmailViewSet, PublicCustomerUserPhoneViewSet, \
+from public.views import PublicCustomerUserViewSet, PublicCustomerUserEmailViewSet, PublicCustomerUserPhoneViewSet, CustomerUserReservaViewSet, \
     PublicCustomerUserWhatsappViewSet, PublicCustomerUserMapViewSet, PublicCustomerUserSocialMediaViewSet, \
     PublicCustomerUserCustomSocialMediaViewSet
 
@@ -19,5 +19,7 @@ urlpatterns = [
          name="visit_social_media_public_app"),
     path('user/<str:public_id>/custom_social_media', PublicCustomerUserCustomSocialMediaViewSet.as_view(),
          name="visit_custom_social_media_public_app"),
+
+     path('user/<str:public_id>/reserva', CustomerUserReservaViewSet.as_view(), name="make_reserva"),
 
 ]

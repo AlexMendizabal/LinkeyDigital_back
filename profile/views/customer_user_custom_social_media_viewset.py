@@ -16,7 +16,7 @@ class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
         fields = (
-            'id', 'customer_user', 'title', 'url', 'image', 'is_active', 'is_visible')
+            'id', 'customer_user', 'title', 'url', 'image', 'is_active', 'is_visible', 'type')
         extra_kwargs = {'title': {'required': True}, 'url': {'required': True},
                         'is_visible': {'required': True}}
 
@@ -38,6 +38,8 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
 
     def post(self, request):
         request.data["customer_user"] = request.user.id
+        if 'type' not in request.data :
+            request.data["type"] = "socialMedia"
         serializer = CustomerUserCustomSocialMediaSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -49,6 +51,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         try:
             response = social_media_service.create_custom_social_media(dto)
         except Exception as e:
+            print(e)
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=False)
@@ -87,6 +90,15 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
 
         return Response({"success": True, "data": customer_user_custom_social_media_serializers.data},
                         status=status.HTTP_200_OK)
+    
+    def delete (self, request, pk=None):
+
+        social_media_service = SocialMediaService()
+        try:
+            response = social_media_service.delete_custom_social_media(pk, request.user.id)
+            return Response({"success": True, "data": response}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
 
     def buid_dto_from_validated_data(self, serializer):
@@ -97,4 +109,5 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             url=data["url"],
             is_active=True,
             is_visible=data["is_visible"],
+            type=data["type"],
         )

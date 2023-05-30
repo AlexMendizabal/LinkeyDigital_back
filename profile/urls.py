@@ -1,8 +1,8 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSet, \
-    CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, \
+from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSet, CustomerUserReservaViewSet,\
+    CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, CustomerUserImageViewSet, \
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet
 
 router = routers.DefaultRouter()
@@ -40,4 +40,9 @@ urlpatterns = [
 
     path('statistics', CustomerUserStatistics.as_view(),
          name="get_customer_user_statistics"),
+
+     path('image', CustomerUserImageViewSet.as_view(), name="customer_user_image_get_or_create_or_update"),
+    path('image/<int:pk>', CustomerUserImageViewSet.as_view(), name="customer_user_whatsapp_get_one"),
+
+    path('reserva/<int:social>', CustomerUserReservaViewSet.as_view(),  name="get_reserva"),
 ]

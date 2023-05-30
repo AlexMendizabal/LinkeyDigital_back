@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from rest_framework.generics import get_object_or_404
 
-from profile.models import CustomerUserWhatsapp, CustomerUserEmail, CustomerUserMap, CustomerUserPhone, \
+from profile.models import CustomerUserWhatsapp, CustomerUserEmail, CustomerUserMap, CustomerUserCustomImage, CustomerUserPhone, \
     CustomerUserProfile, CustomerUserSocialMedia, CustomerUserCustomSocialMedia
 
 
@@ -75,4 +75,13 @@ class PublicCustomerUserService:
         else:
             customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all()
         return customer_user_custom_social_media
+    
+    def get_image(self, pk=None, customer_user=None):
+        if pk and customer_user:
+            customer_user_map = get_object_or_404(CustomerUserCustomImage, pk=pk, customer_user=customer_user)
+        elif customer_user:
+            customer_user_map = get_object_or_404(CustomerUserCustomImage, customer_user_id=customer_user, is_visible=True)
+        else:
+            customer_user_map = CustomerUserMap.objects.all()
+        return customer_user_map
 
