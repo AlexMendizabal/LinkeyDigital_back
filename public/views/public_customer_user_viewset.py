@@ -15,12 +15,14 @@ class PublicCustomerUserViewSet(APIView):
     permission_classes = []
     authentication_classes = []
 
-    def get(self, request, param):
+    def get(self, request, public_id):
+        char_public_id = public_id.replace('-', "")
+
         try:
-            customer_user = CustomerUser.objects.get(username=param)
+            customer_user = CustomerUser.objects.get(username=public_id)
         except:
             try:
-                customer_user = CustomerUser.objects.get(public_id=param)
+                customer_user = CustomerUser.objects.get(public_id=public_id)
             except:
                 raise Http404
                 
