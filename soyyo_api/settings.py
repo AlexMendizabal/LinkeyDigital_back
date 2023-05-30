@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xj(nht#rwob#jz#8z&jpv(a5%(kw#16!9q)79#+rzt2+hau@-x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'authentication',
     'administration',
     'profile',
-    'contact'
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomerUser'
@@ -166,12 +165,3 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
-
-
-
-EMAIL_HOST = "mail.soyyo.digital"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "contacto@soyyo.digital" 
-EMAIL_HOST_PASSWORD = "RfNvVUid8iG5"
-
-EMAIL_USE_SSL = True

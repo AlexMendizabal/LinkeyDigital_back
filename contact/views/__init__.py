@@ -1,1 +1,0 @@
-from .send_email_viewset import UserSendMailViewSet
