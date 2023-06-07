@@ -7,7 +7,7 @@ from rest_framework import status
 from authentication.models import CustomerUser
 from profile.views import CustomerUserProfileSerializer, CustomerUserSocialMediaSerializer, \
     CustomerUserWhatsappSerializer, CustomerUserPhoneSerializer, CustomerUserEmailSerializer, CustomerUserMapSerializer, \
-    CustomerUserCustomSocialMediaSerializer
+    CustomerUserCustomSocialMediaSerializer, CustomerUserCustomSocialMediaViewSet
 from public.services import PublicCustomerUserService
 
 
@@ -45,7 +45,7 @@ class PublicCustomerUserViewSet(APIView):
         return Response({"success": True, "data": {"public_id": customer_user.public_id,
                                                    "profile": customer_profile_serializers.data,
                                                    "social_media": customer_social_media_serializers.data,
-                                                   "custom_social_media": customer_custom_social_media_serializers.data,
+                                                   "custom_social_media": customer_custom_social_media_serializers,
                                                    "whatsapp": customer_whatsapp_serializers_formated,
                                                    "phone": customer_phone_serializers_formated,
                                                    "email": customer_email_serializers_formated,
@@ -76,7 +76,11 @@ class PublicCustomerUserViewSet(APIView):
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
         customer_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=True)
-        return customer_social_media_serializers
+        metodos = CustomerUserCustomSocialMediaViewSet()
+        data = metodos.put_image_with_type(customer_social_media_serializers)
+
+
+        return data
 
     def get_whatsapp(self, customer_user_public_service, customer_user):
         try:

@@ -31,7 +31,11 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
                 return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
             customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=True)
-            return Response({"success": True, "data": customer_custom_social_media_serializers.data},
+            print(customer_custom_social_media_serializers)
+            print("aaaaaaaaaaaaaah")
+            data = self.put_image_with_type(customer_custom_social_media_serializers)
+
+            return Response({"success": True, "data": data},
                             status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
@@ -111,3 +115,45 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             is_visible=data["is_visible"],
             type=data["type"],
         )
+    
+    def put_image_with_type(self, customer_custom_social_media_serializers): 
+        data = []
+        for ccsms in customer_custom_social_media_serializers.data:
+            # Calcular el valor de fecha_fin y agregarlo al diccionario
+            if ccsms["type"] == "whatsappp" :
+                ccsms["image"] = "/media/custom_social_media/icons8-whatsapp-96.png"
+            elif ccsms["type"] == "facebook" :
+                ccsms["image"] = "/media/custom_social_media/icons8-facebook-96.png"
+            elif ccsms["type"] == "github" :
+                ccsms["image"] = "/media/custom_social_media/icons8-github-96.png"
+            elif ccsms["type"] == "gitlab" :
+                ccsms["image"] = "/media/custom_social_media/icons8-gitlab-96.png"
+            elif ccsms["type"] == "maps" :
+                ccsms["image"] = "/media/custom_social_media/icons8-google-maps-old-96.png"
+            elif ccsms["type"] == "instagram" :
+                ccsms["image"] = "/media/custom_social_media/icons8-instagram-96.png"
+            elif ccsms["type"] == "linkedin" :
+                ccsms["image"] = "/media/custom_social_media/icons8-linkedin-96.png"
+            elif ccsms["type"] == "correo" :
+                ccsms["image"] = "/media/custom_social_media/icons8-mail-96.png"
+            elif ccsms["type"] == "phone" :
+                ccsms["image"] = "/media/custom_social_media/icons8-phone-96.png"
+            elif ccsms["type"] == "skype" :
+                ccsms["image"] = "/media/custom_social_media/icons8-skype-96.png"
+            elif ccsms["type"] == "snapchat" :
+                ccsms["image"] = "/media/custom_social_media/icons8-snapchat-96.png"
+            elif ccsms["type"] == "spotify" :
+                ccsms["image"] = "/media/custom_social_media/icons8-spotify-96.png"
+            elif ccsms["type"] == "telegram" :
+                ccsms["image"] = "/media/custom_social_media/icons8-telegram-96.png"
+            elif ccsms["type"] == "tiktok" :
+                ccsms["image"] = "/media/custom_social_media/icons8-tiktok-96.png"
+            elif ccsms["type"] == "twitch" :
+                ccsms["image"] = "/media/custom_social_media/icons8-twitch-96.png"
+            elif ccsms["type"] == "twitter" :
+                ccsms["image"] = "/media/custom_social_media/icons8-twitter-96.png"
+            elif ccsms["type"] == "youtube" :
+                ccsms["image"] = "/media/custom_social_media/icons8-youtube-96.png"
+            # Añadir el diccionario modificado a la lista
+            data.append (ccsms)
+        return data
