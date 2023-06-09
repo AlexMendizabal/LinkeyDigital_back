@@ -11,7 +11,6 @@ from rest_framework import status
 from profile.models import CustomerUserCustomSocialMedia, CustomSocialMediaDto
 from profile.services import SocialMediaService
 
-
 class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
@@ -31,8 +30,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
                 return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
             customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=True)
-            print(customer_custom_social_media_serializers)
-            print("aaaaaaaaaaaaaah")
             data = self.put_image_with_type(customer_custom_social_media_serializers)
 
             return Response({"success": True, "data": data},
@@ -59,9 +56,10 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=False)
-        return Response({"success": True, "data": customer_custom_social_media_serializers.data},
+        data = self.put_image_with_type(customer_custom_social_media_serializers)
+        return Response({"success": True, "data": data},
                         status=status.HTTP_200_OK)
-
+    
     def put(self, request, pk=None):
         customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia,
                                                               id=pk)
@@ -116,44 +114,41 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             type=data["type"],
         )
     
-    def put_image_with_type(self, customer_custom_social_media_serializers): 
-        data = []
-        for ccsms in customer_custom_social_media_serializers.data:
-            # Calcular el valor de fecha_fin y agregarlo al diccionario
-            if ccsms["type"] == "whatsappp" :
-                ccsms["image"] = "/media/custom_social_media/icons8-whatsapp-96.png"
-            elif ccsms["type"] == "facebook" :
-                ccsms["image"] = "/media/custom_social_media/icons8-facebook-96.png"
-            elif ccsms["type"] == "github" :
-                ccsms["image"] = "/media/custom_social_media/icons8-github-96.png"
-            elif ccsms["type"] == "gitlab" :
-                ccsms["image"] = "/media/custom_social_media/icons8-gitlab-96.png"
-            elif ccsms["type"] == "maps" :
-                ccsms["image"] = "/media/custom_social_media/icons8-google-maps-old-96.png"
-            elif ccsms["type"] == "instagram" :
-                ccsms["image"] = "/media/custom_social_media/icons8-instagram-96.png"
-            elif ccsms["type"] == "linkedin" :
-                ccsms["image"] = "/media/custom_social_media/icons8-linkedin-96.png"
-            elif ccsms["type"] == "correo" :
-                ccsms["image"] = "/media/custom_social_media/icons8-mail-96.png"
-            elif ccsms["type"] == "phone" :
-                ccsms["image"] = "/media/custom_social_media/icons8-phone-96.png"
-            elif ccsms["type"] == "skype" :
-                ccsms["image"] = "/media/custom_social_media/icons8-skype-96.png"
-            elif ccsms["type"] == "snapchat" :
-                ccsms["image"] = "/media/custom_social_media/icons8-snapchat-96.png"
-            elif ccsms["type"] == "spotify" :
-                ccsms["image"] = "/media/custom_social_media/icons8-spotify-96.png"
-            elif ccsms["type"] == "telegram" :
-                ccsms["image"] = "/media/custom_social_media/icons8-telegram-96.png"
-            elif ccsms["type"] == "tiktok" :
-                ccsms["image"] = "/media/custom_social_media/icons8-tiktok-96.png"
-            elif ccsms["type"] == "twitch" :
-                ccsms["image"] = "/media/custom_social_media/icons8-twitch-96.png"
-            elif ccsms["type"] == "twitter" :
-                ccsms["image"] = "/media/custom_social_media/icons8-twitter-96.png"
-            elif ccsms["type"] == "youtube" :
-                ccsms["image"] = "/media/custom_social_media/icons8-youtube-96.png"
-            # Añadir el diccionario modificado a la lista
-            data.append (ccsms)
-        return data
+    def put_image_with_type(self, customer_custom_social_media):
+        type_mapping = {
+                "whatsapp": "icons8-whatsapp-96.png",
+                "facebook": "icons8-facebook-96.png",
+                "github": "icons8-github-96.png",
+                "gitlab": "icons8-gitlab-96.png",
+                "maps": "icons8-google-maps-old-96.png",
+                "instagram": "icons8-instagram-96.png",
+                "linkedin": "icons8-linkedin-96.png",
+                "correo": "icons8-mail-96.png",
+                "phone": "icons8-phone-96.png",
+                "skype": "icons8-skype-96.png",
+                "snapchat": "icons8-snapchat-96.png",
+                "spotify": "icons8-spotify-96.png",
+                "telegram": "icons8-telegram-96.png",
+                "tiktok": "icons8-tiktok-96.png",
+                "twitch": "icons8-twitch-96.png",
+                "twitter": "icons8-twitter-96.png",
+                "youtube": "icons8-youtube-96.png"
+            }
+        if isinstance(customer_custom_social_media.data, list):
+            # Si es una colección de objetos
+            data = []
+            for ccsms in customer_custom_social_media.data:
+                if ccsms["type"] in type_mapping:
+                    ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
+                data.append(ccsms)
+            return data
+        else:
+            # Si es un solo objeto
+            ccsms = customer_custom_social_media.data
+            print()
+            if ccsms["type"] in type_mapping:
+                print("esto fue true AAAAAAAAAAAAAH")
+                ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
+            return ccsms
+
+    
