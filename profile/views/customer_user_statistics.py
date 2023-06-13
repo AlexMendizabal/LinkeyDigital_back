@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework import serializers
 from profile.models import CustomerUserProfile, CustomerUserCustomSocialMedia
 from profile.services import ProfileService,  SocialMediaService
+from profile.views import CustomerUserCustomSocialMediaViewSet
 
 
 class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
@@ -14,7 +15,7 @@ class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
 class CustomerUserCustomSocialMediaStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
-        fields = ('title', 'counter', 'image')
+        fields = ('title', 'counter', 'image', 'type')
 
 class CustomerUserStatistics(APIView):
 
@@ -26,7 +27,7 @@ class CustomerUserStatistics(APIView):
         customer_custom_social_media_serializers = self.get_custom_social_media(social_media_service, None,
                                                                                 request.user.id)
 
-        customer_custom_social_media_serializers_formated = customer_custom_social_media_serializers.data if customer_custom_social_media_serializers.data else None
+        customer_custom_social_media_serializers_formated = customer_custom_social_media_serializers if customer_custom_social_media_serializers else None
 
         return Response({"success": True, "data": {
             "profile": customer_profile_serializers.data['counter'],
@@ -45,8 +46,10 @@ class CustomerUserStatistics(APIView):
     def get_custom_social_media(self, contact_service, pk, customer_user):
         try:
             response = contact_service.get_custom_social_media(pk, customer_user)
+            metodos = CustomerUserCustomSocialMediaViewSet()
         except Exception as e:
             return Response(None)
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaStatisticsSerializer(response,
                                                                                                      many=True)
-        return customer_custom_social_media_serializers
+        data = metodos.put_image_with_type(customer_custom_social_media_serializers)
+        return data
