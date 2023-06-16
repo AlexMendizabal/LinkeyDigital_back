@@ -11,6 +11,12 @@ from rest_framework import status
 from profile.models import CustomerUserCustomSocialMedia, CustomSocialMediaDto
 from profile.services import SocialMediaService
 
+from rest_framework import status
+from rest_framework.response import Response
+from django.core.files.storage import default_storage
+from django.conf import settings
+
+
 class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
@@ -59,10 +65,9 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         data = self.put_image_with_type(customer_custom_social_media_serializers)
         return Response({"success": True, "data": data},
                         status=status.HTTP_200_OK)
-    
+
     def put(self, request, pk=None):
-        customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia,
-                                                              id=pk)
+        customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
 
         if request.user.id != customer_user_custom_social_media.customer_user_id:
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
@@ -87,11 +92,18 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             instance=customer_user_custom_social_media,
             data=request.data, partial=True)
 
+        if 'type' in request.data and request.data['type'] == 'image':
+            if 'image' in request.FILES:
+                imagen = request.FILES['image']
+                ruta_imagen = default_storage.save('custom_social_media/' + imagen.name, imagen)
+                request.data['url'] = settings.MEDIA_URL + ruta_imagen
+
         customer_user_custom_social_media_serializers.is_valid(raise_exception=True)
         customer_user_custom_social_media_serializers.save()
 
         return Response({"success": True, "data": customer_user_custom_social_media_serializers.data},
                         status=status.HTTP_200_OK)
+
     
     def delete (self, request, pk=None):
 
