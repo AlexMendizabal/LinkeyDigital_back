@@ -91,12 +91,17 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         customer_user_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(
             instance=customer_user_custom_social_media,
             data=request.data, partial=True)
-
         if 'type' in request.data and request.data['type'] == 'image':
-            if 'image' in request.FILES:
-                imagen = request.FILES['image']
+            if 'imageQR' in request.data:
+                try:
+                    os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
+                except Exception as e:
+                    print(e)
+                    pass
+                imagen = request.data['imageQR']
                 ruta_imagen = default_storage.save('custom_social_media/' + imagen.name, imagen)
-                request.data['url'] = settings.MEDIA_URL + ruta_imagen
+                new_url = settings.MEDIA_URL + ruta_imagen
+                customer_user_custom_social_media.url = new_url
 
         customer_user_custom_social_media_serializers.is_valid(raise_exception=True)
         customer_user_custom_social_media_serializers.save()
