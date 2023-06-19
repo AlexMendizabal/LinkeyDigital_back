@@ -163,7 +163,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             # Si es un solo objeto
             ccsms = customer_custom_social_media.data
             if ccsms["type"] in type_mapping:
-                print("esto fue true AAAAAAAAAAAAAH")
                 ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
             return ccsms
 
