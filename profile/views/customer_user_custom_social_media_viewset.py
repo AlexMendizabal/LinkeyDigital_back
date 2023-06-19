@@ -92,7 +92,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             instance=customer_user_custom_social_media,
             data=request.data, partial=True)
         if 'type' in request.data and request.data['type'] == 'image':
-            if 'imageQR' in request.data:
+            if 'imageQR' in request.data and not isinstance(request.data['imageQR'], str):
                 try:
                     os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
                 except Exception as e:
