@@ -94,7 +94,8 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         if 'type' in request.data and request.data['type'] == 'image':
             if 'imageQR' in request.data and not isinstance(request.data['imageQR'], str):
                 try:
-                    os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
+                    if not customer_user_custom_social_media.url.endswith("custom_social_media/undefined.png"):
+                        os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
                 except Exception as e:
                     print(e)
                     pass
@@ -111,7 +112,8 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
 
     
     def delete (self, request, pk=None):
-
+        # type -> image 
+        # borrar de url
         social_media_service = SocialMediaService()
         try:
             response = social_media_service.delete_custom_social_media(pk, request.user.id)
@@ -149,7 +151,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
                 "tiktok": "icons8-tiktok-96.png",
                 "twitch": "icons8-twitch-96.png",
                 "twitter": "icons8-twitter-96.png",
-                "youtube": "icons8-youtube-96.png"
+                "youtube": "icons8-youtube-96.png",
             }
         if isinstance(customer_custom_social_media.data, list):
             # Si es una colección de objetos
