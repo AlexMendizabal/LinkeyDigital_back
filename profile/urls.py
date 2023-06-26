@@ -3,25 +3,15 @@ from rest_framework import routers
 
 from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSet, CustomerUserReservaViewSet,\
     CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, CustomerUserImageViewSet, \
-    CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet
+    CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
+    ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet
 
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    # ******************  APARTADO PARA USUARIOS NORMALES ******************
     path('user', CustomerUserProfileViewSet.as_view(), name="customer_user_profile_get_or_create_or_update"),
     path('user/<int:pk>', CustomerUserProfileViewSet.as_view(), name="customer_user_profile_get_one"),
-
-    path('whatsapp', CustomerUserWhatsappViewSet.as_view(), name="customer_user_whatsapp_get_or_create_or_update"),
-    path('whatsapp/<int:pk>', CustomerUserWhatsappViewSet.as_view(), name="customer_user_whatsapp_get_one"),
-
-    path('email', CustomerUserEmailViewSet.as_view(), name="customer_user_email_get_or_create_or_update"),
-    path('email/<int:pk>', CustomerUserEmailViewSet.as_view(), name="customer_user_email_get_one"),
-
-    path('map', CustomerUserMapViewSet.as_view(), name="customer_user_map_get_or_create_or_update"),
-    path('map/<int:pk>', CustomerUserMapViewSet.as_view(), name="customer_user_map_get_one"),
-
-    path('phone', CustomerUserPhoneViewSet.as_view(), name="customer_user_phone_get_or_create_or_update"),
-    path('phone/<int:pk>', CustomerUserPhoneViewSet.as_view(), name="customer_user_phone_get_one"),
 
     path('social_media', CustomerUserSocialMediaViewSet.as_view(),
          name="customer_user_social_media_get_or_create_or_update"),
@@ -45,4 +35,30 @@ urlpatterns = [
     path('image/<int:pk>', CustomerUserImageViewSet.as_view(), name="customer_user_whatsapp_get_one"),
 
     path('reserva/<int:social>', CustomerUserReservaViewSet.as_view(),  name="get_reserva"),
+
+    path('view/<int:profile>/<int:month>/<int:year>', ViewsViewSet.as_view(),  name="get_views"),
+
+#**************** APARTADO para administradores *********************
+
+     # retorna los custom social media del usuario que se mande
+     # se puede crear los social media para los usuarios de la licencia 
+     # actualizar los custom social media para los usuarios en la licencia 
+     # se pueden borrar custom social media para algunos usuarios 
+    path('custom_social_media_for_user/<int:user_id>/<int:pk>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
+
+# ************** METODOS YA INUTILES... EVITAR USAR *************************
+
+    path('whatsapp', CustomerUserWhatsappViewSet.as_view(), name="customer_user_whatsapp_get_or_create_or_update"),
+    path('whatsapp/<int:pk>', CustomerUserWhatsappViewSet.as_view(), name="customer_user_whatsapp_get_one"),
+
+    path('email', CustomerUserEmailViewSet.as_view(), name="customer_user_email_get_or_create_or_update"),
+    path('email/<int:pk>', CustomerUserEmailViewSet.as_view(), name="customer_user_email_get_one"),
+
+    path('map', CustomerUserMapViewSet.as_view(), name="customer_user_map_get_or_create_or_update"),
+    path('map/<int:pk>', CustomerUserMapViewSet.as_view(), name="customer_user_map_get_one"),
+
+    path('phone', CustomerUserPhoneViewSet.as_view(), name="customer_user_phone_get_or_create_or_update"),
+    path('phone/<int:pk>', CustomerUserPhoneViewSet.as_view(), name="customer_user_phone_get_one"),
+
+   
 ]

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from rest_framework.generics import get_object_or_404
+from datetime import date
 
 from profile.models import CustomerUserWhatsapp, CustomerUserEmail, CustomerUserMap, CustomerUserCustomImage, CustomerUserPhone, \
-    CustomerUserProfile, CustomerUserSocialMedia, CustomerUserCustomSocialMedia
+    CustomerUserProfile, CustomerUserSocialMedia, CustomerUserCustomSocialMedia, ViewProfile
 
 
 class PublicCustomerUserService:
@@ -12,10 +13,15 @@ class PublicCustomerUserService:
             customer_user_profile = get_object_or_404(CustomerUserProfile, pk=pk, customer_user=customer_user)
         elif customer_user:
             customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=customer_user)
-        else:
-            customer_user_profile = CustomerUserProfile.objects.all()
+        # No tiene sentido... se borrara con el tiempo 
+        # else:
+        #     customer_user_profile = CustomerUserProfile.objects.all()
+        today = date.today()
         new_counter_value = customer_user_profile.counter + 1
         CustomerUserProfile.objects.filter(pk=customer_user_profile.pk).update(counter=new_counter_value)
+        view_profile, created = ViewProfile.objects.get_or_create(custom_user = customer_user_profile,timestamp__date=today)
+        view_profile.counter += 1
+        view_profile.save()
         return customer_user_profile
 
     def get_whatsapp(self, pk=None, customer_user=None):

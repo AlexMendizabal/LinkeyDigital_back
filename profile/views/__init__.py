@@ -1,7 +1,7 @@
 from .social_media_viewset import SocialMediaSerializer, SocialmediaViewSet
 from .design_profile_viewset import DesignProfileSerializer, DesignProfileViewSet
 from .customer_user_custom_social_media_viewset import CustomerUserCustomSocialMediaSerializer, \
-    CustomerUserCustomSocialMediaViewSet
+    CustomerUserCustomSocialMediaViewSet, CustomerUserCustomSocialMediaByUserViewSet
 from .customer_user_social_media_viewset import CustomerUserSocialMediaSerializer, CustomerUserSocialMediaViewSet
 from .customer_user_email_viewset import CustomerUserEmailSerializer, CustomerUserEmailViewSet
 from .customer_user_map_viewset import CustomerUserMapSerializer, CustomerUserMapViewSet
@@ -11,3 +11,4 @@ from .customer_user_profile_viewset import CustomerUserProfileSerializer, Custom
 from .customer_user_statistics import CustomerUserStatistics
 from .customer_user_image_viewset import CustomerUserCustomImageSerializer , CustomerUserImageViewSet
 from .reserva_viewset import CustomerUserReservaViewSet
+from .views_viewset import ViewsViewSet

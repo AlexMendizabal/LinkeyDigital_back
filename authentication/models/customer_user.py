@@ -1,11 +1,12 @@
 import uuid
 from enum import unique
-
+from rest_framework.generics import get_object_or_404
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+#from simple_history.models import HistoricalRecords
+from datetime import date, timedelta
 
-from soyyo_api import settings
-
+from administration.models import Licencia
 
 class CustomerUser(AbstractUser):
     # Id administrado por el orm
@@ -18,11 +19,42 @@ class CustomerUser(AbstractUser):
     customer_user_admin = models.ForeignKey('self', null=True, blank=True, related_name='owner',
                                             on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
+    is_editable = models.BooleanField(default=True)
     username = models.CharField(max_length=50, blank=False, unique=True)
     email = models.CharField(max_length=100, blank=False, unique=True)
     phone_number = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(max_length=100, blank=True)
-    paternal_surname = models.CharField(max_length=100, blank=True)
-    maternal_surname = models.CharField(max_length=100, blank=True)
     birth_genre = models.CharField(max_length=100, blank=True)
     identification_genre = models.CharField(max_length=100, blank=True)
+    rubro = models.CharField(max_length=100, blank=True)
+
+    licencia_id = models.ForeignKey(Licencia, on_delete=models.CASCADE , null=True)
+    #history = HistoricalRecords()
+
+# este metodo es para bloquar cuando el usuario ya no tenga acceso por falta de licencia
+    def has_access_to_protected_views(self):
+        # verifique que la cuenta este activa
+        if self.is_superuser:
+            return True
+        if not self.is_active:
+            return False
+        licencia = get_object_or_404(Licencia, id=self.licencia_id_id)
+        #verifica que la licencia no sea eterna
+        if licencia.status == 4 :
+            return True
+        # verifica que la licencia no esta vencina
+        if licencia.status == 2:
+            return False
+        
+        fecha_inicio = licencia.fecha_inicio.date()
+        duracion_dias = licencia.duracion
+        
+        fecha_fin = fecha_inicio + timedelta(days=duracion_dias)
+        fecha_actual = date.today()
+        
+        if fecha_actual > fecha_fin:
+            licencia.status = 2
+            licencia.save()
+            return False
+        
+        return True
