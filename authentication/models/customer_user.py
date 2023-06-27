@@ -39,6 +39,9 @@ class CustomerUser(AbstractUser):
         if not self.is_active:
             return False
         licencia = get_object_or_404(Licencia, id=self.licencia_id_id)
+        #verifica que la licencia no este bloqueada
+        if licencia.status == 3 :
+            return False
         #verifica que la licencia no sea eterna
         if licencia.status == 4 :
             return True

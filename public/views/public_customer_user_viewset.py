@@ -24,8 +24,8 @@ class PublicCustomerUserViewSet(APIView):
                 customer_user = CustomerUser.objects.get(public_id=public_id)
             except:
                 raise Http404
-        # if not customer_user.has_access_to_protected_views():
-        #         return Response({"succes": False, "message": "El usuario no tiene licencia"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        if not customer_user.has_access_to_protected_views():
+                return Response({"succes": False, "message": "El usuario no tiene licencia"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         customer_user_public_service = PublicCustomerUserService()
 
         customer_profile_serializers = self.get_profile(customer_user_public_service, customer_user)

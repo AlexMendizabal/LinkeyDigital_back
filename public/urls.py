@@ -20,6 +20,7 @@ urlpatterns = [
     path('user/<str:public_id>/custom_social_media', PublicCustomerUserCustomSocialMediaViewSet.as_view(),
          name="visit_custom_social_media_public_app"),
 
+
      path('user/<str:public_id>/reserva', CustomerUserReservaViewSet.as_view(), name="make_reserva"),
 
 ]

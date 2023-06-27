@@ -100,6 +100,8 @@ class LicenciaSuperViewSet(APIView):
             return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
         if 'duracion' not in request.data :
             return Response({"succes": False, "message": "el campo duracion es obligatorio"}, status=status.HTTP_400_BAD_REQUEST)
+        if 'status' not in request.data :
+            return Response({"succes": False, "message": "el campo de status es obligatorio"}, status=status.HTTP_400_BAD_REQUEST)
         
         if 'fecha_inicio' not in request.data :
             request.data["fecha_inicio"] = timezone.now()
@@ -167,23 +169,12 @@ class LicenciaSuperViewSet(APIView):
 class LicenciaCoonectViewSet(APIView):
     #actualiza a el campo "licencia_id" de la clase customer usere para conectar estas dos entidades
     def patch(self, request, pk=None):
-        usrs = []
+        ids = []
         licencia_service = LicenciaService()
-
         for reg in request.data:
-            usrs = licencia_service.connectLicencia(pk,reg["id"] )
-        return Response({"success": True, "data": usrs},
-                        status=status.HTTP_200_OK)
-        # ids= request.ids
-        # if request.user.licencia_id is None:
-        #     return Response({"succes": False, "message": "El usuario no tiene licencia_id"}, status=status.HTTP_404_NOT_FOUND)
-        # licencia_service = LicenciaService()
-        # try:
-        #     response = licencia_service.get_licencia(pk, request.user.licencia_id)
-        # except Exception as e:
-        #     return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
-
-        # licenciaSerializers = LicenciaSerializer(response, many=False)
-        # return Response({"success": True, "data": licenciaSerializers.data}, status=status.HTTP_200_OK)
-    
+            try :
+                usr=licencia_service.connectLicencia(pk,reg["id"] )
+            except Exception as e:
+                return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return Response({"success": True}, status=status.HTTP_200_OK)
 
