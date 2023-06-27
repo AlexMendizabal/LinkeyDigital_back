@@ -12,6 +12,9 @@ from profile.models import CustomerUserCustomSocialMedia, CustomSocialMediaDto
 from profile.services import SocialMediaService
 
 from authentication.models import CustomerUser
+from django.core.files.storage import default_storage
+from django.conf import settings
+
 
 class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,10 +64,9 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         data = self.put_image_with_type(customer_custom_social_media_serializers)
         return Response({"success": True, "data": data},
                         status=status.HTTP_200_OK)
-    
+
     def put(self, request, pk=None):
-        customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia,
-                                                              id=pk)
+        customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
 
         if request.user.id != customer_user_custom_social_media.customer_user_id:
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
@@ -88,15 +90,29 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         customer_user_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(
             instance=customer_user_custom_social_media,
             data=request.data, partial=True)
+        if 'type' in request.data and request.data['type'] == 'image':
+            if 'imageQR' in request.data and not isinstance(request.data['imageQR'], str):
+                try:
+                    if not customer_user_custom_social_media.url.endswith("custom_social_media/undefined.png"):
+                        os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
+                except Exception as e:
+                    print(e)
+                    pass
+                imagen = request.data['imageQR']
+                ruta_imagen = default_storage.save('custom_social_media/' + imagen.name, imagen)
+                new_url = settings.MEDIA_URL + ruta_imagen
+                customer_user_custom_social_media.url = new_url
 
         customer_user_custom_social_media_serializers.is_valid(raise_exception=True)
         customer_user_custom_social_media_serializers.save()
 
         return Response({"success": True, "data": customer_user_custom_social_media_serializers.data},
                         status=status.HTTP_200_OK)
+
     
     def delete (self, request, pk=None):
-
+        # type -> image 
+        # borrar de url
         social_media_service = SocialMediaService()
         try:
             response = social_media_service.delete_custom_social_media(pk, request.user.id)
@@ -134,7 +150,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
                 "tiktok": "icons8-tiktok-96.png",
                 "twitch": "icons8-twitch-96.png",
                 "twitter": "icons8-twitter-96.png",
-                "youtube": "icons8-youtube-96.png"
+                "youtube": "icons8-youtube-96.png",
             }
         if isinstance(customer_custom_social_media.data, list):
             # Si es una colección de objetos
@@ -148,7 +164,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             # Si es un solo objeto
             ccsms = customer_custom_social_media.data
             if ccsms["type"] in type_mapping:
-                print("esto fue true AAAAAAAAAAAAAH")
                 ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
             return ccsms
 

@@ -30,6 +30,7 @@ class CustomerUserCustomSocialMedia(models.Model):
 
     def save(self, **kwargs):
         super().save()
+        print(self.image)
         img = Image.open(self.image.path)
         if img.height > 300 or img.width > 300:
             new_img = (200, 200)
