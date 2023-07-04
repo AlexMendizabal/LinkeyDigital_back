@@ -1,6 +1,7 @@
 from rest_framework.generics import get_object_or_404
 
 from profile.models import CustomerUserProfile
+from authentication.models import CustomerUser
 
 
 class ProfileService:
@@ -22,3 +23,11 @@ class ProfileService:
         else:
             customer_user_profile = CustomerUserProfile.objects.all()
         return customer_user_profile
+    
+    def get_users_by_licencia(self, licencia_id=None):
+
+        if licencia_id:
+            customer_users = CustomerUser.objects.filter(licencia_id_id = licencia_id)
+        else:
+            customer_users = None
+        return customer_users

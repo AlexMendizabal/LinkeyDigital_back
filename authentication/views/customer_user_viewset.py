@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from authentication.models import CustomerUser
 from rest_framework import status
-
+from django.db import transaction
 
 class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,5 +46,32 @@ class CustomerUserViewSet(APIView):
         #userProfile.delete()
         #return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
 
+
+class CustomerUserPutRubroViewSet(APIView):
+
+    """ TODO: filtrar que no se actualicen ids repetidos  """
+    """ TODO: Solo se debe actualizar usuarios en la licencia  """
+    def put(self, request):
+        if not request.user.is_superuser and not request.user.is_admin:
+            return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        if not "ids" in request.data and len(request.data["ids"]) > 0:
+            return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
+        ids = request.data["ids"]
+        with transaction.atomic():
+            for reg in ids:
+                try:
+                    customer_user = get_object_or_404(CustomerUser, id=reg)
+                    customer_user.rubro = request.data["rubro"]
+                    customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)
+                    customer_user_serializers.is_valid(raise_exception=True)
+                    customer_user_serializers.save()
+                except Exception as e:
+                    print(e)
+                    return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
+        
+
+        
 
 

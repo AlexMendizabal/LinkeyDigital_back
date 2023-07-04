@@ -4,7 +4,7 @@ from rest_framework import routers
 from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSet, CustomerUserReservaViewSet,\
     CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, CustomerUserImageViewSet, \
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
-    ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet
+    ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet, StaticsForAdminViewSet
 
 router = routers.DefaultRouter()
 
@@ -30,13 +30,17 @@ urlpatterns = [
 
     path('statistics', CustomerUserStatistics.as_view(),
          name="get_customer_user_statistics"),
+     
+     #README: Traera las metricas de todos los usuarios en la licencia 
+    path('statisticsAdm', StaticsForAdminViewSet.as_view(),
+         name="get_customer_user_statistics_for_adm"),
 
      path('image', CustomerUserImageViewSet.as_view(), name="customer_user_image_get_or_create_or_update"),
     path('image/<int:pk>', CustomerUserImageViewSet.as_view(), name="customer_user_whatsapp_get_one"),
 
     path('reserva/<int:social>', CustomerUserReservaViewSet.as_view(),  name="get_reserva"),
 
-    path('view/<int:profile>/<int:month>/<int:year>', ViewsViewSet.as_view(),  name="get_views"),
+    path('view/<int:month>/<int:year>/<int:profile>', ViewsViewSet.as_view(),  name="get_views"),
 
 #**************** APARTADO para administradores *********************
 
@@ -44,7 +48,10 @@ urlpatterns = [
      # se puede crear los social media para los usuarios de la licencia 
      # actualizar los custom social media para los usuarios en la licencia 
      # se pueden borrar custom social media para algunos usuarios 
+    path('custom_social_media_for_user/<int:user_id>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
     path('custom_social_media_for_user/<int:user_id>/<int:pk>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
+    # README: Esta url sirve para aregrar varios el mismo tiepo
+    path('custom_social_media_for_all_user', CustomerUserCustomSocialMediaByAllUserViewSet.as_view(),  name="custom_user_for_all_user"),
 
 # ************** METODOS YA INUTILES... EVITAR USAR *************************
 

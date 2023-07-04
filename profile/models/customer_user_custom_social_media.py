@@ -14,6 +14,7 @@ class CustomSocialMediaDto:
     is_active: bool
     is_visible: bool
     type : str
+    image: str
 
 
 class CustomerUserCustomSocialMedia(models.Model):

@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from administration.views import LicenciaViewSet, LicenciaSuperViewSet, LicenciaCoonectViewSet,\
-      LicenciaAdminViewSet, BlockersUsersViewSet
+      LicenciaAdminViewSet, BlockersUsersViewSet, EditableUsersViewSet
 
 router = routers.DefaultRouter()
 
@@ -16,6 +16,8 @@ urlpatterns = [
 
     path('licenciaadm', LicenciaAdminViewSet.as_view(), name="get_licencias_adm"),
 
+    #README: end points para bloquear usuarios... cambia el bolleano(si es true pasa a false y viceversa)
+    path('edit/<int:pk>', EditableUsersViewSet.as_view(), name="block_or_desblock_user"),
     path('block/<int:pk>', BlockersUsersViewSet.as_view(), name="block_or_desblock_user")
 
 ]
