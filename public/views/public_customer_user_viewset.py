@@ -32,7 +32,8 @@ class PublicCustomerUserViewSet(APIView):
                                                                                 customer_user)
 
 
-        return Response({"success": True, "data": {"public_id": customer_user.public_id,
+        return Response({"success": True, "data": {"username" : customer_user.username,
+                                                   "public_id": customer_user.public_id,
                                                    "profile": customer_profile_serializers.data,
                                                    "custom_social_media": customer_custom_social_media_serializers,}},
                         status=status.HTTP_200_OK)
