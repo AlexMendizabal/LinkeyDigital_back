@@ -23,7 +23,6 @@ class LicenciaSerializer(serializers.ModelSerializer):
         
 # apartado para usuarios genericos  
 class LicenciaViewSet(APIView):
-    #retorna la licencia a la que el usuario pertenece
     def get(self, request):
         if request.user.licencia_id is None:
             return Response({"succes": False, "message": "El usuario no tiene licencia_id"}, status=status.HTTP_404_NOT_FOUND)
@@ -37,21 +36,18 @@ class LicenciaViewSet(APIView):
         licenciaSerializers = LicenciaSerializer(response, many=False)
 
         #####   proceso para agregar fecha fin al objeto 
+        #WAITING: Agregar esto a una funcion y simplificar code...
         fecha_inicio = datetime.datetime.strptime(licenciaSerializers.data['fecha_inicio'], "%Y-%m-%dT%H:%M:%S.%fZ")
         fecha_fin = fecha_inicio + datetime.timedelta (days=licenciaSerializers.data['duracion'])
         fecha_fin_str = fecha_fin.strftime ("%Y-%m-%dT%H:%M:%S.%fZ")
         licenciaSerializers.data['fecha_fin'] = fecha_fin_str
-
-        # Crear un nuevo diccionario con los datos del serializador
         data = licenciaSerializers.data.copy ()
-        # Agregar el campo fecha_fin al diccionario
         data ['fecha_fin'] = fecha_fin_str
         return Response({"success": True, "data": data }, status=status.HTTP_200_OK)
     
 
 #apartado para usuarios administradores 
 class LicenciaAdminViewSet(APIView):
-    #retorna los usuarios adjuntados a la licencia del admin
     def get(self, request):
         if request.user.licencia_id is None:
             return Response({"success": False, "message": "El usuario no tiene licencia"}, status=status.HTTP_404_NOT_FOUND)
@@ -80,7 +76,6 @@ class LicenciaSuperViewSet(APIView):
 
         licenciaSerializers = LicenciaSerializer(response, many=True)
 
-
         data = []
         for licencia in licenciaSerializers.data:
             # Calcular el valor de fecha_fin y agregarlo al diccionario
@@ -93,7 +88,6 @@ class LicenciaSuperViewSet(APIView):
 
         return Response({"success": True, "data": licenciaSerializers.data}, status=status.HTTP_200_OK)
     
-    #metodo para crear licencias
     def post(self, request, pk=None):
         #validacion de los campos 
         if request.user.is_superuser == False :
@@ -113,7 +107,7 @@ class LicenciaSuperViewSet(APIView):
         licenciaService = LicenciaService()
 
         # Obtener el valor de customer_user_admin del request.data
-        customer_user_admin = request.data.get('customer_user_admin', None) # Puedes cambiar None por otro valor por defecto
+        customer_user_admin = request.data.get('customer_user_admin', None) 
    
         try:
             response = licenciaService.createLicencia(dto,customer_user_admin)
@@ -165,9 +159,7 @@ class LicenciaSuperViewSet(APIView):
             status=data["status"],
         )
     
-#apartado para conectar usuarios con las licencias 
 class LicenciaCoonectViewSet(APIView):
-    #actualiza a el campo "licencia_id" de la clase customer usere para conectar estas dos entidades
     def patch(self, request, pk=None):
         ids = []
         licencia_service = LicenciaService()

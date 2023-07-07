@@ -1,16 +1,10 @@
-import io
 import os
-from io import BytesIO
-from sys import getsizeof
 
-from PIL import Image
-from django.core.files import File
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 
 from rest_framework import serializers
-from profile.models import CustomerUserProfile, ProfileDto, DesignProfile
+from profile.models import CustomerUserProfile, ProfileDto
 from rest_framework.response import Response
 from rest_framework import status
 

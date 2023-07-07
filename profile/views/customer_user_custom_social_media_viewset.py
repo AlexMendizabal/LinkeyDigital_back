@@ -49,10 +49,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         data["customer_user"] = request.user.id
         if 'type' not in data :
             data["type"] = "socialMedia"
-        # DELETEME: Codigo misterioso que por alguna razon hizo funionar el codigo pero 
-        # ya no es necesario... lo dejo aca por si acaso xd(despues en produccion borraremos esto)
-        # if 'image' in request.FILES :
-        #     print("yeeeeeeeeeeeeeeah")
         serializer = CustomerUserCustomSocialMediaSerializer(data=data)
 
 
@@ -123,7 +119,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         return Response({"success": True, "data": customer_user_custom_social_media_serializers.data},
                         status=status.HTTP_200_OK)
 
-    #TODO: se debe cambiar la logica de borrado... de manera que en lugar de guardar 
+    #WAITING: se debe cambiar la logica de borrado... de manera que en lugar de guardar 
     # img por img se guarde una y vaya preguntando si hay otro registro que aun usa esa msima foto
 
     def delete (self, request, pk=None):

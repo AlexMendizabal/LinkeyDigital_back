@@ -1,2 +1,2 @@
-from .licencias_viewset import LicenciaViewSet, LicenciaSuperViewSet, LicenciaCoonectViewSet, LicenciaAdminViewSet
+from .licencias_viewset import LicenciaViewSet, LicenciaSuperViewSet, LicenciaCoonectViewSet, LicenciaAdminViewSet, LicenciaSerializer
 from .bloquer_viewset import BlockersUsersViewSet, EditableUsersViewSet

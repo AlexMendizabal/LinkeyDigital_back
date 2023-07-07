@@ -49,8 +49,9 @@ class CustomerUserViewSet(APIView):
 
 class CustomerUserPutRubroViewSet(APIView):
 
-    """ TODO: filtrar que no se actualicen ids repetidos  """
-    """ TODO: Solo se debe actualizar usuarios en la licencia  """
+    """ WAITING: filtrar que no se actualicen ids repetidos  """
+    """ WAITING: Solo se debe actualizar usuarios en la licencia  """
+    """ WAITING: ID Se debe poner la funcion de filtrar ids """
     def put(self, request):
         if not request.user.is_superuser and not request.user.is_admin:
             return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)

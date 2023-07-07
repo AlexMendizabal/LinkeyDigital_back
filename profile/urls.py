@@ -4,7 +4,9 @@ from rest_framework import routers
 from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSet, CustomerUserReservaViewSet,\
     CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, CustomerUserImageViewSet, \
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
-    ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet, StaticsForAdminViewSet
+    ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
+    StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, CustomerUserIndepProfileViewSet, \
+    CustomerUserLicensProfileViewSet
 
 router = routers.DefaultRouter()
 
@@ -12,6 +14,9 @@ urlpatterns = [
     # ******************  APARTADO PARA USUARIOS NORMALES ******************
     path('user', CustomerUserProfileViewSet.as_view(), name="customer_user_profile_get_or_create_or_update"),
     path('user/<int:pk>', CustomerUserProfileViewSet.as_view(), name="customer_user_profile_get_one"),
+    #DONE: 
+    #README: Metodo que trae perfil como "soy-yo/user" pero sin afectar las metricas
+    path('userWithoutStatcis/<str:public_id>', CustomerUserWithoutStatics.as_view(), name="get_user_public_app"),
 
     path('social_media', CustomerUserSocialMediaViewSet.as_view(),
          name="customer_user_social_media_get_or_create_or_update"),
@@ -44,16 +49,34 @@ urlpatterns = [
 
 #**************** APARTADO para administradores *********************
 
-     # retorna los custom social media del usuario que se mande
+     # README:  retorna los custom social media del usuario que se mande
      # se puede crear los social media para los usuarios de la licencia 
      # actualizar los custom social media para los usuarios en la licencia 
      # se pueden borrar custom social media para algunos usuarios 
     path('custom_social_media_for_user/<int:user_id>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
     path('custom_social_media_for_user/<int:user_id>/<int:pk>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
+
+    # WAITING: Se debe evitar ids repetidos... se podria hacer una funcion para ahorrar la parte de buscar users en el id
     # README: Esta url sirve para aregrar varios el mismo tiepo
     path('custom_social_media_for_all_user', CustomerUserCustomSocialMediaByAllUserViewSet.as_view(),  name="custom_user_for_all_user"),
 
-# ************** METODOS YA INUTILES... EVITAR USAR *************************
+
+    #DONE: 
+    #README: Metodo que traer los perfiles de usuarios en la licencia del admin
+    path('myUsers', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
+
+#**************** APARTADO para superUsuarios *********************
+    #FIXME: Se debe agregar la funcion para mostrar la fecha fin  
+    #README: Metodo que traer todos los perfiles administradores
+    path('allEmpresas', CustomerUserAllProfileViewSet.as_view(), name="get_all_enterprises"),
+    #DONE: 
+    #README: Metodo que traer todos los perfiles de usuarios independientes
+    path('allIndep', CustomerUserIndepProfileViewSet.as_view(), name="get_all_enterprises"),
+    #DONE: 
+    #README: Metodo que traer perfil de usuarios en la licencia del admin(aca se debe mandar la licencia requerida)
+    path('myUsers/<int:licencia_id>', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
+
+# ************** DELETEME: METODOS YA INUTILES... EVITAR USAR *************************
 
     path('whatsapp', CustomerUserWhatsappViewSet.as_view(), name="customer_user_whatsapp_get_or_create_or_update"),
     path('whatsapp/<int:pk>', CustomerUserWhatsappViewSet.as_view(), name="customer_user_whatsapp_get_one"),
