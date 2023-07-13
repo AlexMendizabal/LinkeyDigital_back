@@ -6,7 +6,7 @@ from authentication.models import CustomerUser
 from rest_framework import serializers
 
 from administration.models import Licencia
-from administration.views import LicenciaSerializer
+from administration.views import LicenciaSerializer, Utilities
 
 #WAITING: poner los serializadores en sus archivos o lugares respectivos
 
@@ -24,6 +24,14 @@ class CustomerUserSerializer(serializers.ModelSerializer):
             'id','email', 'rubro', 'is_editable', 'is_active')
 
 class ProfileService:
+    def cantobjs(self):
+        cantUsers = CustomerUser.objects.filter().count()
+        cantLicencia = Licencia.objects.filter(status=1).count()
+        cantLicenciaV = Licencia.objects.filter(status=2).count()
+        cantLicenciaB = Licencia.objects.filter(status=3).count()
+
+        
+        return {"Usuarios": cantUsers, "Licencias vigentes": cantLicencia, "Licencias vencidas": cantLicenciaV, "Licencias bloqueadas": cantLicenciaB}
     def create_profile(self, dto):
         customer_user_profile, created = CustomerUserProfile.objects.update_or_create(
             customer_user=dto.customer_user)
@@ -65,10 +73,14 @@ class ProfileService:
                 profile_user = CustomerUserProfile.objects.get(customer_user_id=custom_user.id)
 
                 licencia_serializ = LicenciaSerializer(licencia, many=False)
+                utilities = Utilities()
+                data = licencia_serializ.data.copy ()
+                data ['fecha_fin'] = utilities.calcular_fecha_fin(licencia_serializ.data['fecha_inicio'], licencia_serializ.data['duracion'])
                 custom_user_serializ = CustomerUserSerializer(custom_user, many=False)
+
                 profile_user_serializ = CustomerUserProfileSerializerLow(profile_user, many=False)
 
-                response.append({"licencia": licencia_serializ.data, "custom_user": custom_user_serializ.data,
+                response.append({"licencia": data, "custom_user": custom_user_serializ.data,
                                 "profile": profile_user_serializ.data})
 
         return response

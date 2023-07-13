@@ -9,7 +9,7 @@ from .customer_user_map_viewset import CustomerUserMapSerializer, CustomerUserMa
 from .customer_user_phonenumber_viewset import CustomerUserPhoneSerializer, CustomerUserPhoneViewSet
 from .customer_user_whatsapp_viewset import CustomerUserWhatsappSerializer, CustomerUserWhatsappViewSet
 from .customer_user_profile_viewset import CustomerUserProfileSerializer, CustomerUserProfileViewSet
-from .customer_user_statistics import CustomerUserStatistics, StaticsForAdminViewSet
+from .customer_user_statistics import CustomerUserStatistics, StaticsForAdminViewSet, StaticsForSuperViewSet
 from .customer_user_image_viewset import CustomerUserCustomImageSerializer , CustomerUserImageViewSet
 from .reserva_viewset import CustomerUserReservaViewSet
 from .views_viewset import ViewsViewSet

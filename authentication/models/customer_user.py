@@ -58,7 +58,9 @@ class CustomerUser(AbstractUser):
         
         fecha_fin = fecha_inicio + timedelta(days=duracion_dias)
         fecha_actual = date.today()
-        
+        #WAITING: Se debe actualizar para que no deje licencias sueltas por ahi... 
+        # este problema surte cuando creo una licencia con un admin... y luego creo otra licencia con el mismo admin
+        # el metodo deberia bloquear todas las licencias con ese admin por si acaso
         if fecha_actual > fecha_fin:
             licencia.status = 2
             licencia.save()

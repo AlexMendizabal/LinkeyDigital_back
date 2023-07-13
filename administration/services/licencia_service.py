@@ -32,7 +32,6 @@ class LicenciaService:
             customer_user_admin=dto.customer_user_admin, tipo_de_plan=dto.tipo_de_plan, fecha_inicio=dto.fecha_inicio, cobro=dto.cobro,
             duracion=dto.duracion, status=dto.status)
         if customer_user_admin is not None:
-            print(licencia.id)
             CustomerUser.objects.filter(id=customer_user_admin).update(licencia_id=licencia.id, is_admin=True)
         return licencia
     #actualiza al usuario con la pk de la licencia 

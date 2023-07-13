@@ -48,7 +48,19 @@ class StaticsForAdminViewSet(APIView):
         if not customer_profile:
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
         return Response({"success": True, "data": customer_profile}, status=status.HTTP_200_OK)
-
+    
+class StaticsForSuperViewSet(APIView):
+    def get(self, request):
+        if not request.user.is_superuser:
+            return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            profile_service = ProfileService()
+            data = profile_service.cantobjs()
+        except Exception as e:
+            print(e)
+            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+    
 class Utilities():
     def get_profile(self, profile_service, pk, customer_user):
         try:

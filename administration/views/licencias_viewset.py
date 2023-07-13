@@ -30,17 +30,14 @@ class LicenciaViewSet(APIView):
         try:
             response = licencia_service.get_licencia(request.user.licencia_id_id)
         except Exception as e:
-            print(e)
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
         licenciaSerializers = LicenciaSerializer(response, many=False)
 
         #####   proceso para agregar fecha fin al objeto 
         #WAITING: Agregar esto a una funcion y simplificar code...
-        fecha_inicio = datetime.datetime.strptime(licenciaSerializers.data['fecha_inicio'], "%Y-%m-%dT%H:%M:%S.%fZ")
-        fecha_fin = fecha_inicio + datetime.timedelta (days=licenciaSerializers.data['duracion'])
-        fecha_fin_str = fecha_fin.strftime ("%Y-%m-%dT%H:%M:%S.%fZ")
-        licenciaSerializers.data['fecha_fin'] = fecha_fin_str
+        utilities = Utilities()
+        fecha_fin_str = utilities.calcular_fecha_fin(licenciaSerializers.data['fecha_inicio'], licenciaSerializers.data['duracion'])
         data = licenciaSerializers.data.copy ()
         data ['fecha_fin'] = fecha_fin_str
         return Response({"success": True, "data": data }, status=status.HTTP_200_OK)
@@ -57,7 +54,6 @@ class LicenciaAdminViewSet(APIView):
         try:
             response = licencia_service.get_Users(request.user.licencia_id_id,request.user.id )
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
         licenciaSerializers = CustomerUserSerializer(response, many=True)
@@ -79,10 +75,8 @@ class LicenciaSuperViewSet(APIView):
         data = []
         for licencia in licenciaSerializers.data:
             # Calcular el valor de fecha_fin y agregarlo al diccionario
-            fecha_inicio = datetime.datetime.strptime (licencia ['fecha_inicio'], "%Y-%m-%dT%H:%M:%S.%fZ")
-            fecha_fin = fecha_inicio + datetime.timedelta (days=licencia ['duracion'])
-            fecha_fin_str = fecha_fin.strftime ("%Y-%m-%dT%H:%M:%S.%fZ")
-            licencia ['fecha_fin'] = fecha_fin_str
+            utilities = Utilities()
+            licencia ['fecha_fin'] = utilities.calcular_fecha_fin(licencia ['fecha_inicio'], licencia ['duracion'])
             # Añadir el diccionario modificado a la lista
             data.append (licencia)
 
@@ -103,7 +97,8 @@ class LicenciaSuperViewSet(APIView):
         serializer = LicenciaSerializer(data=request.data)
         if not serializer.is_valid():
             return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        dto = self.buid_dto_from_validated_data(serializer)
+        utilities = Utilities()
+        dto = utilities.buid_dto_from_validated_data(serializer)
         licenciaService = LicenciaService()
 
         # Obtener el valor de customer_user_admin del request.data
@@ -112,7 +107,6 @@ class LicenciaSuperViewSet(APIView):
         try:
             response = licenciaService.createLicencia(dto,customer_user_admin)
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         licencia_serializers = LicenciaSerializer(response, many=False)
         return Response({"success": True, "data": licencia_serializers.data},
@@ -132,32 +126,14 @@ class LicenciaSuperViewSet(APIView):
         try:
             licencia = licencia_service.updateLicencia(pk=pk, type=type, cobro=cobro, duracion=duracion, status=estado, customer_user_admin=customer_user_admin)
             licenciaSerializers = LicenciaSerializer(licencia, many=False)
-
-            #####   proceso para agregar fecha fin al objeto 
-            fecha_inicio = datetime.datetime.strptime(licenciaSerializers.data['fecha_inicio'], "%Y-%m-%dT%H:%M:%S.%fZ")
-            fecha_fin = fecha_inicio + datetime.timedelta (days=licenciaSerializers.data['duracion'])
-            fecha_fin_str = fecha_fin.strftime ("%Y-%m-%dT%H:%M:%S.%fZ")
-            licenciaSerializers.data['fecha_fin'] = fecha_fin_str
-
+            utilities = Utilities() 
             # Crear un nuevo diccionario con los datos del serializador
             data = licenciaSerializers.data.copy ()
             # Agregar el campo fecha_fin al diccionario
-            data ['fecha_fin'] = fecha_fin_str
+            data ['fecha_fin'] = utilities.calcular_fecha_fin(licenciaSerializers.data['fecha_inicio'], licenciaSerializers.data['duracion'])
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
-    
-    def buid_dto_from_validated_data(self, serializer):
-        data = serializer.validated_data
-        return Licencia(
-            customer_user_admin=data.get("customer_user_admin", None), # Si no hay customer_user_admin, se usa None
-            tipo_de_plan=data["tipo_de_plan"],
-            fecha_inicio=data.get("fecha_inicio", None),
-            cobro=data["cobro"],
-            duracion=data["duracion"],
-            status=data["status"],
-        )
     
 class LicenciaCoonectViewSet(APIView):
     def patch(self, request, pk=None):
@@ -169,4 +145,28 @@ class LicenciaCoonectViewSet(APIView):
             except Exception as e:
                 return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True}, status=status.HTTP_200_OK)
+    
+from dateutil.parser import parse
+from datetime import timedelta
+
+#WAITING: Unificar las clases de utilities en un archivo global para todos los modulo, 
+# DELETEME: borrar esta parte
+class Utilities():
+    def calcular_fecha_fin(self, fecha_inicio, duracion):
+        fecha_inicio = parse(fecha_inicio) # Detecta el formato y convierte la cadena a objeto
+        fecha_fin = fecha_inicio + timedelta(days=duracion) # Suma la duración en días al objeto
+        fecha_fin_str = fecha_fin.strftime("%Y-%m-%dT%H:%M:%SZ") # Convierte el objeto a cadena con el formato deseado
+        return fecha_fin_str # Devuelve la cadena
+    
+    def buid_dto_from_validated_data(self, serializer):
+        data = serializer.validated_data
+        return Licencia(
+            customer_user_admin=data.get("customer_user_admin", None), # Si no hay customer_user_admin, se usa None
+            tipo_de_plan=data["tipo_de_plan"],
+            fecha_inicio=data.get("fecha_inicio", None),
+            cobro=data["cobro"],
+            duracion=data["duracion"],
+            status=data["status"],
+        )
+
 

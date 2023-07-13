@@ -1,7 +1,8 @@
 from rest_framework import routers
 from django.urls import path, include
 
-from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, CustomerUserPutRubroViewSet
+from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, CustomerUserPutRubroViewSet \
+   ,CreateALotOfUsers, CreateAdmin
 
 router = routers.DefaultRouter()
 
@@ -12,4 +13,9 @@ urlpatterns = [
     path('user', CustomerUserViewSet.as_view(), name="user_list_or_create_or_update_or_delete"),
     #README: Metodo para cambiar el rubro de muchos usuarios
     path('rubro', CustomerUserPutRubroViewSet.as_view(), name="user_list_or_create_or_update_or_delete"),
+
+    #README: Metodo para cambiar el rubro de muchos usuarios
+    path('create/<int:cant>', CreateALotOfUsers.as_view(), name="register_user"),
+    #README: Metodo para crear un usuario con su licencia 
+    path('create-admin', CreateAdmin.as_view(), name="register_user_admin"),
 ]

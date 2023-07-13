@@ -6,7 +6,7 @@ from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSe
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
     ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
     StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, CustomerUserIndepProfileViewSet, \
-    CustomerUserLicensProfileViewSet
+    CustomerUserLicensProfileViewSet, StaticsForSuperViewSet
 
 router = routers.DefaultRouter()
 
@@ -14,7 +14,7 @@ urlpatterns = [
     # ******************  APARTADO PARA USUARIOS NORMALES ******************
     path('user', CustomerUserProfileViewSet.as_view(), name="customer_user_profile_get_or_create_or_update"),
     path('user/<int:pk>', CustomerUserProfileViewSet.as_view(), name="customer_user_profile_get_one"),
-    #DONE: 
+
     #README: Metodo que trae perfil como "soy-yo/user" pero sin afectar las metricas
     path('userWithoutStatcis/<str:public_id>', CustomerUserWithoutStatics.as_view(), name="get_user_public_app"),
 
@@ -35,10 +35,6 @@ urlpatterns = [
 
     path('statistics', CustomerUserStatistics.as_view(),
          name="get_customer_user_statistics"),
-     
-     #README: Traera las metricas de todos los usuarios en la licencia 
-    path('statisticsAdm', StaticsForAdminViewSet.as_view(),
-         name="get_customer_user_statistics_for_adm"),
 
      path('image', CustomerUserImageViewSet.as_view(), name="customer_user_image_get_or_create_or_update"),
     path('image/<int:pk>', CustomerUserImageViewSet.as_view(), name="customer_user_whatsapp_get_one"),
@@ -60,21 +56,26 @@ urlpatterns = [
     # README: Esta url sirve para aregrar varios el mismo tiepo
     path('custom_social_media_for_all_user', CustomerUserCustomSocialMediaByAllUserViewSet.as_view(),  name="custom_user_for_all_user"),
 
-
-    #DONE: 
     #README: Metodo que traer los perfiles de usuarios en la licencia del admin
     path('myUsers', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
 
+    #README: Traera las metricas de todos los usuarios en la licencia 
+    path('statisticsAdm', StaticsForAdminViewSet.as_view(),
+         name="get_customer_user_statistics_for_adm"),
+
 #**************** APARTADO para superUsuarios *********************
-    #FIXME: Se debe agregar la funcion para mostrar la fecha fin  
     #README: Metodo que traer todos los perfiles administradores
     path('allEmpresas', CustomerUserAllProfileViewSet.as_view(), name="get_all_enterprises"),
-    #DONE: 
+
     #README: Metodo que traer todos los perfiles de usuarios independientes
     path('allIndep', CustomerUserIndepProfileViewSet.as_view(), name="get_all_enterprises"),
-    #DONE: 
+
     #README: Metodo que traer perfil de usuarios en la licencia del admin(aca se debe mandar la licencia requerida)
     path('myUsers/<int:licencia_id>', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
+    #DONE: 
+    #README: Traera las metricas generales para el super admin
+    path('statisticsSup', StaticsForSuperViewSet.as_view(),
+         name="get_customer_user_statistics_for_adm"),
 
 # ************** DELETEME: METODOS YA INUTILES... EVITAR USAR *************************
 
