@@ -72,7 +72,6 @@ urlpatterns = [
 
     #README: Metodo que traer perfil de usuarios en la licencia del admin(aca se debe mandar la licencia requerida)
     path('myUsers/<int:licencia_id>', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
-    #DONE: 
     #README: Traera las metricas generales para el super admin
     path('statisticsSup', StaticsForSuperViewSet.as_view(),
          name="get_customer_user_statistics_for_adm"),

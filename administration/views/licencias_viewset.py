@@ -35,7 +35,6 @@ class LicenciaViewSet(APIView):
         licenciaSerializers = LicenciaSerializer(response, many=False)
 
         #####   proceso para agregar fecha fin al objeto 
-        #WAITING: Agregar esto a una funcion y simplificar code...
         utilities = Utilities()
         fecha_fin_str = utilities.calcular_fecha_fin(licenciaSerializers.data['fecha_inicio'], licenciaSerializers.data['duracion'])
         data = licenciaSerializers.data.copy ()
