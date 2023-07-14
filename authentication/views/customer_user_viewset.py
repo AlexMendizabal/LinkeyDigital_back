@@ -15,10 +15,6 @@ class CustomerUserSerializer(serializers.ModelSerializer):
 
 class CustomerUserViewSet(APIView):
     def get(self, request):
-        if request.user.is_superuser == 1:
-            customer_user_list = CustomerUser.objects.all()
-            customer_user_serializers = CustomerUserSerializer(customer_user_list, many=True)
-            return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
         customer_user = get_object_or_404(CustomerUser, id=request.user.id)
         customer_user_serializer = CustomerUserSerializer(customer_user)
         return Response(customer_user_serializer.data, status=status.HTTP_200_OK)
