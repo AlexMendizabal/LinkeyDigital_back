@@ -26,6 +26,9 @@ urlpatterns = [
     # README:retorna los usuarios adjuntados a la licencia del admin 
     path('licenciaadm', LicenciaAdminViewSet.as_view(), name="get_licencias_adm"),
 
+    # README: Retorna las usuarios adjuntados de la licencia del admin, si eres superadmin
+    path('licenciaadm/<int:pk>', LicenciaAdminViewSet.as_view(), name="get_licencias_adm_employee"),
+
     #README: end points para bloquear usuarios... cambia el bolleano(si es true pasa a false y viceversa)
     path('edit/<int:pk>', EditableUsersViewSet.as_view(), name="block_or_desblock_user"),
     path('block/<int:pk>', BlockersUsersViewSet.as_view(), name="block_or_desblock_user")

@@ -2,11 +2,16 @@ from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import get_object_or_404
+
 
 from administration.models import Licencia
 from administration.services import LicenciaService
 
 from authentication.views import CustomerUserSerializer
+
+from authentication.models import CustomerUser
+
 
 from django.utils import timezone
 import datetime
@@ -44,12 +49,26 @@ class LicenciaViewSet(APIView):
 
 #apartado para usuarios administradores 
 class LicenciaAdminViewSet(APIView):
-    def get(self, request):
+    def get(self, request, pk=None):
+        licencia_service = LicenciaService()
+        
+        if(pk is not None):
+            user = get_object_or_404(CustomerUser, id=pk);
+            print(user.licencia_id);
+            print(user.licencia_id_id)
+            if not request.user.is_superuser:
+                return Response({"success": False, "message": "Acceso negado"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            response = licencia_service.get_Users(user.licencia_id_id, pk);
+            licenciaSerializers = CustomerUserSerializer(response, many=True)
+            return Response({"success": True, "data": licenciaSerializers.data  }, status=status.HTTP_200_OK)
+
+        
         if request.user.licencia_id is None:
             return Response({"success": False, "message": "El usuario no tiene licencia"}, status=status.HTTP_404_NOT_FOUND)
         if not (request.user.is_admin):
             return Response({"success": False, "message": "Acceso negado"}, status=status.HTTP_404_NOT_FOUND)
-        licencia_service = LicenciaService()
+        
         try:
             response = licencia_service.get_Users(request.user.licencia_id_id,request.user.id )
         except Exception as e:
