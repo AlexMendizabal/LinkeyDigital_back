@@ -15,8 +15,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
 
 class CustomerUserViewSet(APIView):
     def get(self, request):
-        customer_user = get_object_or_404(CustomerUser, id=request.user.id)
-        customer_user_serializer = CustomerUserSerializer(customer_user)
+        customer_user_serializer = CustomerUserSerializer(request.user)
         return Response(customer_user_serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
