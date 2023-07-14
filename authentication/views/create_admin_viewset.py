@@ -34,7 +34,7 @@ class CreateAdmin(APIView):
         try:
             user = auth.create_user(
                 email=correo,
-                password=username
+                password="soyyo.digital"
             )
             uid = user.uid            
         except Exception as e:
