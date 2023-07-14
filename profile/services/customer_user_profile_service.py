@@ -21,7 +21,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUser
         fields = (
-            'id','email', 'rubro', 'is_editable', 'is_active', 'username')
+            'id','email', 'rubro', 'is_editable', 'is_active', 'username', 'is_admin')
 
 class ProfileService:
     def cantobjs(self):
