@@ -21,4 +21,5 @@ class RegisterUser(APIView):
     # permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        return Response({'message': 'User Registered'})
+        user_serializer = CustomerUserSerializer(request.user, many=False)
+        return Response({'message': 'User Registered','data': user_serializer.data })

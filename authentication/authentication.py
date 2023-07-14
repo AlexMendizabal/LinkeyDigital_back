@@ -51,6 +51,7 @@ class FirebaseAuthentication(BaseAuthentication):
         except Exception as e:
             raise EmailNotVerified()
         try:
+            #DELETEME: Esta parte no tiene sentido... el usuario ya se verifico antes y si no existe mando error por lo que jamas llegara aqui si no existe
             user_exists = User.objects.filter(uid=uid).count() > 0
             if user_exists:
                 user = User.objects.filter(uid=uid)[0]
