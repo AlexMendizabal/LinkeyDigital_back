@@ -28,7 +28,7 @@ class SocialMediaService:
     def create_custom_social_media(self, dto):
         customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.create(
             customer_user=dto.customer_user, url=dto.url, title=dto.title, is_active=dto.is_active,
-            is_visible=dto.is_visible, type=dto.type, image=dto.image)
+            is_visible=dto.is_visible, type=dto.type, image=dto.image or "custom_social_media/undefined.png")
         return customer_user_custom_social_media
 
     def get_custom_social_media(self, pk=None, customer_user=None):
