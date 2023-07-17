@@ -156,10 +156,12 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
         customer_user_custom_social_media = get_object_or_404(CustomerUser,
                                                               id=user_id)
-        request.data["customer_user"] = customer_user_custom_social_media.id
-        if 'type' not in request.data :
-            request.data["type"] = "socialMedia"
-        serializer = CustomerUserCustomSocialMediaSerializer(data=request.data)
+        
+        data = request.data.copy()
+        data["customer_user"] = customer_user_custom_social_media.id
+        if 'type' not in data :
+            data["type"] = "socialMedia"
+        serializer = CustomerUserCustomSocialMediaSerializer(data=data)
 
         if not serializer.is_valid():
             return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -169,10 +171,10 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
 
         try:
             response = social_media_service.create_custom_social_media(dto)
-            if 'type' in request.data and request.data['type'] == 'image':
-                if 'imageQR' in request.data and not isinstance(request.data['imageQR'], str):
+            if 'type' in data and data['type'] == 'image':
+                if 'imageQR' in data and not isinstance(data['imageQR'], str):
                     try:
-                        response = utilities.replace_url_in_image_type(request.data,response)
+                        response = utilities.replace_url_in_image_type(data,response)
                         response.save()
                     except Exception as e:
                         print(e)
