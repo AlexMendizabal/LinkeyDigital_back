@@ -87,8 +87,8 @@ class ProfileService:
 
     
     def get_profile(self, pk=None, customer_user=None):
-        if pk and customer_user:
-            customer_user_profile = get_object_or_404(CustomerUserProfile, pk=pk, customer_user=customer_user)
+        if pk :
+            customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user_id=pk)
         elif customer_user:
             customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=customer_user)
         else:

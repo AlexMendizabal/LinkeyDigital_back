@@ -41,7 +41,8 @@ class CustomerUserProfileViewSet(APIView):
         if not serializer.is_valid():
             return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        dto = self.buid_dto_from_validated_data(serializer)
+        utilities = UtilitiesProfile()
+        dto = utilities.buid_dto_from_validated_data(serializer)
         profile_service = ProfileService()
 
         try:
@@ -77,7 +78,51 @@ class CustomerUserProfileViewSet(APIView):
         customer_user_profile_serializers.save()
 
         return Response({"success": True, "data": customer_user_profile_serializers.data}, status=status.HTTP_200_OK)
+    
 
+class CustomerUserProfileForAdmViewSet(APIView):
+    def get(self, request, customer_user=None):
+        profile_service = ProfileService()
+        try:
+            response = profile_service.get_profile(customer_user)
+        except Exception as e:
+            return Response({"succes": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        customer_profile_serializers = CustomerUserProfileSerializer(response, many=False)
+        return Response({"success": True, "data": customer_profile_serializers.data}, status=status.HTTP_200_OK)
+
+    def put(self, request, customer_user=None):
+        if not request.user.is_superuser and not request.user.is_admin:
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+        customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=customer_user)
+        # WAITING: DEBE PREGUNTAR POR LA LICENCIA
+        # if request.user.licencia_id_id != customer_user_profile.customer_user_id:
+        #     return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if 'image' in request.data and customer_user_profile.image != "profile/icon_perfil.png":
+            try:
+                os.remove(customer_user_profile.image.path)
+            except Exception as e:
+                pass
+
+        if 'background' in request.data and customer_user_profile.background != "background/image_background.png":
+            try:
+                os.remove(customer_user_profile.background.path)
+            except Exception as e:
+                pass
+
+        customer_user_profile_serializers = CustomerUserProfileSerializer(
+            instance=customer_user_profile,
+            data=request.data, partial=True)
+
+        customer_user_profile_serializers.is_valid(raise_exception=True)
+        customer_user_profile_serializers.save()
+
+        return Response({"success": True, "data": customer_user_profile_serializers.data}, status=status.HTTP_200_OK)
+
+    
+    
+class UtilitiesProfile ():
     def buid_dto_from_validated_data(self, serializer):
         data = serializer.validated_data
         return ProfileDto(

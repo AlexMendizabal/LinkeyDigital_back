@@ -6,7 +6,7 @@ from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSe
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
     ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
     StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, CustomerUserIndepProfileViewSet, \
-    CustomerUserLicensProfileViewSet, StaticsForSuperViewSet
+    CustomerUserLicensProfileViewSet, StaticsForSuperViewSet, CustomerUserProfileForAdmViewSet
 
 router = routers.DefaultRouter()
 
@@ -62,6 +62,10 @@ urlpatterns = [
     #README: Traera las metricas de todos los usuarios en la licencia 
     path('statisticsAdm', StaticsForAdminViewSet.as_view(),
          name="get_customer_user_statistics_for_adm"),
+
+    #README: Trae o edita algun profile
+    path('user-profile/<int:customer_user>', CustomerUserProfileForAdmViewSet.as_view(),
+         name="get_or_edit_profile"),
 
 #**************** APARTADO para superUsuarios *********************
     #README: Metodo que traer todos los perfiles administradores
