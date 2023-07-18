@@ -35,11 +35,12 @@ class EditableUsersViewSet(APIView):
     def put(self, request, pk=None):
             
         serviceBlock = BlockersService()
+        value = request.data.get("canEdit", False)
         try:
             if (request.user.is_superuser) :
-                response = serviceBlock.blockEditUser(pk)
+                response = serviceBlock.blockEditUser(value, pk)
             elif (request.user.is_admin) :
-                response = serviceBlock.blockEditUser(pk,request.user.licencia_id_id )
+                response = serviceBlock.blockEditUser(value, pk,request.user.licencia_id_id )
                 if response is None:
                     return Response({"success": False, "error": "No tienes permisos de administrador."},
                     status=status.HTTP_403_FORBIDDEN)
