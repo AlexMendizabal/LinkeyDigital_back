@@ -81,8 +81,11 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
     def put(self, request, pk=None):
         customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
 
-        if request.user.id != customer_user_custom_social_media.customer_user_id:
-            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        # TODO: Verificar si pertenece a la licencia del administrador
+        if not request.user.is_superuser:
+            if not request.user.is_admin:
+                if request.user.id != customer_user_custom_social_media.customer_user_id:
+                    return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         if 'image' in request.data and customer_user_custom_social_media.image != "custom_social_media/undefined.png":
             try:
@@ -131,7 +134,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             return Response({"success": True, "data": response}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
-   
     
 class CustomerUserCustomSocialMediaByUserViewSet(APIView):
     # retorna los custom social media del usuario que se mande
