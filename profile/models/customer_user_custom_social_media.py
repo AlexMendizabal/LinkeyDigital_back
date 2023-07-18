@@ -32,9 +32,10 @@ class CustomerUserCustomSocialMedia(models.Model):
 #FIXME: DA ERROR AL CREARLO POR LA IMG
     def save(self, **kwargs):
         super().save()
-        print(self.image)
-        img = Image.open(self.image.path)
-        if img.height > 300 or img.width > 300:
-            new_img = (200, 200)
-            img.thumbnail(new_img)
-            img.save(self.image.path)
+        #FIXME: Da error, self.image esta nulo pero 
+        if(self.image):
+            img = Image.open(self.image.path)
+            if img.height > 300 or img.width > 300:
+                new_img = (200, 200)
+                img.thumbnail(new_img)
+                img.save(self.image.path)
