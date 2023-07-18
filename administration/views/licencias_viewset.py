@@ -30,12 +30,12 @@ class LicenciaSerializer(serializers.ModelSerializer):
 class LicenciaViewSet(APIView):
     def get(self, request):
         if request.user.licencia_id is None:
-            return Response({"succes": False, "message": "El usuario no tiene licencia_id"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"success": False, "message": "El usuario no tiene licencia_id"}, status=status.HTTP_404_NOT_FOUND)
         licencia_service = LicenciaService()
         try:
             response = licencia_service.get_licencia(request.user.licencia_id_id)
         except Exception as e:
-            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
         licenciaSerializers = LicenciaSerializer(response, many=False)
 
@@ -43,7 +43,7 @@ class LicenciaViewSet(APIView):
         utilities = Utilities()
         fecha_fin_str = utilities.calcular_fecha_fin(licenciaSerializers.data['fecha_inicio'], licenciaSerializers.data['duracion'])
         data = licenciaSerializers.data.copy ()
-        data ['fecha_fin'] = fecha_fin_str
+        data['fecha_fin'] = fecha_fin_str
         return Response({"success": True, "data": data }, status=status.HTTP_200_OK)
     
 
@@ -54,8 +54,6 @@ class LicenciaAdminViewSet(APIView):
         
         if(pk is not None):
             user = get_object_or_404(CustomerUser, id=pk);
-            print(user.licencia_id);
-            print(user.licencia_id_id)
             if not request.user.is_superuser:
                 return Response({"success": False, "message": "Acceso negado"}, status=status.HTTP_401_UNAUTHORIZED)
             
@@ -70,8 +68,9 @@ class LicenciaAdminViewSet(APIView):
             return Response({"success": False, "message": "Acceso negado"}, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            response = licencia_service.get_Users(request.user.licencia_id_id,request.user.id )
+            response = licencia_service.get_Users(request.user.licencia_id_id,request.user.id, with_admin=True )
         except Exception as e:
+            print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
         licenciaSerializers = CustomerUserSerializer(response, many=True)
