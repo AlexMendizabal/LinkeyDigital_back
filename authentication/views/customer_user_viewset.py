@@ -41,6 +41,19 @@ class CustomerUserViewSet(APIView):
         #userProfile.delete()
         #return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
 
+class CustomerAdminViewSet(APIView):
+    def put(self, request, customer_id):
+        # TODO: Verificar si pertenece a la licencia
+        if not request.user.is_superuser:
+            if not request.user.is_admin:
+                return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        customer_user = get_object_or_404(CustomerUser, id=customer_id)
+        customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)
+        customer_user_serializers.is_valid(raise_exception=True)
+        customer_user_serializers.save()
+        return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
+
 
 class CustomerUserPutRubroViewSet(APIView):
 
