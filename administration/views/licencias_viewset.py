@@ -8,9 +8,9 @@ from rest_framework.generics import get_object_or_404
 from administration.models import Licencia
 from administration.services import LicenciaService
 
-from authentication.views import CustomerUserSerializer
-
+#from authentication.views import CustomerUserSerializer
 from authentication.models import CustomerUser
+from profile.models import CustomerUserProfile
 
 
 from django.utils import timezone
@@ -25,6 +25,28 @@ class LicenciaSerializer(serializers.ModelSerializer):
         extra_kwargs = {'cobro': {'required': True}, 
                         'duracion': {'required': True}}
         read_only_fields = ('fecha_fin',)
+
+class CustomerUserProfileSerializerLow(serializers.ModelSerializer):
+    #WAITING: Se debe evitar mandar tantos datos
+    #customer_user = CustomerUserSerializer()
+    class Meta:
+        model = CustomerUserProfile
+        fields = (
+            'id','public_name', 'customer_user',
+            'image')
+        
+class CustomerUserSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+    class Meta:
+        model = CustomerUser
+        fields = ('id','email','is_editable','rubro', 'username','profile', 'phone_number')
+        read_only_fields = ('profile',)
+    def get_profile(self, user):
+        profile = CustomerUserProfile.objects.get(customer_user=user)
+        profile_serializer = CustomerUserProfileSerializerLow(profile)
+        return profile_serializer.data
+        
+
         
 # apartado para usuarios genericos  
 class LicenciaViewSet(APIView):
@@ -49,8 +71,11 @@ class LicenciaViewSet(APIView):
 
 #apartado para usuarios administradores 
 class LicenciaAdminViewSet(APIView):
+    #FIXME: Que retorne la imagen
     def get(self, request, pk=None):
         licencia_service = LicenciaService()
+        #Si se manda Pk es porque la peticion es de un superAdmin
+        #WAITING: Se debe verificar super user o adm
         
         if(pk is not None):
             user = get_object_or_404(CustomerUser, id=pk);
@@ -59,6 +84,10 @@ class LicenciaAdminViewSet(APIView):
             
             response = licencia_service.get_Users(user.licencia_id_id, pk);
             licenciaSerializers = CustomerUserSerializer(response, many=True)
+            # for user in licenciaSerializers.data:
+            #     p = CustomerUserProfile.objects.get(customer_user = user["id"])
+            #     p = CustomerUserProfileSerializerLow(p, many=False)
+            #     user["profile"] = p.data
             return Response({"success": True, "data": licenciaSerializers.data  }, status=status.HTTP_200_OK)
 
         
