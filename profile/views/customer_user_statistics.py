@@ -5,6 +5,7 @@ from rest_framework import serializers
 from profile.models import CustomerUserProfile, CustomerUserCustomSocialMedia
 from profile.services import ProfileService,  SocialMediaService
 from profile.views import customerUserUtilities
+from authentication.models import CustomerUser
 
 class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,6 +16,12 @@ class CustomerUserCustomSocialMediaStatisticsSerializer(serializers.ModelSeriali
     class Meta:
         model = CustomerUserCustomSocialMedia
         fields = ('title', 'counter', 'image', 'type', 'url')
+
+class CustomerUserStatisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerUser
+        fields = ('username', 'rubro')
+
 
 class CustomerUserStatistics(APIView):
 
@@ -81,7 +88,9 @@ class Utilities():
                 obj = CustomerUserProfileStatisticsSerializer(obj, many=False)
                 custom = contact_service.get_custom_social_media(customer_user=usr.id)
                 custom = CustomerUserCustomSocialMediaStatisticsSerializer(custom,many=True)
-                profiles.append({"profile": obj.data, "custom_social_list": custom.data})
+
+                user = CustomerUserStatisticsSerializer(usr, many=False)
+                profiles.append({   **user.data, **obj.data, "statistics": {"custom_social_list": custom.data}})
             return profiles
 
         except Exception as e:
