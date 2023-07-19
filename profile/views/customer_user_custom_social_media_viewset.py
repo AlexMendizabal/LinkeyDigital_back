@@ -128,9 +128,15 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
     def delete (self, request, pk=None):
         # type -> image 
         # borrar de url
+        #TODO: Validar que pertenezca a la licencia
         social_media_service = SocialMediaService()
+
+        if not request.user.is_superuser:
+            if not request.user.is_admin: 
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
         try:
-            response = social_media_service.delete_custom_social_media(pk, request.user.id)
+            response = social_media_service.delete_custom_social_media(pk)
             return Response({"success": True, "data": response}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)

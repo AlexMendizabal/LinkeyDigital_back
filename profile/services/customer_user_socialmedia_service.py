@@ -50,7 +50,7 @@ class SocialMediaService:
         #*******************************************
     
         # busca el objeto y si lo encuentra lo borra 
-        cusm = get_object_or_404(CustomerUserCustomSocialMedia, id=pk, customer_user_id=customer_user)
+        cusm = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
         if cusm.type=="socialmedia" and cusm.image != "custom_social_media/undefined.png":
             try:
                 os.remove(cusm.image.path)
