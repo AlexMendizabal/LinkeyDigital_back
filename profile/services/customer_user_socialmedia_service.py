@@ -42,15 +42,10 @@ class SocialMediaService:
             customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all()
         return customer_user_custom_social_media
 
-    def delete_custom_social_media(self, pk=None, customer_user=None):
-        # esta parte queda censurada *******************
-        # customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.filter(id=pk,
-        #                                                                                  customer_user_id=customer_user).delete()
-        # return customer_user_custom_social_media
-        #*******************************************
-    
+    def delete_custom_social_media(self, pk=None, cusm=None):
         # busca el objeto y si lo encuentra lo borra 
-        cusm = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
+        if not cusm:
+            cusm = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
         if cusm.type=="socialmedia" and cusm.image != "custom_social_media/undefined.png":
             try:
                 os.remove(cusm.image.path)

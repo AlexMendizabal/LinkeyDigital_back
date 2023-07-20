@@ -16,6 +16,7 @@ from django.core.files.storage import default_storage
 from django.conf import settings
 from django.db import transaction
 import json
+from administration.UtilitiesAdministration import UtilitiesAdm
 
 class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,11 +82,9 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
     def put(self, request, pk=None):
         customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
 
-        # TODO: Verificar si pertenece a la licencia del administrador
-        if not request.user.is_superuser:
-            if not request.user.is_admin:
-                if request.user.id != customer_user_custom_social_media.customer_user_id:
-                    return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, customer_user_custom_social_media.customer_user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         if 'image' in request.data and customer_user_custom_social_media.image != "custom_social_media/undefined.png":
             try:
@@ -126,18 +125,16 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
     # img por img se guarde una y vaya preguntando si hay otro registro que aun usa esa msima foto
 
     def delete (self, request, pk=None):
-        # type -> image 
-        # borrar de url
-        #TODO: Validar que pertenezca a la licencia
         social_media_service = SocialMediaService()
 
-        if not request.user.is_superuser:
-            if not request.user.is_admin: 
-                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        utilitiesAdm = UtilitiesAdm()
+        custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, id=pk)
+        if not utilitiesAdm.hasPermision(request.user, custom_social_media.customer_user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         try:
-            response = social_media_service.delete_custom_social_media(pk)
-            return Response({"success": True, "data": response}, status=status.HTTP_200_OK)
+            social_media_service.delete_custom_social_media(cusm = custom_social_media)
+            return Response({"success": True}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
     
@@ -145,8 +142,10 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
     # retorna los custom social media del usuario que se mande
     def get(self, request, user_id=None):
         try:
-            if not request.user.is_admin:
-                return Response({"succes": False, "mensaje": "No tienes permisos"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, user_id ):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            
             social_media_service = SocialMediaService()
             try:
                 response = social_media_service.get_custom_social_media(customer_user = user_id)
@@ -154,14 +153,19 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
                 return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
             customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=True)
-            return Response({"success": True, "data": customer_custom_social_media_serializers.data},
+            utilitiesC = customerUserUtilities()
+            data = utilitiesC.put_image_with_type(customer_custom_social_media_serializers)
+            return Response({"success": True, "data":data},
                             status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
 # crea los social media para los usuarios de la licencia 
     def post(self, request, user_id=None, pk=None):
-        if not request.user.is_admin and not request.user.is_superuser:
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user_id ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        
         customer_user_custom_social_media = get_object_or_404(CustomerUser,
                                                               id=user_id)
         
@@ -192,16 +196,18 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=False)
-        return Response({"success": True, "data": customer_custom_social_media_serializers.data},
+        utilitiesC = customerUserUtilities()
+        data = utilitiesC.put_image_with_type(customer_custom_social_media_serializers)
+        return Response({"success": True, "data": data},
                         status=status.HTTP_200_OK)
 # actualizar los custom social media para los usuarios en la licencia 
     def put(self, request, user_id=None ,pk=None):
-        if not request.user.is_admin and not request.user.is_superuser:
-            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+               
         customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia,
                                                               id=pk)
 
-        if user_id != customer_user_custom_social_media.customer_user_id:
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, customer_user_custom_social_media.customer_user ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         if 'image' in request.data and customer_user_custom_social_media.image != "custom_social_media/undefined.png":
@@ -236,12 +242,18 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
         customer_user_custom_social_media_serializers.is_valid(raise_exception=True)
         customer_user_custom_social_media_serializers.save()
 
-        return Response({"success": True, "data": customer_user_custom_social_media_serializers.data},
+        utilitiesC = customerUserUtilities()
+        data = utilitiesC.put_image_with_type(customer_user_custom_social_media_serializers)
+
+        return Response({"success": True, "data": data},
                         status=status.HTTP_200_OK)
     
     def delete (self, request, user_id=None ,pk=None):
 
         social_media_service = SocialMediaService()
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user_id ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             response = social_media_service.delete_custom_social_media(pk, user_id)
             return Response({"success": True, "data": response}, status=status.HTTP_200_OK)
@@ -252,9 +264,10 @@ class CustomerUserCustomSocialMediaByUserViewSet(APIView):
 # estos metodos se usan igual que la clase anterior pero se pasa una coleccion de ids
 class CustomerUserCustomSocialMediaByAllUserViewSet(APIView):
     def post(self, request):
-        if not request.user.is_admin:
-            return Response({"success": False, "error": "No tienes permisos de administrador."},
-                            status=status.HTTP_403_FORBIDDEN)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, request.user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
         
         try:
             ids = json.loads(request.data.get("ids", []))

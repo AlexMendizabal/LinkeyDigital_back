@@ -2,6 +2,7 @@ from rest_framework.generics import get_object_or_404
 from django.db.models import Max
 
 from profile.models import CustomerUserProfile
+from authentication.views import CustomerUserSerializer
 from authentication.models import CustomerUser
 from rest_framework import serializers
 
@@ -12,6 +13,7 @@ from administration.views import LicenciaSerializer, Utilities
 
 class CustomerUserProfileSerializerLow(serializers.ModelSerializer):
     class Meta:
+        CustomerUser = CustomerUserSerializer
         model = CustomerUserProfile
         fields = (
             'id','public_name', 

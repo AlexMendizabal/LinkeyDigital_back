@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from authentication.models import CustomerUser
 from rest_framework import status
 from django.db import transaction
+from administration.UtilitiesAdministration import UtilitiesAdm
 
 class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,12 +44,13 @@ class CustomerUserViewSet(APIView):
 
 class CustomerAdminViewSet(APIView):
     def put(self, request, customer_id):
-        # TODO: Verificar si pertenece a la licencia
-        if not request.user.is_superuser:
-            if not request.user.is_admin:
-                return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
 
         customer_user = get_object_or_404(CustomerUser, id=customer_id)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, customer_user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        
         customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)
         customer_user_serializers.is_valid(raise_exception=True)
         customer_user_serializers.save()

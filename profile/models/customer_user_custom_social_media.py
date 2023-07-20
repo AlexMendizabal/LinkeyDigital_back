@@ -29,10 +29,8 @@ class CustomerUserCustomSocialMedia(models.Model):
     counter = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     type = models.CharField(max_length=50, blank=True, default='socialMedia')
 
-#FIXME: DA ERROR AL CREARLO POR LA IMG
     def save(self, **kwargs):
         super().save()
-        #FIXME: Da error, self.image esta nulo pero 
         if(self.image):
             img = Image.open(self.image.path)
             if img.height > 300 or img.width > 300:

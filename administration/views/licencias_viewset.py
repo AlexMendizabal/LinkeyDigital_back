@@ -11,6 +11,7 @@ from administration.services import LicenciaService
 #from authentication.views import CustomerUserSerializer
 from authentication.models import CustomerUser
 from profile.models import CustomerUserProfile
+from administration.UtilitiesAdministration import UtilitiesAdm
 
 
 from django.utils import timezone
@@ -27,8 +28,6 @@ class LicenciaSerializer(serializers.ModelSerializer):
         read_only_fields = ('fecha_fin',)
 
 class CustomerUserProfileSerializerLow(serializers.ModelSerializer):
-    #WAITING: Se debe evitar mandar tantos datos
-    #customer_user = CustomerUserSerializer()
     class Meta:
         model = CustomerUserProfile
         fields = (
@@ -71,39 +70,21 @@ class LicenciaViewSet(APIView):
 
 #apartado para usuarios administradores 
 class LicenciaAdminViewSet(APIView):
-    #FIXME: Que retorne la imagen
     def get(self, request, pk=None):
         licencia_service = LicenciaService()
         #Si se manda Pk es porque la peticion es de un superAdmin
-        #WAITING: Se debe verificar super user o adm
-        
-        if(pk is not None):
-            user = get_object_or_404(CustomerUser, id=pk);
-            if not request.user.is_superuser:
-                return Response({"success": False, "message": "Acceso negado"}, status=status.HTTP_401_UNAUTHORIZED)
-            
-            response = licencia_service.get_Users(user.licencia_id_id, pk);
-            licenciaSerializers = CustomerUserSerializer(response, many=True)
-            # for user in licenciaSerializers.data:
-            #     p = CustomerUserProfile.objects.get(customer_user = user["id"])
-            #     p = CustomerUserProfileSerializerLow(p, many=False)
-            #     user["profile"] = p.data
-            return Response({"success": True, "data": licenciaSerializers.data  }, status=status.HTTP_200_OK)
-
-        
-        if request.user.licencia_id is None:
-            return Response({"success": False, "message": "El usuario no tiene licencia"}, status=status.HTTP_404_NOT_FOUND)
-        if not (request.user.is_admin):
-            return Response({"success": False, "message": "Acceso negado"}, status=status.HTTP_404_NOT_FOUND)
-        
         try:
-            response = licencia_service.get_Users(request.user.licencia_id_id,request.user.id, with_admin=True )
+            user = get_object_or_404(CustomerUser, id=pk) if pk is not None else request.user
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, user ):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=False if pk is None else True )
         except Exception as e:
             print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
-        licenciaSerializers = CustomerUserSerializer(response, many=True)
-        return Response({"success": True, "data": licenciaSerializers.data  }, status=status.HTTP_200_OK)
+        UserSerializers = CustomerUserSerializer(response, many=True)
+        return Response({"success": True, "data": UserSerializers.data  }, status=status.HTTP_200_OK)
   
 # apartado para los super usuarios
 class LicenciaSuperViewSet(APIView):

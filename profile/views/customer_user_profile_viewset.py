@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from profile.services import ProfileService
+from administration.UtilitiesAdministration import UtilitiesAdm
 
 
 class CustomerUserProfileSerializer(serializers.ModelSerializer):
@@ -85,19 +86,22 @@ class CustomerUserProfileForAdmViewSet(APIView):
         profile_service = ProfileService()
         try:
             response = profile_service.get_profile(customer_user)
+
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, customer_user ):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
+            print(e)
             return Response({"succes": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         customer_profile_serializers = CustomerUserProfileSerializer(response, many=False)
         return Response({"success": True, "data": customer_profile_serializers.data}, status=status.HTTP_200_OK)
 
     def put(self, request, customer_user=None):
-        if not request.user.is_superuser and not request.user.is_admin:
-            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-
         customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=customer_user)
-        # WAITING: DEBE PREGUNTAR POR LA LICENCIA
-        # if request.user.licencia_id_id != customer_user_profile.customer_user_id:
-        #     return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, customer_user.customer_user_id ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         if 'image' in request.data and customer_user_profile.image != "profile/icon_perfil.png":
             try:
