@@ -36,7 +36,7 @@ class EmailThread(threading.Thread):
         self.subject = emailFormat["title"]
         self.sendTo = emailFormat["to"]
         self.sender = "contacto@soyyo.digital"
-        self.body = '\n'.join( [ f"{key} = {value}" for key,value in content.items() ] )
+        self.body = '\n'.join( [ f"{key} : {value}" for key,value in content.items() ] )
         threading.Thread.__init__(self)
 
     def run(self):
