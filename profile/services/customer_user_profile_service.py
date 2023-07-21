@@ -11,19 +11,22 @@ from administration.views import LicenciaSerializer, Utilities
 
 #WAITING: poner los serializadores en sus archivos o lugares respectivos
 
-class CustomerUserProfileSerializerLow(serializers.ModelSerializer):
-    class Meta:
-        CustomerUser = CustomerUserSerializer
-        model = CustomerUserProfile
-        fields = (
-            'id','public_name', 
-            'image')
-
-class CustomerUserSerializer(serializers.ModelSerializer):
+class CustomerUserSerializerr(serializers.ModelSerializer):
+    licencia_id = LicenciaSerializer()
     class Meta:
         model = CustomerUser
         fields = (
-            'id','email', 'rubro', 'is_editable', 'is_active', 'username', 'is_admin')
+            'id','email', 'rubro', 'is_editable', 'is_active', 'username', 'is_admin', 'licencia_id')
+
+class CustomerUserProfileSerializerLow(serializers.ModelSerializer):
+    customer_user = CustomerUserSerializerr()
+    class Meta:
+        model = CustomerUserProfile
+        fields = (
+            'id','public_name', 
+            'image', 'customer_user')
+
+
 
 class ProfileService:
     def cantobjs(self):
@@ -61,32 +64,44 @@ class ProfileService:
         
         return customer_user_profile
     
+    # def get_all_profiles(self, rubro=None):
+    #     # Obtener los customer_user_id más recientes
+    #     latest_ids = Licencia.objects.values('customer_user_admin').annotate(max_id=Max('id'))
+    #     # Obtener las licencias correspondientes a los customer_user_id más recientes
+    #     licencias = Licencia.objects.filter(id__in=latest_ids.values('max_id'))
+    #     response = []
+
+    #     for licencia in licencias:
+    #         custom_user = licencia.customer_user_admin
+    #         if (rubro == "independiente" and custom_user.rubro == "independiente") or \
+    #                 (rubro != "independiente" and custom_user.rubro != "independiente"):
+    #             profile_user = CustomerUserProfile.objects.get(customer_user_id=custom_user.id)
+
+    #             licencia_serializ = LicenciaSerializer(licencia, many=False)
+    #             utilities = Utilities()
+    #             data = licencia_serializ.data.copy ()
+    #             data ['fecha_fin'] = utilities.calcular_fecha_fin(licencia_serializ.data['fecha_inicio'], licencia_serializ.data['duracion'])
+    #             custom_user_serializ = CustomerUserSerializer(custom_user, many=False)
+
+    #             profile_user_serializ = CustomerUserProfileSerializerLow(profile_user, many=False)
+
+    #             response.append({"licencia": data, "custom_user": custom_user_serializ.data,
+    #                             "profile": profile_user_serializ.data})
+
+    #     return response
+
+
     def get_all_profiles(self, rubro=None):
-        # Obtener los customer_user_id más recientes
-        latest_ids = Licencia.objects.values('customer_user_admin').annotate(max_id=Max('id'))
-        # Obtener las licencias correspondientes a los customer_user_id más recientes
-        licencias = Licencia.objects.filter(id__in=latest_ids.values('max_id'))
-        response = []
+        if rubro == "independiente":
+            profile = CustomerUserProfile.objects.filter(customer_user__rubro=rubro).order_by('id')
+        elif rubro == "empresa":
+            profile = CustomerUserProfile.objects.filter(customer_user__is_admin = True).order_by('id')
+        else :
+            profile = CustomerUserProfile.objects.filter().order_by('id')
 
-        for licencia in licencias:
-            custom_user = licencia.customer_user_admin
-            if (rubro == "independiente" and custom_user.rubro == "independiente") or \
-                    (rubro != "independiente" and custom_user.rubro != "independiente"):
-                profile_user = CustomerUserProfile.objects.get(customer_user_id=custom_user.id)
+        user_serializers = CustomerUserProfileSerializerLow(profile, many=True)
 
-                licencia_serializ = LicenciaSerializer(licencia, many=False)
-                utilities = Utilities()
-                data = licencia_serializ.data.copy ()
-                data ['fecha_fin'] = utilities.calcular_fecha_fin(licencia_serializ.data['fecha_inicio'], licencia_serializ.data['duracion'])
-                custom_user_serializ = CustomerUserSerializer(custom_user, many=False)
-
-                profile_user_serializ = CustomerUserProfileSerializerLow(profile_user, many=False)
-
-                response.append({"licencia": data, "custom_user": custom_user_serializ.data,
-                                "profile": profile_user_serializ.data})
-
-        return response
-
+        return user_serializers.data
     
     def get_profile(self, pk=None, customer_user=None):
         if pk :

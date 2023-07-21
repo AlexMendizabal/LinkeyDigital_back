@@ -5,7 +5,7 @@ from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSe
     CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, CustomerUserImageViewSet, \
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
     ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
-    StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, CustomerUserIndepProfileViewSet, \
+    StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, \
     CustomerUserLicensProfileViewSet, StaticsForSuperViewSet, CustomerUserProfileForAdmViewSet
 
 router = routers.DefaultRouter()
@@ -69,10 +69,7 @@ urlpatterns = [
 
 #**************** APARTADO para superUsuarios *********************
     #README: Metodo que traer todos los perfiles administradores
-    path('allEmpresas', CustomerUserAllProfileViewSet.as_view(), name="get_all_enterprises"),
-
-    #README: Metodo que traer todos los perfiles de usuarios independientes
-    path('allIndep', CustomerUserIndepProfileViewSet.as_view(), name="get_all_enterprises"),
+    path('allEmpresas/', CustomerUserAllProfileViewSet.as_view(), name="get_all_users"),
 
     #README: Metodo que traer perfil de usuarios en la licencia del admin(aca se debe mandar la licencia requerida)
     path('myUsers/<int:licencia_id>', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
