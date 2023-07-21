@@ -78,7 +78,7 @@ class LicenciaAdminViewSet(APIView):
             utilitiesAdm = UtilitiesAdm()
             if not utilitiesAdm.hasPermision(request.user, user ):
                 return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-            response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=False if pk is None else True )
+            response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=True if pk is None else True )
         except Exception as e:
             print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
