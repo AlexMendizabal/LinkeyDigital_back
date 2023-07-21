@@ -94,6 +94,7 @@ class CustomUserUtilities():
     def makeData(self, customer_user, customer_profile_serializers, customer_custom_social_media_serializers, customer_user_admin, customer_profile_serializers_admin, customer_custom_social_media_serializers_admin):
         if customer_user_admin:
             data = {"public_id": customer_user.public_id,
+                    "username": customer_user.username,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers,
                     "admin":    {"public_id": customer_user_admin.public_id,
@@ -101,6 +102,7 @@ class CustomUserUtilities():
                                 "custom_social_media": customer_custom_social_media_serializers_admin,}}
         else : 
             data = {"public_id": customer_user.public_id,
+                    "username": customer_user.username,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers}
         return data
