@@ -58,20 +58,25 @@ class CustomerAdminViewSet(APIView):
 
 
 class CustomerUserPutRubroViewSet(APIView):
-
-    """ WAITING: filtrar que no se actualicen ids repetidos  """
-    """ WAITING: Solo se debe actualizar usuarios en la licencia  """
+    
     """ WAITING: ID Se debe poner la funcion de filtrar ids """
     def put(self, request):
         if not request.user.is_superuser and not request.user.is_admin:
             return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        
         if not "ids" in request.data and len(request.data["ids"]) > 0:
             return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
-        ids = request.data["ids"]
+        ids_get = request.data["ids"]
         with transaction.atomic():
+            ids = []
+            [ids.append(ids_get) for id in ids if id not in id]
             for reg in ids:
                 try:
                     customer_user = get_object_or_404(CustomerUser, id=reg)
+                    utilitiesAdm = UtilitiesAdm()
+                    if not utilitiesAdm.is_from_same_license(request.user, customer_user ):
+                            return Response({"success": False,"mensaje": "uno de los ids no pertenece a la licencia "}, status=status.HTTP_401_UNAUTHORIZED)
+                    
                     customer_user.rubro = request.data["rubro"]
                     customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)
                     customer_user_serializers.is_valid(raise_exception=True)

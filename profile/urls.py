@@ -60,7 +60,7 @@ urlpatterns = [
     path('myUsers', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
 
     #README: Traera las metricas de todos los usuarios en la licencia 
-    path('statisticsAdm', StaticsForAdminViewSet.as_view(),
+    path('statisticsAdm/', StaticsForAdminViewSet.as_view(),
          name="get_customer_user_statistics_for_adm"),
 
     #README: Trae o edita algun profile
