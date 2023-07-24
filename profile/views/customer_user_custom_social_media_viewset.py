@@ -271,7 +271,7 @@ class CustomerUserCustomSocialMediaByAllUserViewSet(APIView):
         
         try:
             ids = json.loads(request.data.get("ids", []))
-            customer_user_list = CustomerUser.objects.filter(id__in=ids,licencia_id_id=request.user.licencia_id)
+            customer_user_list = CustomerUser.objects.filter(id__in=ids)
 
         except Exception as e:
             print(e)
