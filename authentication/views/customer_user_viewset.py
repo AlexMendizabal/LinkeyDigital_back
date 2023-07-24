@@ -68,14 +68,14 @@ class CustomerUserPutRubroViewSet(APIView):
             return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
         ids_get = request.data["ids"]
         with transaction.atomic():
-            ids = []
-            [ids.append(ids_get) for id in ids if id not in id]
+            ids = list( set(ids_get) )
             for reg in ids:
                 try:
                     customer_user = get_object_or_404(CustomerUser, id=reg)
                     utilitiesAdm = UtilitiesAdm()
-                    if not utilitiesAdm.is_from_same_license(request.user, customer_user ):
-                            return Response({"success": False,"mensaje": "uno de los ids no pertenece a la licencia "}, status=status.HTTP_401_UNAUTHORIZED)
+                    if not request.user.is_superuser:
+                        if not utilitiesAdm.is_from_same_license(request.user, customer_user ):
+                                return Response({"success": False,"mensaje": "uno de los ids no pertenece a la licencia "}, status=status.HTTP_401_UNAUTHORIZED)
                     
                     customer_user.rubro = request.data["rubro"]
                     customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)

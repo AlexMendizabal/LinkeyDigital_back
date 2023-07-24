@@ -6,6 +6,7 @@ from profile.models import CustomerUserProfile, CustomerUserCustomSocialMedia
 from profile.services import ProfileService,  SocialMediaService
 from profile.views import customerUserUtilities
 from authentication.models import CustomerUser
+from authentication.views import CustomerUserSerializer
 
 class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,7 +48,12 @@ class StaticsForAdminViewSet(APIView):
             if not request.user.is_admin:
                 return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
         
-        licencia_id = request.GET.get('licencia_id', request.user.licencia_id)
+        user_id = request.GET.get('user_id', request.user.licencia_id)
+
+        user = CustomerUser.objects.get(id = user_id)
+        user = CustomerUserSerializer(user, many=False)
+        licencia_id = user.data["licencia_id"]
+
         utilities = Utilities()
         profile_service = ProfileService()
         social_media_service = SocialMediaService()
