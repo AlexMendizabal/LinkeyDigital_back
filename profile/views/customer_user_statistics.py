@@ -44,9 +44,8 @@ class CustomerUserStatistics(APIView):
 class StaticsForAdminViewSet(APIView):
     def get(self, request):
         if not request.user.is_superuser:
-            return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        elif not request.user.is_admin:
-            return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+            if not request.user.is_admin:
+                return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
         
         licencia_id = request.GET.get('licencia_id', request.user.licencia_id)
         utilities = Utilities()
