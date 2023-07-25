@@ -33,7 +33,7 @@ urlpatterns = [
     path('base_design_profile', DesignProfileViewSet.as_view(), name="design_profile_list"),
     path('base_design_profile/<int:pk>', DesignProfileViewSet.as_view(), name="design_profile_get"),
 
-    path('statistics', CustomerUserStatistics.as_view(),
+    path('statistics/', CustomerUserStatistics.as_view(),
          name="get_customer_user_statistics"),
 
      path('image', CustomerUserImageViewSet.as_view(), name="customer_user_image_get_or_create_or_update"),
