@@ -7,6 +7,7 @@ from profile.services import ProfileService,  SocialMediaService
 from profile.views import customerUserUtilities
 from authentication.models import CustomerUser
 from authentication.views import CustomerUserSerializer
+from administration.UtilitiesAdministration import UtilitiesAdm
 
 class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,13 +28,19 @@ class CustomerUserStatisticsSerializer(serializers.ModelSerializer):
 class CustomerUserStatistics(APIView):
 
     def get(self, request):
+
+        user_id = request.GET.get('user_id', request.user)
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user_id ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            
         utilities = Utilities()
         profile_service = ProfileService()
         social_media_service = SocialMediaService()
 
-        customer_profile_serializers = utilities.get_profile(profile_service, None, request.user.id)
+        customer_profile_serializers = utilities.get_profile(profile_service, None, user_id)
         customer_custom_social_media_serializers = utilities.get_custom_social_media(social_media_service, None,
-                                                                                request.user.id)
+                                                                                user_id)
 
         customer_custom_social_media_serializers_formated = customer_custom_social_media_serializers if customer_custom_social_media_serializers else None
 
@@ -44,20 +51,21 @@ class CustomerUserStatistics(APIView):
 
 class StaticsForAdminViewSet(APIView):
     def get(self, request):
-        if not request.user.is_superuser:
-            if not request.user.is_admin:
-                return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
         
         
-        user_id = request.GET.get('user_id', None)
+        user_id = request.GET.get('user_id', request.user.id)
 
-        if user_id is not None:
-            user = CustomerUser.objects.get(id = user_id)
-            user = CustomerUserSerializer(user, many=False)
-            licencia_id = user.data["licencia_id"]
+        if user_id == request.user.id:
+            user = request.user.id
         else:
-            licencia_id = request.user.licencia_id
-        
+            user = CustomerUser.objects.get(id = user_id)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+        licencia_id = user.id
+
         utilities = Utilities()
         profile_service = ProfileService()
         social_media_service = SocialMediaService()
