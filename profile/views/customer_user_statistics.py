@@ -48,12 +48,16 @@ class StaticsForAdminViewSet(APIView):
             if not request.user.is_admin:
                 return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
         
-        user_id = request.GET.get('user_id', request.user.licencia_id)
+        
+        user_id = request.GET.get('user_id', None)
 
-        user = CustomerUser.objects.get(id = user_id)
-        user = CustomerUserSerializer(user, many=False)
-        licencia_id = user.data["licencia_id"]
-
+        if user_id is not None:
+            user = CustomerUser.objects.get(id = user_id)
+            user = CustomerUserSerializer(user, many=False)
+            licencia_id = user.data["licencia_id"]
+        else:
+            licencia_id = request.user.licencia_id
+        
         utilities = Utilities()
         profile_service = ProfileService()
         social_media_service = SocialMediaService()
