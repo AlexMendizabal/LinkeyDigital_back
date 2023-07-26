@@ -16,17 +16,18 @@ class CreateAdmin(APIView):
             raise TokenNotFound()
         
         correo = request.data.get("correo", None)
-        rubro = request.data.get("esEmpresa", None)
+        esEmpresa = request.data.get("esEmpresa", None)
         # tipo_de_plan = request.data.get("tipo_de_plan", None)
         # cobro = request.data.get("cobro", None)
         # duracion = request.data.get("duracion", None)
         # fecha_inicio = request.data.get("fecha_inicio", None)
         # estado = request.data.get("status", None)
 
-        if not correo  or rubro is None: #or not tipo_de_plan or not cobro or not duracion or not fecha_inicio or not estado
+        if not correo  or esEmpresa is None: #or not tipo_de_plan or not cobro or not duracion or not fecha_inicio or not estado
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
         
-        rubro = "empresa" if rubro else "independiente"
+        rubro = "empresa" if esEmpresa else "independiente"
+        is_admin = True if esEmpresa else False
 
 
         username = correo.split('@')[0]
@@ -52,7 +53,7 @@ class CreateAdmin(APIView):
                 serializer.data["customer_user_admin"] = user
                 dto = utilitiesLicencia.buid_dto_from_validated_data(serializer)
                 licenciaService = LicenciaService()    
-                licencia = licenciaService.createLicencia(dto,user.id)
+                licencia = licenciaService.createLicencia(dto,user.id, is_admin)
 
                 user = User.objects.get(id=user.id)
             except Exception as e:

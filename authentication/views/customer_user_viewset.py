@@ -30,10 +30,22 @@ class CustomerUserViewSet(APIView):
             return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        customer_user = get_object_or_404(CustomerUser, id=request.user.id)
-        customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)
-        customer_user_serializers.is_valid(raise_exception=True)
-        customer_user_serializers.save()
+        customer_user = request.GET.get('user_id', request.user)
+        #pregunta user es numerico, si lo es busca al user, si no lo es significa que ya lo tiene
+        try:
+            if isinstance(customer_user, int) or isinstance(customer_user, str):
+                customer_user = get_object_or_404(CustomerUser, id=customer_user)
+
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, customer_user):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            customer_user_serializers = CustomerUserSerializer(instance=customer_user, data=request.data, partial=True)
+            customer_user_serializers.is_valid(raise_exception=True)
+            customer_user_serializers.save()
+        except Exception as e:
+            return Response({"status": False, "error" : str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        
         return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
 
     def delete(self, request):

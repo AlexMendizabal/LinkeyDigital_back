@@ -52,11 +52,14 @@ class CustomerUserProfileViewSet(APIView):
             return Response({"succes": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         customer_email_serializers = CustomerUserProfileSerializer(response, many=False)
         return Response({"success": True, "data": customer_email_serializers.data}, status=status.HTTP_200_OK)
-
+    
     def put(self, request):
-        customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=request.user.id)
 
-        if request.user.id != customer_user_profile.customer_user_id:
+        user_id = request.GET.get('user_id', request.user.id)
+        customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=user_id)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, customer_user_profile.customer_user ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         if 'image' in request.data and customer_user_profile.image != "profile/icon_perfil.png":
