@@ -20,7 +20,7 @@ class CustomerUserSerializerLow(serializers.ModelSerializer):
     class Meta:
         model = CustomerUser
         fields = (
-            'id','email', 'rubro', 'is_editable', 'date_joined', 'is_active', 'customeruserprofile', 'username', 'is_admin', 'licencia_id')
+            'id','email', 'phone_number', 'rubro', 'is_editable', 'date_joined', 'is_active', 'customeruserprofile', 'username', 'is_admin', 'licencia_id')
 
 
 class CustomerUserAllProfileViewSet(APIView):
@@ -63,7 +63,8 @@ class CustomerUserAllProfileViewSet(APIView):
                     "username": user["username"],
                     "email": user["email"],
                     "is_editable": user["is_editable"],
-                    "date_joined": user["date_joined"]
+                    "date_joined": user["date_joined"],
+                    "phone_number": user["phone_number"]
                 }
             }
             data.append(new_object)

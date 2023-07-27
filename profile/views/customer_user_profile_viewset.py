@@ -103,7 +103,7 @@ class CustomerUserProfileForAdmViewSet(APIView):
         customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=customer_user)
 
         utilitiesAdm = UtilitiesAdm()
-        if not utilitiesAdm.hasPermision(request.user, customer_user.customer_user_id ):
+        if not utilitiesAdm.hasPermision(request.user, customer_user_profile.customer_user_id ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         if 'image' in request.data and customer_user_profile.image != "profile/icon_perfil.png":
