@@ -46,8 +46,22 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             print(e)
 
     def post(self, request):
+        user_id = request.GET.get('user_id', request.user.id)
+
+        if user_id == request.user.id:
+            user = request.user
+        else:
+            try:
+                user = CustomerUser.objects.get(id = user_id)
+            except Exception as e:
+                return Response({"success": False, 'message': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
         data = request.data.copy()
-        data["customer_user"] = request.user.id
+        data["customer_user"] = user.id
         if 'type' not in data :
             data["type"] = "socialMedia"
         serializer = CustomerUserCustomSocialMediaSerializer(data=data)
