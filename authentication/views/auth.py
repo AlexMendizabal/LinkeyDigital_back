@@ -1,15 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from firebase_admin import auth
-from django.contrib.auth import get_user_model
+#from rest_framework.permissions import IsAuthenticated
+from .customer_user_viewset import CustomerUserSerializer
 
 
 class AuthenticatedView(APIView):
     # permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        return Response({'User': request.user.email})
+        user_serializer = CustomerUserSerializer(request.user, many=False)
+        return Response({'User': user_serializer.data})
 
 
 """
@@ -21,4 +21,5 @@ class RegisterUser(APIView):
     # permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        return Response({'message': 'User Registered'})
+        user_serializer = CustomerUserSerializer(request.user, many=False)
+        return Response({'message': 'User Registered','data': user_serializer.data })
