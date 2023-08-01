@@ -77,7 +77,7 @@ class PublicCustomerUserService:
                                                                   customer_user=customer_user)
         elif customer_user:
             customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().filter(
-                customer_user_id=customer_user, is_visible=True)
+                customer_user_id=customer_user)
         else:
             customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all()
         return customer_user_custom_social_media
