@@ -1,2 +1,2 @@
 from .solicitudViewset import SolicitudViewSet
-from .consultaViewset import ConsultaViewSet
+from .consultaViewset import ConsultaViewSet, ConsultaExtendViewSet

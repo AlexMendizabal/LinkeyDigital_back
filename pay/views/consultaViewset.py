@@ -33,7 +33,10 @@ class ConsultaViewSet(APIView):
         transaction_serializer = TransactionSerializerForGet(response, many=True)
         return Response({"success": True, "data": transaction_serializer.data}, status=status.HTTP_200_OK)
 
-    def post(self, request, pk=None):
+
+        
+class ConsultaExtendViewSet(APIView):
+    def get(self, request, pk=None):
         if not pk:
             return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
         
