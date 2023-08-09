@@ -21,3 +21,4 @@ urlpatterns = [
     path('create-admin', CreateAdmin.as_view(), name="register_user_admin"),
     path('edit-user/<int:customer_id>', CustomerAdminViewSet.as_view(), name="update_user_admin")
 ]
+#TODO: End point para verificar Token (pregunta si el user firebase es valido en correo)
