@@ -66,9 +66,9 @@ class PublicCustomerUserService:
             customer_user_social_media = get_object_or_404(CustomerUserSocialMedia, pk=pk, customer_user=customer_user)
         elif customer_user:
             customer_user_social_media = CustomerUserSocialMedia.objects.all().filter(customer_user_id=customer_user,
-                                                                                      is_visible=True)
+                                                                                      is_visible=True).order_by('id')
         else:
-            customer_user_social_media = CustomerUserSocialMedia.objects.all()
+            customer_user_social_media = CustomerUserSocialMedia.objects.all().order_by('id')
         return customer_user_social_media
 
     def get_custom_social_media(self, pk=None, customer_user=None):
@@ -77,9 +77,9 @@ class PublicCustomerUserService:
                                                                   customer_user=customer_user)
         elif customer_user:
             customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().filter(
-                customer_user_id=customer_user)
+                customer_user_id=customer_user).order_by('id')
         else:
-            customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all()
+            customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().order_by('id')
         return customer_user_custom_social_media
     
     def get_image(self, pk=None, customer_user=None):
