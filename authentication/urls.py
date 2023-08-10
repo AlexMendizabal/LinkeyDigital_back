@@ -21,7 +21,7 @@ urlpatterns = [
     path('create-admin', CreateAdmin.as_view(), name="register_user_admin"),
     path('edit-user/<int:customer_id>', CustomerAdminViewSet.as_view(), name="update_user_admin"),
 
-    path('verifyEmail/<int:customer_id>', VerifyEmailViewSet.as_view(), name="verifyEmail")
+    path('verifyToken', VerifyEmailViewSet.as_view(), name="verifyEmail")
 
 
 ]
