@@ -1,3 +1,5 @@
+Esto no es una documentacion, pero se especificaran algunas cosas utiles para entender el desarrollo
+
 *********  estatus licencia  ***********
 
 1 --->  Activa
@@ -5,15 +7,29 @@
 3 --->  Bloqueada
 4 --->  Ilimitada (para admins, etc)
 
-******** campos user description *************
+**** estatus de transacciones *********************************
 
-is_editable ---> sirve para ver si el usuario puede ser editado(aun se puede acceder a su perfil publico)
-is_active   ---> Es para bloquear a un usuario en definitivo
-                 (sin acceso a la plataforma y tampoco al perfil public)
+    #Status del transaction
+    # 1 --> no_pago
+    # 2 --> pagada
+    # 3 --> finalizado 
 
 
-******* Apartado para cambios importantes ******* 
- 
+******** explciacion de custom social media *********************
 
-1 --->  Ahora el custom social media guarda imagenes en el metodo post
-    (esto aplica para todos los metodos de custom social media)
+Debido que los modelos fueron mal diseñados anteriormente, para evitar editarlos lo menos posible
+y no crear campos inecesarios y ante la necesidad de poner img y files se opto por la siguiente metodologia 
+al crear un custom social media de type = image o file recibira el archivo en el request y lo guardara 
+en el servidor, luego pondra la direccino del mismo en la url del custom social media
+de manera que al obtener un custom social media de tipo image o file quiere decir que 
+la url apunta al servidor django.
+
+******** explicacion modelo de productos *************
+
+Debido al poco tiempo que se tiene para sacar la pasarela de pagos,
+implementar los metodos adecuados para hacer un crud de productos tomara tiempo que no tenemos,
+por ello se opto por poner una tabla falsa de prodcutos, dicha tabla tendra los datos predefenidos,
+de esta manera podremos realizar transacciones y llenar la tabla de detalle transaccion (donde se 
+guardara la relacion de productos comprados y pagos(transaccion) realizados) 
+la tabla falsa actuara como si fuera real, con los metodos adecuados para que el dia que se implemente 
+los metodos crud de productos no choque con las otras tablas de transacciones y de detalles 

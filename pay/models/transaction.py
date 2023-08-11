@@ -57,8 +57,4 @@ class Transaction(models.Model):
     telefono = models.CharField(max_length=20, blank=False, null=False)
 
 
-#Status del transaction
-# 1 --> no_pago
-# 2 --> pagada
-
 
