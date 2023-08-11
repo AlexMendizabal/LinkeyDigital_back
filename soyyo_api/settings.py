@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'authentication',
     'administration',
     'profile',
-    'contact'
+    'contact',
+    'pay'
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomerUser'
@@ -93,9 +94,9 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo4',
+        'NAME': 'soyyo',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': '123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

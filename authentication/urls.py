@@ -2,7 +2,7 @@ from rest_framework import routers
 from django.urls import path, include
 
 from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, CustomerUserPutRubroViewSet \
-   ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet
+   ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyEmailViewSet
 
 router = routers.DefaultRouter()
 
@@ -19,5 +19,9 @@ urlpatterns = [
     path('create', CreateALotOfUsers.as_view(), name="register_user"),
     #README: Metodo para crear un usuario con su licencia 
     path('create-admin', CreateAdmin.as_view(), name="register_user_admin"),
-    path('edit-user/<int:customer_id>', CustomerAdminViewSet.as_view(), name="update_user_admin")
+    path('edit-user/<int:customer_id>', CustomerAdminViewSet.as_view(), name="update_user_admin"),
+
+    path('verifyToken', VerifyEmailViewSet.as_view(), name="verifyEmail")
+
+
 ]
