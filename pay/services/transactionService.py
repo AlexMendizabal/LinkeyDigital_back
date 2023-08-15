@@ -1,6 +1,6 @@
 from rest_framework.generics import get_object_or_404
 
-from pay.models import Transaction
+from pay.models import Transaction, DetalleTransaction
 
 class ReservaService:
     
@@ -30,5 +30,13 @@ class ReservaService:
             codigoTransaccion=dto.codigoTransaccion,
             urlRespuesta =dto.urlRespuesta,
             id_transaccion =dto.id_transaccion,
+        ) 
+        return transaction
+    
+    def create_Detalle_transaction(self, dto):
+        transaction = DetalleTransaction.objects.create(
+            producto=dto.producto,
+            transaction=dto.transaction,
+            cantidad=dto.cantidad,
         ) 
         return transaction

@@ -51,6 +51,9 @@ class ConsultaExtendViewSet(APIView):
             solicitud_pago = scrumPay.consultaDePago(transaction.id_transaccion)
             
             if not "success" in solicitud_pago:
+                if solicitud_pago["estatus"] == "0":
+                    transaction.status = 2
+                    transaction.save()
                 transaction_serializer = TransactionSerializerForGet(transaction, many=False)
                 return Response({"success": True, "data": transaction_serializer.data, "respuesta" : solicitud_pago  }, status=status.HTTP_200_OK)
             else:

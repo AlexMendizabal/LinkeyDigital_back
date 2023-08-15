@@ -11,7 +11,7 @@ Esto no es una documentacion, pero se especificaran algunas cosas utiles para en
 
     #Status del transaction
     # 1 --> no_pago
-    # 2 --> pagada
+    # 2 --> pagada y por entregar 
     # 3 --> finalizado 
 
 
@@ -32,4 +32,7 @@ por ello se opto por poner una tabla falsa de prodcutos, dicha tabla tendra los 
 de esta manera podremos realizar transacciones y llenar la tabla de detalle transaccion (donde se 
 guardara la relacion de productos comprados y pagos(transaccion) realizados) 
 la tabla falsa actuara como si fuera real, con los metodos adecuados para que el dia que se implemente 
-los metodos crud de productos no choque con las otras tablas de transacciones y de detalles 
+los metodos crud de productos no choque con las otras tablas de transacciones y de detalles
+
+
+
