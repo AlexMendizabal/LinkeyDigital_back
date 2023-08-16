@@ -51,7 +51,7 @@ class ConsultaExtendViewSet(APIView):
             solicitud_pago = scrumPay.consultaDePago(transaction.id_transaccion)
             
             if not "success" in solicitud_pago:
-                if solicitud_pago["estatus"] == "0":
+                if solicitud_pago["estatus"] == "0" and transaction.status == 1:
                     transaction.status = 2
                     transaction.save()
                 transaction_serializer = TransactionSerializerForGet(transaction, many=False)
@@ -61,6 +61,26 @@ class ConsultaExtendViewSet(APIView):
         except Exception as e:
             print(e)
             return {"success": False, "error": str(e)}
+    # maybe deberia verificar que este pagado primero idk
+    def put(self, request, pk=None):
+        estatus = 3
 
-    
+        if not pk or not estatus: 
+            return Response({"success": False, "error" : "falta pk"}, status=status.HTTP_400_BAD_REQUEST)
+        if not request.user.is_superuser: 
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        try: 
+            transaction = get_object_or_404(Transaction, id=pk)
+            transaction.status = estatus
+            transaction.save()
+            transaction_serializer = TransactionSerializerForGet(transaction, many=False)
+        except Exception as e:
+            print(e)
+            return {"success": False, "error": str(e)}
+        return Response({"success": True, "data": transaction_serializer.data }, status=status.HTTP_200_OK)
+        
+
+        
+        
+        
 

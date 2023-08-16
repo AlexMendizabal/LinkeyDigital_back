@@ -35,4 +35,12 @@ la tabla falsa actuara como si fuera real, con los metodos adecuados para que el
 los metodos crud de productos no choque con las otras tablas de transacciones y de detalles
 
 
+*************** borrado de datos ****************
+
+debido a que el codigo fue pasando de mano en mano, hubieron muchos archivos y modelos planteados
+que, a mi pareces, no tienen ningun sentido, intente reacrealos en un diagrama uml pero 
+realmente no parecen tener utilidad, estos modelos y metodos jamas de usaron y estan en el olvido
+pero darse la tarea de borrar todo es tiempo que no hay, y la verdad, ¿vale la pena? 
+
+
 
