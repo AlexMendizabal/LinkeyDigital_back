@@ -37,7 +37,7 @@ class PublicCustomerUserViewSet(APIView):
             customer_profile_serializers_admin = utilities.get_profile(customer_user_public_service,
                                                                        customer_user_admin)
             customer_custom_social_media_serializers_admin = utilities.get_custom_social_media(
-                customer_user_public_service, customer_user_admin)
+                customer_user_public_service, customer_user_admin, True)
 
         data = utilities.makeData(customer_user, customer_profile_serializers, customer_custom_social_media_serializers,
                                   customer_user_admin, customer_profile_serializers_admin,
@@ -57,9 +57,12 @@ class CustomUserUtilities():
         return customer_profile_serializers
 
 
-    def get_custom_social_media(self, customer_user_public_service, customer_user):
+    def get_custom_social_media(self, customer_user_public_service, customer_user, trues = False):
         try:
-            response = customer_user_public_service.get_custom_social_media_only_true(None, customer_user.pk)
+            if trues:
+                response = customer_user_public_service.get_custom_social_media_only_true(None, customer_user.pk)
+            else:
+                response = customer_user_public_service.get_custom_social_media(None, customer_user.pk)
         except Exception as e:
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
