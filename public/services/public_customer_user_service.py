@@ -82,6 +82,17 @@ class PublicCustomerUserService:
             customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().order_by('id')
         return customer_user_custom_social_media
     
+    def get_custom_social_media_only_true(self, pk=None, customer_user=None):
+        if pk and customer_user:
+            customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia, pk=pk,
+                                                                  customer_user=customer_user)
+        elif customer_user:
+            customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().filter(
+                customer_user_id=customer_user, is_visible=True).order_by('id')
+        else:
+            customer_user_custom_social_media = CustomerUserCustomSocialMedia.objects.all().order_by('id')
+        return customer_user_custom_social_media
+    
     def get_image(self, pk=None, customer_user=None):
         if pk and customer_user:
             customer_user_map = get_object_or_404(CustomerUserCustomImage, pk=pk, customer_user=customer_user)

@@ -59,7 +59,7 @@ class CustomUserUtilities():
 
     def get_custom_social_media(self, customer_user_public_service, customer_user):
         try:
-            response = customer_user_public_service.get_custom_social_media(None, customer_user.pk)
+            response = customer_user_public_service.get_custom_social_media_only_true(None, customer_user.pk)
         except Exception as e:
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
