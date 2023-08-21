@@ -28,7 +28,7 @@ class PublicCustomerUserViewSet(APIView):
 
         customer_profile_serializers = utilities.get_profile(customer_user_public_service, customer_user)
         customer_custom_social_media_serializers = utilities.get_custom_social_media(customer_user_public_service,
-                                                                                    customer_user)
+                                                                                    customer_user, True)
 
         customer_profile_serializers_admin = None
         customer_custom_social_media_serializers_admin = None
