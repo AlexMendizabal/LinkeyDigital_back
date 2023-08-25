@@ -6,7 +6,7 @@ from administration.UtilitiesAdministration import UtilitiesAdm
 from rest_framework.generics import get_object_or_404
 
 from pay.models import Transaction, TransactionDto
-from pay.services import ReservaService, ScrumPay
+from pay.services import PayService, ScrumPay
 
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializerForGet
 
@@ -23,7 +23,7 @@ class ConsultaViewSet(APIView):
 
         user_id = request.GET.get('user_id', request.user.id)
 
-        transaction_service = ReservaService()
+        transaction_service = PayService()
         try:
             response = transaction_service.get_transactions(user_id)
         except Exception as e:
@@ -55,7 +55,7 @@ class ConsultaExtendViewSet(APIView):
                     transaction.status = 2
                     transaction.save()
                 transaction_serializer = TransactionSerializerForGet(transaction, many=False)
-                return Response({"success": True, "data": transaction_serializer.data, "respuesta" : solicitud_pago  }, status=status.HTTP_200_OK)
+                return Response({"success": True, "data": transaction_serializer.data, "respuesta" : {"estatus":solicitud_pago["estatus"], "error": solicitud_pago["error"]}  }, status=status.HTTP_200_OK)
             else:
                 return Response(solicitud_pago, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         except Exception as e:

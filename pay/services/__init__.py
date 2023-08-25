@@ -1,2 +1,2 @@
-from .transactionService import ReservaService
+from .transactionService import PayService
 from .scrumPay import ScrumPay

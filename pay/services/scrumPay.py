@@ -20,10 +20,10 @@ class ScrumPay():
             if response.status_code == 200:
                 return response.json()
             else:
-                return {"success": False, "error": "error al hacer la solicitud con la pasarela", "codigo de error": response.status_code}
+                raise Exception("error al hacer la solicitud con la pasarela" ) 
         except Exception as e:
-            print(e)
-            return {"success": False, "error": str(e)}
+            print(str(e))
+            raise Exception("error al hacer la solicitud con la pasarela" ) 
         
     def consultaDePago(self, id_transaccion):
         url = self.url + "/consulta_transaccion.php"

@@ -210,5 +210,16 @@ class Utilities():
             duracion=data["duracion"],
             status=data["status"],
         )
+    
+    def createDTO(self, data):
+        serializer = LicenciaSerializer(data=data)
+        if not serializer.is_valid():
+            return False
+        utilities = Utilities()
+        dto = utilities.buid_dto_from_validated_data(serializer)
+        licenciaService = LicenciaService()
+
+        response = licenciaService.createLicencia(dto)
+        return response
 
 

@@ -18,13 +18,7 @@ class TransactionSerializerForGet(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = (
-            'id','customer_user',  'status', 'date',
-            'monto', 'moneda', 'descripcion', 'nombreComprador',
-            'apellidoComprador', 'documentoComprador', 
-            'extra1','extra2','extra3', 'direccionComprador',
-            'correo', 'telefono')
-        extra_kwargs = {'customer_user': {'required': True},
-                         'monto' :{'required': True} }
+            'id', 'status')
         
 class DetalleTransactionSerializer(serializers.ModelSerializer):
     class Meta:

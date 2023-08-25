@@ -1,5 +1,5 @@
 from .auth import RegisterUser, AuthenticatedView
 from .customer_user_viewset import CustomerUserSerializer, CustomerUserViewSet,CustomerAdminViewSet, CustomerUserPutRubroViewSet
-from .Register_user import CreateALotOfUsers
+from .Register_user import CreateALotOfUsers, CreateUserThread, create_users_in_threads
 from .create_admin_viewset import CreateAdmin
 from .verifyToken import VerifyToken
