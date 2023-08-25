@@ -23,3 +23,8 @@ class EmailNotVerified(APIException):
     status_code = 401
     default_detail = 'Email not Verified'
     default_code = 'email_not_verified'
+
+class NotFound(APIException):
+    status_code = 404
+    default_detail = 'NOT FOUND'
+    default_code = 'NOT_FOUND'

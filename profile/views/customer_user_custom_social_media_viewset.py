@@ -17,6 +17,9 @@ from django.conf import settings
 from django.db import transaction
 import json
 from administration.UtilitiesAdministration import UtilitiesAdm
+from authentication.exceptions import NotFound
+
+from django.core.exceptions import ValidationError
 
 class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,7 +63,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         if not utilitiesAdm.hasPermision(request.user, user ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
-        data = request.data.copy()
+        data = request.data
         data["customer_user"] = user.id
         if 'type' not in data :
             data["type"] = "socialMedia"
@@ -74,18 +77,21 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         social_media_service = SocialMediaService()
 
         try:
-            response = social_media_service.create_custom_social_media(dto)
-            if 'type' in data and data['type'] == 'image':
-                if 'imageQR' in data and not isinstance(data['imageQR'], str):
-                    try:
-                        response = utilities.replace_url_in_image_type(data,response)
-                        response.save()
-                    except Exception as e:
-                        print(e)
-                        return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
+            with transaction.atomic():
+                response = social_media_service.create_custom_social_media(dto)
+                if 'type' in data and data['type'] == 'image':
+                    if 'imageQR' in data and not isinstance(data['imageQR'], str):
+
+                            response = utilities.replace_url_in_image_type(data,response)
+                            response.save()
+                elif 'type' in data and data['type'] == 'file':
+                    if 'file' in data and not isinstance(data['file'], str):
+
+                            response = utilities.replace_url_in_file_type(data,response)
+                            response.save()
         except Exception as e:
             print(e)
-            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response({"success": False, "error" : str(e)}, status=status.HTTP_404_NOT_FOUND)
 
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=False)
         utilitiesC = customerUserUtilities()
@@ -359,14 +365,14 @@ class customerUserUtilities():
             # Si es una colección de objetos
             data = []
             for ccsms in customer_custom_social_media.data:
-                if ccsms["type"] in type_mapping:
+                if ccsms["type"] in type_mapping and ccsms["image"] == "custom_social_media/undefined.png" :
                     ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
                 data.append(ccsms)
             return data
         else:
             # Si es un solo objeto
             ccsms = customer_custom_social_media.data
-            if ccsms["type"] in type_mapping:
+            if ccsms["type"] in type_mapping and ccsms["image"] == "custom_social_media/undefined.png":
                 ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
             return ccsms
         
@@ -385,7 +391,7 @@ class customerUserUtilities():
     def replace_url_in_image_type(self, data, customer_user_custom_social_media):
 
         try:
-            if not customer_user_custom_social_media.url.endswith("custom_social_media/undefined.png") and not customer_user_custom_social_media.url.startswith("http"):
+            if not customer_user_custom_social_media.url.endswith("custom_social_media/undefined.png") and not self.is_safe_url(customer_user_custom_social_media.url):
                 os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
         except Exception as e:
             print(e)
@@ -396,3 +402,65 @@ class customerUserUtilities():
         new_url = settings.MEDIA_URL + ruta_imagen
         customer_user_custom_social_media.url = new_url
         return customer_user_custom_social_media
+    
+    
+    def replace_url_in_file_type(self, data, cucsm):
+        try:
+            # Validación de tipos de URL no seguros
+            if not self.is_safe_url(cucsm.url):
+                self.delete_invalid_file(cucsm.url)
+        except Exception as e:
+            print(e)
+            pass
+        
+        file = data['file']
+        
+        # Validación de tipo de archivo permitido y tamaño máximo
+        if not self.is_valid_file_type(file):
+            raise ValidationError("Tipo de archivo no permitido.")
+        if not self.is_valid_file_size(cucsm.customer_user, file.size, cucsm.id ):
+            raise ValidationError("Memoria de usuario llena")
+        
+        nombre_file = file.name.replace(" ", "")
+        ruta_file = default_storage.save('files/' + nombre_file, file)
+        new_url = settings.MEDIA_URL + ruta_file
+        cucsm.url = new_url
+        return cucsm
+            
+    def is_safe_url(self, url):
+        return url.startswith(("http://", "https://", "tel:", "www", "mailto:"))
+
+    def delete_invalid_file(self, url):
+        try:
+            if url.startswith(settings.MEDIA_URL):
+                file_path = url.replace(settings.MEDIA_URL, "")
+                os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, file_path)))
+        except Exception as e:
+            print(e)
+            pass
+
+    def is_valid_file_type(self, file):
+        allowed_extensions = ["pdf", "docx", "pptx", "pptm", "ppt", "doc"]  # Agrega las extensiones permitidas
+        return file.name.split(".")[-1].lower() in allowed_extensions
+
+    def is_valid_file_size(self, userPK, sizeFile, idcucsm):
+        objs = CustomerUserCustomSocialMedia.objects.filter(type="file",customer_user=userPK ).exclude(id=idcucsm)
+        max =  20 * 1024 * 1024  #expresando en MB
+        AlmacenamientoUsado = sizeFile
+        try:
+            for cucsm in objs:
+                file_path_relative =  cucsm.url.replace(settings.MEDIA_URL, "")
+                file_path_absolute = os.path.normpath(os.path.join(settings.MEDIA_ROOT, file_path_relative))
+                
+                print("Relative path:", file_path_relative)
+                print("Absolute path:", file_path_absolute)
+                file_size_bytes = os.path.getsize( file_path_absolute)
+                file_size_mb = file_size_bytes #/ (1024 * 1024)  
+                AlmacenamientoUsado += file_size_mb
+        except Exception as e:
+            print(e)
+            return False
+        
+        return AlmacenamientoUsado <= max
+
+    #TODO: Editar los metodos put
