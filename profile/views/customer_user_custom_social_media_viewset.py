@@ -63,7 +63,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         if not utilitiesAdm.hasPermision(request.user, user ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
-        data = request.data
+        data = request.data.copy()
         data["customer_user"] = user.id
         if 'type' not in data :
             data["type"] = "socialMedia"
@@ -372,7 +372,7 @@ class customerUserUtilities():
         else:
             # Si es un solo objeto
             ccsms = customer_custom_social_media.data
-            if ccsms["type"] in type_mapping and ccsms["image"] == "custom_social_media/undefined.png":
+            if ccsms["type"] in type_mapping and ccsms["image"] == "/media/custom_social_media/undefined.png":
                 ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
             return ccsms
         
