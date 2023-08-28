@@ -124,8 +124,11 @@ class Utilities():
                 custom = contact_service.get_custom_social_media(customer_user=usr.id)
                 custom = CustomerUserCustomSocialMediaStatisticsSerializer(custom,many=True)
 
+                utilitiesC = customerUserUtilities()
+                custom = utilitiesC.put_image_with_type(custom)
+
                 user = CustomerUserStatisticsSerializer(usr, many=False)
-                profiles.append({   **user.data, **obj.data, "statistics": {"custom_social_list": custom.data}})
+                profiles.append({   **user.data, **obj.data, "statistics": {"custom_social_list": custom}})
             return profiles
 
         except Exception as e:
