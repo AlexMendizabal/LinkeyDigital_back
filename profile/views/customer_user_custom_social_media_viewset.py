@@ -365,7 +365,7 @@ class customerUserUtilities():
             # Si es una colección de objetos
             data = []
             for ccsms in customer_custom_social_media.data:
-                if ccsms["type"] in type_mapping and ccsms["image"] == "custom_social_media/undefined.png" :
+                if ccsms["type"] in type_mapping and ccsms["image"] == "/media/custom_social_media/undefined.png" :
                     ccsms["image"] = f"/media/custom_social_media/{type_mapping[ccsms['type']]}"
                 data.append(ccsms)
             return data
