@@ -26,7 +26,6 @@ class SolicitudViewSet(APIView):
             "modalidad",
             "direccionComprador",
             "ciudad",
-            "urlRespuesta",
             "detalle"
 
         ]
@@ -43,6 +42,7 @@ class SolicitudViewSet(APIView):
                     transaction_service = PayService()
                     data["monto"] = str(transaction_service.get_price_by_id_producto(data["detalle"]))
                     data["codigoTransaccion"] = scrumPay.generar_codigo_unico()
+                    data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
                     solicitud_pago = scrumPay.solicitudPago(data)
                     
                     if "success" not in solicitud_pago:
