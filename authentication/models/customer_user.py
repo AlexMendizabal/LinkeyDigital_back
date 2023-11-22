@@ -16,6 +16,12 @@ class CustomerUser(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
+    is_sponsor=models.BooleanField(default=False)
+    dependency_id=models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
+
+    
+    
+
     customer_user_admin = models.ForeignKey('self', null=True, blank=True, related_name='owner',
                                             on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)

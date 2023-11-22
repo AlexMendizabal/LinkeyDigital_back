@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'administration',
     'profile',
     'contact',
-    'pay'
+    'pay',
+ 
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomerUser'
@@ -97,7 +98,7 @@ DATABASES = {
         'NAME': 'soyyo4',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -157,6 +158,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 """
 Proteccion de rutas
 """
+
+CORS_ALLOWED_ORIGIN=["http://localhost:3000/"]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

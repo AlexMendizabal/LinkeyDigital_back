@@ -1,9 +1,15 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
+
 
 from pay.views import SolicitudViewSet, ConsultaViewSet, ConsultaExtendViewSet, webhook
 
-router = routers.DefaultRouter()
+from pay.views.discountViews import DiscountView, GetUserByDiscountView, UserDiscountsView, GetDiscountByVerificationCodeView
+
+
+
+router = routers.DefaultRouter() 
+router.register(r'discount', DiscountView, 'discount')
 
 urlpatterns = [
 
@@ -14,8 +20,18 @@ urlpatterns = [
 
     
     path('webhook', webhook.as_view(), name="consulta_transaccion"),
-    
 
+    path("discounts/", include(router.urls)),
+
+    path("discount/user/<int:discount_id>/", GetUserByDiscountView.as_view(), name='get_user_by_discount'),
+
+    path("discounts/user/", UserDiscountsView.as_view(), name="get_user_disocunts"),
+
+    path('discount/verification_code/<str:verification_code>/', GetDiscountByVerificationCodeView.as_view(), name='get_discount_by_verification_code'),
+
+   
+    
+    #path("")
 
 ]
 

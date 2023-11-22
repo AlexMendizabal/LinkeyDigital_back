@@ -1,4 +1,4 @@
-from .models import Transaction, TransactionDto, DetalleTransaction, DetalleTransactionDto
+from .models import Transaction, TransactionDto, DetalleTransaction, DetalleTransactionDto, Discount
 from rest_framework import viewsets, serializers
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -48,7 +48,7 @@ class UtilitiesPay():
             urlRespuesta =data["urlRespuesta"],
             id_transaccion =data["id_transaccion"],
             correo =data["correo"],
-            telefono =data.get("telefono", None)
+            telefono =data.get("telefono", None),
         )
     
     def buid_dto_from_validated_data_detalle(self, serializer):
@@ -58,3 +58,12 @@ class UtilitiesPay():
             transaction =data["transaction"],
             cantidad =data["cantidad"]
         )
+    
+    def apply_discount(request,id_transaccion, verification_code):
+        transaccion = Transaction.objects.get(id=id_transaccion)
+        discount = Discount.objects.get(verification_code)
+
+        transaccion.discount=discount
+        transaccion.save()
+
+        
