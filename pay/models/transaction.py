@@ -6,6 +6,8 @@ from django.db import models
 from soyyo_api import settings
 from decimal import Decimal
 
+from pay.models.productos import Productos
+from authentication.models import CustomerUser
 
 @dataclass
 class TransactionDto:
@@ -40,28 +42,44 @@ class Discount(models.Model):
     discount_type=models.CharField(max_length=10,choices=[('price', 'Price Value'), ('percentage', 'Pecentage Value')],default="percentage")
     discount_rate=models.DecimalField(max_digits=5, decimal_places=2)
     status=models.BooleanField(default=True)
-    
-    def apply_discounts(self):
+    # Agrega una relación con el modelo de productos
+    product_id = models.ForeignKey(Productos, on_delete=models.CASCADE, default=1)
+
+    def es_valido(self):
         """
-        Aplica descuentos al precio del producto.
+        Verifica si el cupón de descuento es válido en la fecha actual.
         """
-        # Obtén todos los descuentos asociados al producto
-        descuentos = self.discounts.all()
+        from django.utils import timezone
 
-        # Calcula el precio final aplicando descuentos
-        precio_final = self.price
+        # Verificar el estado del cupón
+        if not self.status:
+            return False
 
-        for descuento in descuentos:
-            if descuento.discount_type == 'price':
-                # Descuento en valor fijo
-                precio_final -= descuento.discount_rate
-            elif descuento.discount_type == 'percentage':
-                # Descuento en porcentaje
-                precio_final -= (precio_final * descuento.discount_rate)
+        #Verificar que monto no supere el 100%
+        if self.discount_type == 'percentage' and self.discount_rate > 100:
+            return False
 
-        return max(precio_final, 0)  # Asegura que el precio final no sea negativo
+        # Obtener la fecha actual
+        fecha_actual = timezone.now().date()
+
+        # Verificar si la fecha actual está dentro del rango de inicio y finalización
+        if self.initial_date <= fecha_actual <= self.final_date:
+            return True
+        else:
+            return False
+        
+    def calculate_discount_value(self, amount):
+        """
+        Calcula el valor de descuento aplicado al monto dado, según el tipo y tasa de descuento.
+        """
+        if self.discount_type == 'percentage':
+            discount_rate = self.discount_rate / 100  # Convertir el porcentaje a decimal
+            return amount * discount_rate
+        elif self.discount_type == 'price':
+            return min(amount, self.discount_rate)
+        else:
+            return 0  # Tipo de descuento no válido
     
- 
 
 class Transaction(models.Model):
     #datos de soyYo
@@ -93,16 +111,18 @@ class Transaction(models.Model):
     discount_value = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-    # If there is a discount_id, calculate the discount_value based on discount_type and discount_rate
-        if self.discount_id:
-            if self.discount_id.discount_type == 'percentage':
-                discount_rate = self.discount_id.discount_rate / 100  # Convert percentage to decimal
-                self.discount_value = self.monto * discount_rate
-            elif self.discount_id.discount_type == 'price':
-                self.discount_value = min(self.monto, self.discount_id.discount_rate)
+        # ... (resto del código)
 
-            # Subtract the calculated discount_value from the monto
-            self.monto -= self.discount_value
+        if self.discount_id:
+            # Obtener el descuento asociado
+            discount = self.discount_id
+
+            # Calcular el valor de descuento y restarlo al monto
+            discount_value = discount.calculate_discount_value(self.monto)
+            self.monto -= discount_value
+
+            # Asignar el valor de descuento a la transacción
+            self.discount_value = discount_value
 
         super().save(*args, **kwargs)
 
@@ -110,3 +130,29 @@ class Transaction(models.Model):
         if self.discount_id:
             return self.discount_id.discount_type
         return None
+
+
+class SavedDiscounts(models.Model):
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
+    product = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
+    id_sponsor = models.ForeignKey(CustomerUser, related_name='sponsor_discounts', on_delete=models.CASCADE)
+    discount_type = models.CharField(max_length=10, choices=[('price', 'Price Value'), ('percentage', 'Percentage Value')], default="percentage")
+    discount_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    previous_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    new_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    emission_date = models.DateField(auto_now_add=True)
+
+
+    def save(self, *args, **kwargs):
+        # Obtén el tipo de descuento y la tasa de descuento del modelo Discount relacionado
+        discount_type = self.discount.discount_type
+        discount_rate = self.discount.discount_rate
+
+        # Calcula el nuevo precio aplicando el descuento
+        if discount_type == 'price':
+            self.new_price = self.previous_price - discount_rate
+        elif discount_type == 'percentage':
+            self.new_price = self.previous_price * (1 - (discount_rate / 100))
+
+        super(SavedDiscounts, self).save(*args, **kwargs)

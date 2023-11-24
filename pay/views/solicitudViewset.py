@@ -4,11 +4,17 @@ from rest_framework import status
 
 from pay.services import PayService, ScrumPay
 
+from pay.models.transaction import Discount, Transaction
+
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransactionSerializer
 
 from decimal import Decimal
 
+from django.shortcuts import get_object_or_404
+
 class SolicitudViewSet(APIView):
+
+    
 
     def post(self, request):
         
@@ -40,6 +46,49 @@ class SolicitudViewSet(APIView):
             with transaction.atomic():
                     scrumPay = ScrumPay()
                     transaction_service = PayService()
+
+                    
+                    
+            
+
+
+
+
+
+       
+                    def post(self, request):
+                        try:
+                            # ... (resto del código)
+
+                            # 1. Obtener el ID de la transacción
+                            transaction_id = response.id  # Asumiendo que response es la transacción recién creada
+
+                            # 2. Verificar si hay un descuento aplicado a esa transacción
+                            transaction = get_object_or_404(transaction, id=transaction_id)
+                            discount_id = transaction.discount_id
+
+                            # 3. Si hay un descuento, verificar si es válido
+                            if discount_id and discount_id.es_valido():
+                                # 4. Obtener el descuento aplicado
+                                discount_value = transaction.discount_value
+
+                                # 5. Calcular el valor final de la venta
+                                final_value = transaction.monto  # Valor original de la transacción
+                                if discount_value:
+                                    final_value -= discount_value
+
+                         
+
+                        except Exception as e:
+                            print(e)
+                            return Response({"success": False, "error": str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+                        
+                    # buscar transaccion de venta  
+                    # identificar si hay un cupon de descuento VALIDO aplicado
+                    # buscar cual es el descuento para el cupon aplicado
+                    # calcular cuál es el valor final de la venta
                     data["monto"] = str(transaction_service.get_price_by_id_producto(data["detalle"]))
                     data["codigoTransaccion"] = scrumPay.generar_codigo_unico()
                     data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
