@@ -94,9 +94,9 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo4',
+        'NAME': 'soyyo',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'psqlkj23!',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -106,9 +106,9 @@ if os.getenv("DEV") == 'true':
     DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo_test',
-        'USER': 'loza',
-        'PASSWORD': '1234',
+        'NAME': 'soyyo',
+        'USER': 'postgres',
+        'PASSWORD': 'psqlkj23',
         'HOST': '127.0.0.1',
         'PORT': '5432',
         }
