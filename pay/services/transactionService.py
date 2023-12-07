@@ -26,6 +26,7 @@ class PayService:
             canal =dto.canal,
             monto =dto.monto,
             moneda =dto.moneda,
+            telefono =dto.telefono,
             descripcion =dto.descripcion,
             nombreComprador =dto.nombreComprador,
             apellidoComprador=dto.apellidoComprador,
