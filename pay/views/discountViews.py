@@ -4,7 +4,7 @@ from pay.models import Discount
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-
+from rest_framework.views import APIView
 
 class DiscountView(viewsets.ModelViewSet):
     serializer_class=DiscountSerializer
@@ -35,8 +35,10 @@ class UserDiscountsView(generics.GenericAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
     
-class GetDiscountByVerificationCodeView(generics.GenericAPIView):
+class GetDiscountByVerificationCodeView(APIView):
     serializer_class = DiscountSerializer  # Use your Discount serializer here
+    permission_classes = []
+    authentication_classes = []
 
     def get(self, request, verification_code):
         try:
