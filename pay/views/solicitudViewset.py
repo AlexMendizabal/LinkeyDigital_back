@@ -10,6 +10,7 @@ from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransac
 
 from decimal import Decimal
 
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 class SolicitudViewSet(APIView):
@@ -19,7 +20,6 @@ class SolicitudViewSet(APIView):
     def post(self, request):
         
         data = request.data
-
         # Lista de campos requeridos
         required_fields = [
             "canal",
@@ -40,89 +40,72 @@ class SolicitudViewSet(APIView):
             return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            
-            from django.db import transaction
-
             with transaction.atomic():
-                    scrumPay = ScrumPay()
-                    transaction_service = PayService()
+                scrumPay = ScrumPay()
+                transaction_service = PayService()
 
-                    
-                    
-            
+                monto_pedido = float(transaction_service.get_price_by_id_producto(data["detalle"]))
 
+                costo_envio = 0
+                ciudad = data.get("ciudad", "")
+                if ciudad != "Santa Cruz":
+                    costo_envio = 50
 
+                descuento = 0
+                verification_code = data.get("verificationCode", False)
+                if verification_code:
+                    try:
+                        cupon = get_object_or_404(Discount, verification_code=verification_code)
+                        discount_rate = float(cupon.discount_rate)
+                        if(cupon.discount_type == "percentage"):
+                            descuento = monto_pedido* discount_rate / 100
 
+                        if(cupon.discount_type == "price"):
+                            descuento = discount_rate
 
+                        if not cupon.es_valido():
+                            descuento = 0
 
-       
-                    def post(self, request):
-                        try:
-                            # ... (resto del código)
+                    except Exception:
+                        descuento = 0                            
 
-                            # 1. Obtener el ID de la transacción
-                            transaction_id = response.id  # Asumiendo que response es la transacción recién creada
+                data["monto"] = str(monto_pedido - descuento + costo_envio)
+                data["codigoTransaccion"] = scrumPay.generar_codigo_unico()
+                data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
 
-                            # 2. Verificar si hay un descuento aplicado a esa transacción
-                            transaction = get_object_or_404(transaction, id=transaction_id)
-                            discount_id = transaction.discount_id
+                print("Solicitud a SCRUM")
+                solicitud_pago = scrumPay.solicitudPago(data)
+                print("Finalizado SCRUM")
+                
+                if "success" not in solicitud_pago:
+                    data["id_transaccion"] = solicitud_pago["id_transaccion"]
+                    data["customer_user"] = request.user.id
+                    serializer = TransactionSerializer(data=data)
+                    if not serializer.is_valid():
+                        return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                    utilities = UtilitiesPay()
+                    dto = utilities.buid_dto_from_validated_data_transaction(serializer)
 
-                            # 3. Si hay un descuento, verificar si es válido
-                            if discount_id and discount_id.es_valido():
-                                # 4. Obtener el descuento aplicado
-                                discount_value = transaction.discount_value
+                    response = transaction_service.create_transaction(dto)
 
-                                # 5. Calcular el valor final de la venta
-                                final_value = transaction.monto  # Valor original de la transacción
-                                if discount_value:
-                                    final_value -= discount_value
+                    detalles = data.get("detalle", [])
+                    for producto in detalles:
+                        producto["transaction"] = response.id
+                        detalle_serializer = DetalleTransactionSerializer(data=producto)
+                        if not detalle_serializer.is_valid():
+                            return Response({"status": "error", "data": detalle_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                        detalle_dto = utilities.buid_dto_from_validated_data_detalle(detalle_serializer)
+                        responseP = transaction_service.create_Detalle_transaction(detalle_dto)
 
-                         
+                else:
+                    return Response({"success": False, "error": solicitud_pago.get("error")}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
-                        except Exception as e:
-                            print(e)
-                            return Response({"success": False, "error": str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-
-
-                        
-                    # buscar transaccion de venta  
-                    # identificar si hay un cupon de descuento VALIDO aplicado
-                    # buscar cual es el descuento para el cupon aplicado
-                    # calcular cuál es el valor final de la venta
-                    data["monto"] = str(transaction_service.get_price_by_id_producto(data["detalle"]))
-                    data["codigoTransaccion"] = scrumPay.generar_codigo_unico()
-                    data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
-                    solicitud_pago = scrumPay.solicitudPago(data)
-                    
-                    if "success" not in solicitud_pago:
-                        data["id_transaccion"] = solicitud_pago["id_transaccion"]
-                        data["customer_user"] = request.user.id
-                        serializer = TransactionSerializer(data=data)
-                        if not serializer.is_valid():
-                            return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-                        utilities = UtilitiesPay()
-                        dto = utilities.buid_dto_from_validated_data_transaction(serializer)
-
-                        response = transaction_service.create_transaction(dto)
-
-                        detalles = data.get("detalle", [])
-                        for producto in detalles:
-                            producto["transaction"] = response.id
-                            detalle_serializer = DetalleTransactionSerializer(data=producto)
-                            if not detalle_serializer.is_valid():
-                                return Response({"status": "error", "data": detalle_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-                            detalle_dto = utilities.buid_dto_from_validated_data_detalle(detalle_serializer)
-                            responseP = transaction_service.create_Detalle_transaction(detalle_dto)
-
-                    else:
-                        return Response({"success": False, "error": solicitud_pago.get("error")}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-
-                    sp = {
-                        "error": solicitud_pago.get("error"),
-                        "solicitud_pago": solicitud_pago.get("url"),
-                        "id": response.id
-                    }
-                    return Response({"success": True, "data": sp}, status=status.HTTP_200_OK)
+                sp = {
+                    "error": solicitud_pago.get("error"),
+                    "solicitud_pago": solicitud_pago.get("url"),
+                    "id": response.id
+                }
+                return Response({"success": True, "data": sp}, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({"success": False, "error":str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
