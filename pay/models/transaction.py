@@ -2,9 +2,12 @@ from dataclasses import dataclass
 from PIL import Image
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta, datetime
 
 from soyyo_api import settings
 from decimal import Decimal
+
 
 from pay.models.productos import Productos
 from authentication.models import CustomerUser
@@ -49,7 +52,6 @@ class Discount(models.Model):
         """
         Verifica si el cupón de descuento es válido en la fecha actual.
         """
-        from django.utils import timezone
 
         # Verificar el estado del cupón
         if not self.status:
@@ -59,9 +61,12 @@ class Discount(models.Model):
         if self.discount_type == 'percentage' and self.discount_rate > 100:
             return False
 
-        # Obtener la fecha actual
-        fecha_actual = timezone.now().date()
 
+        # ESTE CUPÓN SOLO ES VÁLIDO PARA LA HORA BOLIVIANA
+        # SE OBTIENE LA HORA GLOBAL Y SE RESTA 4 HORAS PORQUE BOLIVIA
+        # ESTÁ EN GMT-4
+        fecha_actual = timezone.now().date() - timedelta(hours=4)
+        
         # Verificar si la fecha actual está dentro del rango de inicio y finalización
         if self.initial_date <= fecha_actual <= self.final_date:
             return True
