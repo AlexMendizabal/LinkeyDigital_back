@@ -28,6 +28,10 @@ class UserDiscountsView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+
+        if self.request.user.is_superuser:
+            userID = self.request.GET.get("userID", False) or self.request.user.id
+            return Discount.objects.filter(customer_user__id=userID)
         return Discount.objects.filter(customer_user=self.request.user)
 
     def get(self, request, *args, **kwargs):
