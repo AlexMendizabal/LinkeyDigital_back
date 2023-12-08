@@ -15,6 +15,8 @@ from authentication.models import CustomerUser
 @dataclass
 class TransactionDto:
     customer_user: int
+    discount_id: int
+    discount_value: float
     status: int
     canal : str
     monto : Decimal

@@ -10,6 +10,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             'apellidoComprador', 'documentoComprador', 'modalidad',
             'extra1','extra2','extra3', 'direccionComprador',
             'ciudad','codigoTransaccion', 'urlRespuesta',
+            'discount_value', 'discount_id',
             'id_transaccion','correo', 'telefono')
         extra_kwargs = {'customer_user': {'required': True}, 'id_transaccion': {'required': True},
                          'monto' :{'required': True} }
@@ -49,6 +50,8 @@ class UtilitiesPay():
             id_transaccion =data["id_transaccion"],
             correo =data["correo"],
             telefono =data.get("telefono", None),
+            discount_id=data.get("discount_id", None),
+            discount_value = data.get("discount_value", None),
         )
     
     def buid_dto_from_validated_data_detalle(self, serializer):

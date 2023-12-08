@@ -22,6 +22,8 @@ class PayService:
     def create_transaction(self, dto):
         transaction = Transaction.objects.create(
             customer_user=dto.customer_user,
+            discount_id=dto.discount_id,
+            discount_value=dto.discount_value,
             status=dto.status,
             canal =dto.canal,
             monto =dto.monto,

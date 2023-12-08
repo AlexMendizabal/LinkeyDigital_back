@@ -53,6 +53,7 @@ class SolicitudViewSet(APIView):
 
                 descuento = 0
                 verification_code = data.get("verificationCode", False)
+                cupon = None
                 if verification_code:
                     try:
                         cupon = get_object_or_404(Discount, verification_code=verification_code)
@@ -80,6 +81,14 @@ class SolicitudViewSet(APIView):
                 if "success" not in solicitud_pago:
                     data["id_transaccion"] = solicitud_pago["id_transaccion"]
                     data["customer_user"] = request.user.id
+
+                    data["discount_id"] = None if cupon==None else cupon.id
+                    data["discount_value"] = descuento
+
+                    # Parece que el "monto" se está guarda incorrectamente y está restando el 'descuento'
+                    # A pesar de que claramente lo estoy redefiniendo aquí
+                    # ...
+                    data["monto"] = str(monto_pedido + costo_envio)
                     serializer = TransactionSerializer(data=data)
                     if not serializer.is_valid():
                         return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
