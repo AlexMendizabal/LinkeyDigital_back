@@ -83,12 +83,15 @@ class SolicitudViewSet(APIView):
                     data["customer_user"] = request.user.id
 
                     data["discount_id"] = None if cupon==None else cupon.id
-                    data["discount_value"] = descuento
+
+                    # Lo tengo que redondear para que no de error, porque así esta en las tablas
+                    data["discount_value"] = round( descuento, 2)
 
                     # Parece que el "monto" se está guarda incorrectamente y está restando el 'descuento'
                     # A pesar de que claramente lo estoy redefiniendo aquí
                     # ...
-                    data["monto"] = str(monto_pedido + costo_envio)
+                    data["monto"] = str( round(monto_pedido + costo_envio, 2) )
+
                     serializer = TransactionSerializer(data=data)
                     if not serializer.is_valid():
                         return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
