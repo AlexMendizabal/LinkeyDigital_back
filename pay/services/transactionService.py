@@ -104,6 +104,7 @@ class PayService:
             response = utilities.createDTO(data)
             user.licencia_id = response
             user.save()
+            print("Creada licencia")
 
             #logica para buscar la cantiad de usuarios requeridos
             detalleProductos = DetalleTransaction.objects.filter(transaction_id = resp.id)

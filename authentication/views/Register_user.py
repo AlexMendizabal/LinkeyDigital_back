@@ -64,7 +64,6 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
     numbers = [int(re.search(re.escape(correo) + r'-(\d+)@', user.email).group(1)) for user in users if re.search(re.escape(correo) + r'-(\d+)@', user.email)]
 
     max_number = max(numbers) if numbers else 0
-
     threads = []
     errors = []
     corrects = []
@@ -72,6 +71,7 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
 
     for i in range(1, cant + 1):
         email = f"{correo}-{max_number + i}@soyyo.digital"
+        print(email)
         password = "soyyo.digital"
         thread = CreateUserThread(email=email, password=password, errors=errors, lock=lock, corrects=corrects, licencia_id=licencia_id)
         thread.start()
