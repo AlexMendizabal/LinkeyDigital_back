@@ -113,8 +113,9 @@ class PayService:
                 cantidad += int(detalle.cantidad)
             #crea los usuarios restantes en la licencia y ademas les pone la misma licencia
             #creada anteriormente 
+            correo_inicio = user.username
             if cantidad > 0 :
-                errors, corrects = create_users_in_threads(cantidad, "borrar", response.id)
+                errors, corrects = create_users_in_threads(cantidad, correo_inicio, response.id)
 
             #funcion para mandar correo 
             subject = "¡Confirmación de Pago Exitosa!"
