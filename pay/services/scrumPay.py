@@ -5,15 +5,15 @@ import secrets
 class ScrumPay():
     def __init__(self):
 
-        #self.url =" https://pay.scrum-technology.com/api/v2test"
-        #self.username = "lormyu76_f224Dfyht32343"
-        #self.password = "c7r8s39rr_wewe3234r4wew"
-        #self.id_comercio = "es_gtbyhtt3534534_3dgdfg_y45y5re4",
+        self.url ="https://pay.scrum-technology.com/api/v2test"
+        self.username = "acdfvstrzujfcvn_23ujkuu"
+        self.password = "awerf_567miopyh674rf"
+        self.id_comercio = "es_gtbyhtttd6strz03dgdfg_y45y5re4",
 
-        self.url = "https://pay.scrum-technology.com/api/v2pro"
-        self.username = "ri&fgt131gdG_eitalj0rks2"
-        self.password = "1t4eeew45a0_ew02_reew542"
-        self.id_comercio = "eef_htt3534oLFO_3dgdfg_y4ere4"
+        #self.url = "https://pay.scrum-technology.com/api/v2pro"
+        #self.username = "ri&fgt131gdG_eitalj0rks2"
+        #self.password = "1t4eeew45a0_ew02_reew542"
+        #self.id_comercio = "eef_htt3534oLFO_3dgdfg_y4ere4"
     #/consulta_transaccion.php
     #solicitud_pago.php
 

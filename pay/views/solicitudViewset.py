@@ -70,7 +70,7 @@ class SolicitudViewSet(APIView):
                     except Exception:
                         descuento = 0                            
 
-                data["monto"] = 1 #str(monto_pedido - descuento + costo_envio)
+                data["monto"] = str(monto_pedido - descuento + costo_envio)
                 data["codigoTransaccion"] = scrumPay.generar_codigo_unico()
                 data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
 
