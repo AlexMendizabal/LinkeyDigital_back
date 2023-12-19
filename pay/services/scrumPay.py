@@ -22,7 +22,8 @@ class ScrumPay():
         data["id_comercio"] = self.id_comercio
         try:
             response = requests.post(url,json=data,auth=(self.username, self.password))
-
+            print(response.status_code)
+            print(response.json())
             if response.status_code == 200:
                 return response.json()
             else:
