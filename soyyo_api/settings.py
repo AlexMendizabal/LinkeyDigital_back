@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'administration',
     'profile',
     'contact',
-    'pay'
+    'pay',
+ 
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomerUser'
@@ -157,6 +158,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 """
 Proteccion de rutas
 """
+
+CORS_ALLOWED_ORIGIN=["http://localhost:3000/",
+                     "http://localhost:3001/"]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

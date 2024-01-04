@@ -1,4 +1,4 @@
-from .models import Transaction, TransactionDto, DetalleTransaction, DetalleTransactionDto
+from .models import Transaction, TransactionDto, DetalleTransaction, DetalleTransactionDto, Discount
 from rest_framework import viewsets, serializers
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -10,6 +10,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             'apellidoComprador', 'documentoComprador', 'modalidad',
             'extra1','extra2','extra3', 'direccionComprador',
             'ciudad','codigoTransaccion', 'urlRespuesta',
+            'discount_value', 'discount_id',
             'id_transaccion','correo', 'telefono')
         extra_kwargs = {'customer_user': {'required': True}, 'id_transaccion': {'required': True},
                          'monto' :{'required': True} }
@@ -48,7 +49,9 @@ class UtilitiesPay():
             urlRespuesta =data["urlRespuesta"],
             id_transaccion =data["id_transaccion"],
             correo =data["correo"],
-            telefono =data.get("telefono", None)
+            telefono =data.get("telefono", None),
+            discount_id=data.get("discount_id", None),
+            discount_value = data.get("discount_value", None),
         )
     
     def buid_dto_from_validated_data_detalle(self, serializer):
@@ -58,3 +61,12 @@ class UtilitiesPay():
             transaction =data["transaction"],
             cantidad =data["cantidad"]
         )
+    
+    def apply_discount(request,id_transaccion, verification_code):
+        transaccion = Transaction.objects.get(id=id_transaccion)
+        discount = Discount.objects.get(verification_code)
+
+        transaccion.discount=discount
+        transaccion.save()
+
+        

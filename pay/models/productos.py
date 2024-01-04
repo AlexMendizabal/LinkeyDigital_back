@@ -19,7 +19,8 @@ class Productos(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     description = models.CharField(max_length=300 )
-    image = models.ImageField(upload_to="productos_images", blank='', default="productos_images/undefined.png")
+    image = models.ImageField(upload_to="productos_images", blank='', default="productos_images/undefined.png") 
+   
 
 
 

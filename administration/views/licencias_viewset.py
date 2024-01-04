@@ -38,7 +38,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
     class Meta:
         model = CustomerUser
-        fields = ('id','email','is_editable','rubro', 'username', 'public_id', 'profile', 'phone_number')
+        fields = ('id','email','is_editable','rubro', 'username', 'public_id', 'profile', 'phone_number', 'is_sponsor')
         read_only_fields = ('profile',)
     def get_profile(self, user):
         profile = CustomerUserProfile.objects.get(customer_user=user)

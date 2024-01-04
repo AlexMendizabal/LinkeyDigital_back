@@ -4,6 +4,12 @@ import secrets
 
 class ScrumPay():
     def __init__(self):
+
+        #self.url ="https://pay.scrum-technology.com/api/v2test"
+        #self.username = "acdfvstrzujfcvn_23ujkuu"
+        #self.password = "awerf_567miopyh674rf"
+        #self.id_comercio = "es_gtbyhtttd6strz03dgdfg_y45y5re4",
+
         self.url = "https://pay.scrum-technology.com/api/v2pro"
         self.username = "ri&fgt131gdG_eitalj0rks2"
         self.password = "1t4eeew45a0_ew02_reew542"
@@ -16,7 +22,8 @@ class ScrumPay():
         data["id_comercio"] = self.id_comercio
         try:
             response = requests.post(url,json=data,auth=(self.username, self.password))
-
+            print(response.status_code)
+            print(response.json())
             if response.status_code == 200:
                 return response.json()
             else:
