@@ -2,95 +2,108 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import serializers
-from profile.models import CustomerUserProfile, CustomerUserWhatsapp, CustomerUserEmail, CustomerUserPhone, \
-    CustomerUserSocialMedia, CustomerUserMap, SocialMedia, CustomerUserCustomSocialMedia
-from profile.services import ProfileService, ContactService, SocialMediaService
-
-
-class SocialMediaStatisticsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SocialMedia
-        fields = ('title', 'image')
-
+from profile.models import CustomerUserProfile, CustomerUserCustomSocialMedia
+from profile.services import ProfileService,  SocialMediaService
+from profile.views import customerUserUtilities
+from authentication.models import CustomerUser
+from authentication.views import CustomerUserSerializer
+from administration.UtilitiesAdministration import UtilitiesAdm
 
 class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserProfile
-        fields = ('counter', 'image')
-
-
-class CustomerUserWhatsappStatisticsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerUserWhatsapp
-        fields = ('counter', 'image')
-
-
-class CustomerUserEmailStatisticsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerUserEmail
-        fields = ('counter', 'image')
-
-
-class CustomerUserPhoneStatisticsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerUserPhone
-        fields = ('counter', 'image')
-
-
-class CustomerUserMapStatisticsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerUserMap
-        fields = ('counter',)
-
+        fields = ('counter', 'image', 'public_name')
 
 class CustomerUserCustomSocialMediaStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
-        fields = ('title', 'counter', 'image')
+        fields = ('title', 'counter', 'image', 'type', 'url')
 
-
-class CustomerUserSocialMediaStatisticsSerializer(serializers.ModelSerializer):
-    social_media = SocialMediaStatisticsSerializer(many=False, read_only=True)
-
+class CustomerUserStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomerUserSocialMedia
-        fields = ('social_media', 'counter')
+        model = CustomerUser
+        fields = ('username', 'rubro')
 
 
 class CustomerUserStatistics(APIView):
 
     def get(self, request):
+
+        user_id = request.GET.get('user_id', request.user)
+
+        if user_id == request.user.id:
+            user = request.user
+        else:
+            try:
+                user = CustomerUser.objects.get(id = user_id)
+            except Exception as e:
+                return Response({"success": False, 'message': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            
+        utilities = Utilities()
         profile_service = ProfileService()
-        contact_service = ContactService()
         social_media_service = SocialMediaService()
 
-        customer_profile_serializers = self.get_profile(profile_service, None, request.user.id)
-        customer_whatsapp_serializers = self.get_whatsapp(contact_service, None, request.user.id)
-        customer_email_serializers = self.get_email(contact_service, None, request.user.id)
-        customer_phone_serializers = self.get_phone(contact_service, None, request.user.id)
-        customer_map_serializers = self.get_map(contact_service, None, request.user.id)
-        customer_social_media_serializers = self.get_social_media(social_media_service, None, request.user.id)
-        customer_custom_social_media_serializers = self.get_custom_social_media(social_media_service, None,
-                                                                                request.user.id)
+        customer_profile_serializers = utilities.get_profile(profile_service, None, user_id)
+        customer_custom_social_media_serializers = utilities.get_custom_social_media(social_media_service, None,
+                                                                                user_id)
 
-        customer_whatsapp_serializers_formate = customer_whatsapp_serializers.data if customer_whatsapp_serializers.data else None
-        customer_email_serializers_formated = customer_email_serializers.data if customer_email_serializers.data else None
-        customer_phone_serializers_formated = customer_phone_serializers.data if customer_phone_serializers.data else None
-        customer_map_serializers_formated = customer_map_serializers.data if customer_map_serializers.data else None
-
-        customer_social_media_serializers_formated = customer_social_media_serializers.data if customer_social_media_serializers.data else None
-        customer_custom_social_media_serializers_formated = customer_custom_social_media_serializers.data if customer_custom_social_media_serializers.data else None
+        customer_custom_social_media_serializers_formated = customer_custom_social_media_serializers if customer_custom_social_media_serializers else None
 
         return Response({"success": True, "data": {
             "profile": customer_profile_serializers.data['counter'],
-            "whatsapp": customer_whatsapp_serializers_formate,
-            "email": customer_email_serializers_formated,
-            "phone": customer_phone_serializers_formated,
-            "map": customer_map_serializers_formated,
-            "social_media_list": customer_social_media_serializers_formated,
             "custom_social_list": customer_custom_social_media_serializers_formated,
         }}, status=status.HTTP_200_OK)
 
+class StaticsForAdminViewSet(APIView):
+    def get(self, request):
+        
+
+        user_id = request.GET.get('user_id', request.user.id)
+
+        if user_id == request.user.id:
+            user = request.user
+        else:
+            try:
+                user = CustomerUser.objects.get(id = user_id)
+            except Exception as e:
+                return Response({"success": False, 'message': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+        licencia_id = user.licencia_id
+
+        utilities = Utilities()
+        profile_service = ProfileService()
+        social_media_service = SocialMediaService()
+
+        customer_profile = utilities.get_profile_and_social_medias_by_licencia(profile_service=profile_service,
+                                                                               licencia_id=licencia_id,
+                                                                               contact_service = social_media_service
+                                                                               )
+        if not customer_profile:
+            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"success": True, "data": customer_profile}, status=status.HTTP_200_OK)
+    
+class StaticsForSuperViewSet(APIView):
+    def get(self, request):
+        if not request.user.is_superuser:
+            return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            profile_service = ProfileService()
+            data = profile_service.cantobjs()
+        except Exception as e:
+            print(e)
+            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+    
+class Utilities():
     def get_profile(self, profile_service, pk, customer_user):
         try:
             response = profile_service.get_profile(pk, customer_user)
@@ -99,51 +112,37 @@ class CustomerUserStatistics(APIView):
         customer_profile_serializers = CustomerUserProfileStatisticsSerializer(response, many=False)
         return customer_profile_serializers
 
-    def get_whatsapp(self, contact_service, pk, customer_user):
+    def get_profile_and_social_medias_by_licencia(self, profile_service, contact_service, licencia_id):
         try:
-            response = contact_service.get_whatsapp(pk, customer_user)
-        except Exception as e:
-            return Response(None)
-        customer_whatsapp_serializers = CustomerUserWhatsappStatisticsSerializer(response, many=False)
-        return customer_whatsapp_serializers
+            response = profile_service.get_users_by_licencia(licencia_id)
+            if not response:
+                return None
+            profiles = []
+            for usr in response:
+                obj = profile_service.get_profile(customer_user=usr.id)
+                obj = CustomerUserProfileStatisticsSerializer(obj, many=False)
+                custom = contact_service.get_custom_social_media(customer_user=usr.id)
+                custom = CustomerUserCustomSocialMediaStatisticsSerializer(custom,many=True)
 
-    def get_email(self, contact_service, pk, customer_user):
-        try:
-            response = contact_service.get_email(pk, customer_user)
-        except Exception as e:
-            return Response(None)
-        customer_email_serializers = CustomerUserEmailStatisticsSerializer(response, many=False)
-        return customer_email_serializers
+                utilitiesC = customerUserUtilities()
+                custom = utilitiesC.put_image_with_type(custom)
 
-    def get_map(self, contact_service, pk, customer_user):
-        try:
-            response = contact_service.get_map(pk, customer_user)
-        except Exception as e:
-            return Response(None)
-        customer_map_serializers = CustomerUserMapStatisticsSerializer(response, many=False)
-        return customer_map_serializers
+                user = CustomerUserStatisticsSerializer(usr, many=False)
+                profiles.append({   **user.data, **obj.data, "statistics": {"custom_social_list": custom}})
+            return profiles
 
-    def get_phone(self, contact_service, pk, customer_user):
-        try:
-            response = contact_service.get_phone(pk, customer_user)
         except Exception as e:
             return Response(None)
-        customer_phone_serializers = CustomerUserPhoneStatisticsSerializer(response, many=False)
-        return customer_phone_serializers
 
-    def get_social_media(self, contact_service, pk, customer_user):
-        try:
-            response = contact_service.get_social_media(pk, customer_user)
-        except Exception as e:
-            return Response(None)
-        customer_social_media_serializers = CustomerUserSocialMediaStatisticsSerializer(response, many=True)
-        return customer_social_media_serializers
+
 
     def get_custom_social_media(self, contact_service, pk, customer_user):
         try:
             response = contact_service.get_custom_social_media(pk, customer_user)
+            metodos = customerUserUtilities()
         except Exception as e:
             return Response(None)
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaStatisticsSerializer(response,
                                                                                                      many=True)
-        return customer_custom_social_media_serializers
+        data = metodos.put_image_with_type(customer_custom_social_media_serializers)
+        return data

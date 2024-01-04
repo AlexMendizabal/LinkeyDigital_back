@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'authentication',
     'administration',
     'profile',
-    'contact'
+    'contact',
+    'pay'
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomerUser'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,7 +58,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'soyyo_api.urls'
@@ -95,11 +96,24 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'soyyo',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'psqlkj23!',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
+
+if os.getenv("DEV") == 'true':
+    DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'soyyo',
+        'USER': 'postgres',
+        'PASSWORD': 'psqlkj23',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+        }
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

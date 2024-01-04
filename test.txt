@@ -1,0 +1,17 @@
+nuevo endpoint
+auth/create-admin 
+- correo
+- esEmpresa: booleano
+
+if( esEmpresa ) -> rubro: "Empresa"
+else -> rubro: "Independiente"
+
+- tipo_de_plan
+- cobro
+- duracion
+- fecha_inicio
+- status 
+
+1. Crear usuario
+2. Obtener id de usuario
+3. Crear licencia con esa id de usuario

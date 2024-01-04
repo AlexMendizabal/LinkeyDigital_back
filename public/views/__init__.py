@@ -1,4 +1,4 @@
-from .public_customer_user_viewset import PublicCustomerUserViewSet
+from .public_customer_user_viewset import PublicCustomerUserViewSet, CustomUserUtilities
 from .public_email_viewset import PublicCustomerUserEmailViewSet
 from .public_phone_viewset import PublicCustomerUserPhoneViewSet
 from .public_whatsapp_viewset import PublicCustomerUserWhatsappViewSet

@@ -8,6 +8,7 @@ from public.views import PublicCustomerUserViewSet, PublicCustomerUserEmailViewS
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    #README: Ahora treaera el usaurio admin relacionado del que solicita 
     path('user/<str:public_id>', PublicCustomerUserViewSet.as_view(), name="get_user_public_app"),
 
     path('user/<str:public_id>/email', PublicCustomerUserEmailViewSet.as_view(), name="visit_email_public_app"),
@@ -19,6 +20,7 @@ urlpatterns = [
          name="visit_social_media_public_app"),
     path('user/<str:public_id>/custom_social_media', PublicCustomerUserCustomSocialMediaViewSet.as_view(),
          name="visit_custom_social_media_public_app"),
+
 
      path('user/<str:public_id>/reserva', CustomerUserReservaViewSet.as_view(), name="make_reserva"),
 

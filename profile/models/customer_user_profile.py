@@ -50,6 +50,7 @@ class CustomerUserProfile(models.Model):
             bg.save(self.background.path)
 
 
+#WAITING: claro ejemplo de la tarea de receiver
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

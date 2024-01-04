@@ -32,6 +32,7 @@ class FirebaseAuthentication(BaseAuthentication):
         try:
             decoded_token = auth.verify_id_token(id_token = token)
         except Exception as e:
+            print(e)
             raise InvalidToken()
         try:
             uid = decoded_token.get('uid')
@@ -54,8 +55,21 @@ class FirebaseAuthentication(BaseAuthentication):
             if user_exists:
                 user = User.objects.filter(uid=uid)[0]
             else:
-                user, created = User.objects.create(uid=uid, email=email, username=username)
+                #verificamos que el username no se repita
+                try:
+                    userOld = User.objects.get(username__startswith=username).latest("id")
+                except Exception as e:
+                    userOld = None
+                if userOld:
+                    letter = username[-1]
+                    if letter.isnumeric ():
+                        number = int(letter) + 1  
+                    else:
+                        number = 1
+                    username = username + str(number)
+
+                user = User.objects.create(uid=uid, email=email, username=username)
         except Exception as e:
             print('this is problem', e)
-            return None
+            raise TokenNotFound()
         return user, None

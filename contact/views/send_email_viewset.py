@@ -24,13 +24,16 @@ class UserSendMailViewSet(APIView):
 
     def post(self, request, pk=None, format=None):
 
-        json_response = json.loads(request.body);
-        emailContent = EmailContent(json_response)
+        try:
+            json_response = json.loads(request.body)
+            emailContent = EmailContent(json_response)
 
-        ip = _get_client_ip(request)
+            ip = _get_client_ip(request)
 
-        EmailThread(content=emailContent, ip=ip).start()
-        return Response({'msg': 'enviado'}, status=status.HTTP_200_OK)
+            EmailThread(content=emailContent, ip=ip).start()
+            return Response({"succes": True, "message": "enviado"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"succes": False, "message": "error al enviar el correo"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class EmailThread(threading.Thread):
