@@ -15,6 +15,12 @@ class SocialMediaService:
         customer_user_social_media.is_visible = dto.is_visible
         customer_user_social_media.save()
         return customer_user_social_media
+    
+    def update_order_social_media(self, pk, n):
+        cusm = get_object_or_404(CustomerUserCustomSocialMedia, pk=pk)
+        cusm.order = n
+        cusm.save()
+        return cusm
 
     def get_social_media(self, pk=None, customer_user=None):
         if pk and customer_user:

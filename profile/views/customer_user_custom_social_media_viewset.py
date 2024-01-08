@@ -17,7 +17,6 @@ from django.conf import settings
 from django.db import transaction
 import json
 from administration.UtilitiesAdministration import UtilitiesAdm
-from authentication.exceptions import NotFound
 
 from django.core.exceptions import ValidationError
 
@@ -25,7 +24,7 @@ class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
         fields = (
-            'id', 'customer_user', 'title', 'url', 'image', 'is_active', 'is_visible', 'type')
+            'id', 'customer_user', 'title', 'url', 'image', 'is_active', 'is_visible', 'type', 'order')
         extra_kwargs = {'title': {'required': True}, 'url': {'required': True},
                         'is_visible': {'required': True}}
 

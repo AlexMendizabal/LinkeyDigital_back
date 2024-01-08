@@ -16,3 +16,4 @@ from .views_viewset import ViewsViewSet
 from .customer_user_without_statics import CustomerUserWithoutStatics
 from .customer_user_profile_all_usesrs import CustomerUserAllProfileViewSet
 from .customer_user_licens_profile_viewset import CustomerUserLicensProfileViewSet
+from .customer_user_custom_order_viewset import customer_user_custom_order_viewset
