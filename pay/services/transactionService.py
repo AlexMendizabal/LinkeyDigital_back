@@ -22,10 +22,13 @@ class PayService:
     def create_transaction(self, dto):
         transaction = Transaction.objects.create(
             customer_user=dto.customer_user,
+            discount_id=dto.discount_id,
+            discount_value=dto.discount_value,
             status=dto.status,
             canal =dto.canal,
             monto =dto.monto,
             moneda =dto.moneda,
+            telefono =dto.telefono,
             descripcion =dto.descripcion,
             nombreComprador =dto.nombreComprador,
             apellidoComprador=dto.apellidoComprador,
@@ -101,6 +104,7 @@ class PayService:
             response = utilities.createDTO(data)
             user.licencia_id = response
             user.save()
+            print("Creada licencia")
 
             #logica para buscar la cantiad de usuarios requeridos
             detalleProductos = DetalleTransaction.objects.filter(transaction_id = resp.id)
@@ -110,8 +114,9 @@ class PayService:
                 cantidad += int(detalle.cantidad)
             #crea los usuarios restantes en la licencia y ademas les pone la misma licencia
             #creada anteriormente 
+            correo_inicio = user.username
             if cantidad > 0 :
-                errors, corrects = create_users_in_threads(cantidad, "borrar", response.id)
+                errors, corrects = create_users_in_threads(cantidad, correo_inicio, response.id)
 
             #funcion para mandar correo 
             subject = "¡Confirmación de Pago Exitosa!"

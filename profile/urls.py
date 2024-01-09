@@ -6,7 +6,8 @@ from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSe
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
     ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
     StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, \
-    CustomerUserLicensProfileViewSet, StaticsForSuperViewSet, CustomerUserProfileForAdmViewSet
+    CustomerUserLicensProfileViewSet, StaticsForSuperViewSet, CustomerUserProfileForAdmViewSet , \
+    customer_user_custom_order_viewset
 
 router = routers.DefaultRouter()
 
@@ -26,6 +27,9 @@ urlpatterns = [
          name="customer_user_custom_social_media_get_or_create"),
     path('custom_social_media/<int:pk>', CustomerUserCustomSocialMediaViewSet.as_view(),
          name="customer_user_custom_social_media_get_one_or_update_or_delete"),
+     #README: Metodo para cambiar el orden de los social media
+    path('custom_social_media_order', customer_user_custom_order_viewset.as_view(),
+         name="customer_user_custom_social_media_change_order"),
 
     path('base_social_media', SocialmediaViewSet.as_view(), name="socialmedia_list"),
     path('base_social_media/<int:pk>', SocialmediaViewSet.as_view(), name="socialmedia_get"),

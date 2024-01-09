@@ -28,6 +28,7 @@ class CustomerUserCustomSocialMedia(models.Model):
     is_visible = models.BooleanField(default=True)
     counter = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     type = models.CharField(max_length=50, blank=True, default='socialMedia')
+    order = models.IntegerField(default=None,blank=True,null=True)
 
     def save(self, **kwargs):
         super().save()

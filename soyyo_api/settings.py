@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'administration',
     'profile',
     'contact',
-    'pay'
+    'pay',
+ 
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomerUser'
@@ -94,9 +95,9 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo',
+        'NAME': 'soyyo5',
         'USER': 'postgres',
-        'PASSWORD': 'psqlkj23!',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -157,6 +158,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 """
 Proteccion de rutas
 """
+
+CORS_ALLOWED_ORIGIN=["http://localhost:3000/",
+                     "http://localhost:3001/"]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

@@ -10,7 +10,7 @@ from soyyo_api import settings
 
 
 @dataclass
-class LicenciaDto:
+class LicenciaDto: 
     customer_user_admin: int
     tipo_de_plan: str
     fecha_inicio : datetime
