@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'profile',
     'contact',
     'pay',
+    'booking',
  
 ]
 
@@ -95,9 +96,9 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo5',
+        'NAME': 'soyyo4',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': '123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
