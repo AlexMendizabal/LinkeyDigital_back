@@ -12,7 +12,7 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = (
-            'customer_user', 'adults', 'kids', 'teen', 'date','created_at', 'nombre', 
+            'id', 'customer_user', 'adults', 'kids', 'teen', 'date','created_at', 'nombre', 
             'email', 'phone', 'status_booking', 'code')
     code = serializers.CharField(required=False)
 
