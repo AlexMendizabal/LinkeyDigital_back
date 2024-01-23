@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework import serializers
+
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -7,35 +7,15 @@ from booking.models import Booking, BookingDto
 from booking.services import BookingService
 
 from administration.UtilitiesAdministration import UtilitiesAdm
+
 from booking.serializer import BookingSerializer
 
-class BookingViewset(APIView):
-    def get(self, request, user_id=None):
+class PublicBookingViewset(APIView):
+    permission_classes = []
+    authentication_classes = []
 
-        if not user_id:
-            user_id = request.user.id
-        #TODO: Implementar seguridad del metodo a aplicar 
-        #TODO: Implementar paginacion para hacer mas eficiente
-
-        # utilitiesAdm = UtilitiesAdm()
-        # if not utilitiesAdm.hasPermision(request.user, user_id):
-        #     return Response({"status": "error"}, status=status.HTTP_401_UNAUTHORIZED)
-        # booking_serializer = BookingSerializer(data=request.data)
-        # user_id = request.GET.get('user_id', request.user.id)
-
-        booking_service = BookingService()
-        try:
-            response = booking_service.get_booking(customer_user=user_id)
-        except Exception as e:
-            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
-        booking_serializer = BookingSerializer(response, many=True)
-        return Response({"success": True, "data": booking_serializer.data}, status=status.HTTP_200_OK)
-
-    #TODO: Pasar este metodo para actualziar las licencias
     def post(self, request, user_id=None):
-        utilitiesAdm = UtilitiesAdm()
-        if not utilitiesAdm.hasPermision(request.user, user_id):
-            return Response({"status": "error"}, status=status.HTTP_401_UNAUTHORIZED)
+
         booking_serializer = BookingSerializer(data=request.data)
 
         if not booking_serializer.is_valid():

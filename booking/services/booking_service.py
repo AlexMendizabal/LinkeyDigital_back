@@ -11,12 +11,14 @@ class BookingService:
             booking = get_object_or_404(Booking, pk=pk, customer_user=customer_user)
         elif pk:
             booking = get_object_or_404(Booking, pk=pk)
+        elif customer_user:
+            booking = Booking.objects.filter(customer_user=customer_user)
         else: 
             booking = Booking.objects.all()
         return booking
     
     def create_or_update_booking(self, dto):
-        booking, created = Booking.objects.update_or_create(
+        booking = Booking.objects.create(
             customer_user=dto.customer_user,
         adults = dto.adults,
         kids = dto.kids,
