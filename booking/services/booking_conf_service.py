@@ -36,14 +36,17 @@ class ConfBookingService:
     def create_or_update_conf_booking(self, dto):
         booking_conf, created = ConfigurationBooking.objects.update_or_create(
             customer_user=dto.customer_user,
-        max_personas = dto.max_personas,
-        time_bet_booking = dto.time_bet_booking,
-        holiday = dto.holiday,
-        hora_inicio = dto.hora_inicio,
-        hora_fin = dto.hora_fin,
-        status_conf = dto.status_conf,
-        kids = dto.kids,
-        teen = dto.teen)
+            defaults={
+                'max_personas': dto.max_personas,
+                'time_bet_booking': dto.time_bet_booking,
+                'holiday': dto.holiday,
+                'hora_inicio': dto.hora_inicio,
+                'hora_fin': dto.hora_fin,
+                'status_conf': dto.status_conf,
+                'kids': dto.kids,
+                'teen': dto.teen,
+            }
+        )
         return booking_conf
 
     

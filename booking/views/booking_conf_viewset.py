@@ -8,30 +8,9 @@ from booking.services import ConfBookingService
 
 from administration.UtilitiesAdministration import UtilitiesAdm
 
-class ConfBookingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ConfigurationBooking
-        fields = (
-            'id', 'customer_user', 'max_personas', 'time_bet_booking', 'holiday', 
-            'hora_inicio','hora_fin', 'status_conf', 
-            'kids', 'teen')
+from booking.serializer import ConfBookingSerializer
 
 class ConfBookingViewset(APIView):
-    def get(self, request, user_id=None):
-        booking_service = ConfBookingService()
-        try:
-            if not user_id:
-                user_id = request.user.id
-            response = booking_service.get_conf_booking(customer_user=user_id)
-        except Exception as e:
-            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
-        if not response:
-            response = booking_service.create_default_conf_booking(cu=user_id)
-        if user_id:
-            booking_serializer = ConfBookingSerializer(response, many=False)
-        else:
-            booking_serializer = ConfBookingSerializer(response, many=True)
-        return Response({"success": True, "data": booking_serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request, user_id=None):
         # utilitiesAdm = UtilitiesAdm()

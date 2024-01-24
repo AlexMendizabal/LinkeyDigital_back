@@ -25,7 +25,7 @@ class PublicBookingViewset(APIView):
         booking_service = BookingService()
 
         try:
-            response = booking_service.create_or_update_booking(dto)
+            response = booking_service.create_booking(dto)
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         customer_email_serializers = BookingSerializer(response, many=False)

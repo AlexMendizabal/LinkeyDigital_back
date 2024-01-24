@@ -17,7 +17,7 @@ class BookingService:
             booking = Booking.objects.all()
         return booking
     
-    def create_or_update_booking(self, dto):
+    def create_booking(self, dto):
         booking = Booking.objects.create(
             customer_user=dto.customer_user,
         adults = dto.adults,
