@@ -17,6 +17,7 @@ class CustomerUser(AbstractUser):
     update_at = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
     is_sponsor=models.BooleanField(default=False)
+    is_booking=models.BooleanField(default=False)
     dependency_id=models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
 
     

@@ -39,7 +39,7 @@ class ConfBookingViewset(APIView):
             time_bet_booking=data.get("time_bet_booking", 60),
             holiday=data.get("holiday", []),
             hora_inicio=data.get("hora_inicio", "08:00:00"),
-            hora_fin=data.get("hora_inicio", "20:00:00"),
+            hora_fin=data.get("hora_fin", "20:00:00"),
             status_conf=data.get("status_conf", 0),
             kids=data.get("kids", False),
             teen=data.get("teen", False),
