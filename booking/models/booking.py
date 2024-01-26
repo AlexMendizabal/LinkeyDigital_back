@@ -40,9 +40,5 @@ class Booking(models.Model):
     def save(self, *args, **kwargs):
         # Genera un código único de 5 dígitos
         unique_code = ''.join(random.choices(string.digits, k=5))
-
-        # Asigna el código generado a la instancia del modelo
         self.code = unique_code
-
-        # Llama al método save de la clase base para guardar la instancia
         super().save(*args, **kwargs)

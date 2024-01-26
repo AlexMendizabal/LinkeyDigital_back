@@ -15,6 +15,9 @@ class BookingViewset(APIView):
 
         if not pk:
             pk = request.user.id
+        
+        all = request.GET.get('all', False)
+
         #TODO: Implementar seguridad del metodo a aplicar 
         #TODO: Implementar paginacion para hacer mas eficiente
 
@@ -26,7 +29,7 @@ class BookingViewset(APIView):
 
         booking_service = BookingService()
         try:
-            response = booking_service.get_booking(customer_user=pk)
+            response = booking_service.get_booking_today(customer_user=pk, all=all)
         except Exception as e:
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
         booking_serializer = BookingSerializer(response, many=True)

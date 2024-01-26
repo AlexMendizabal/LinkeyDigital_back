@@ -6,14 +6,14 @@ from booking.views import BookingViewset, ConfBookingViewset, PublicBookingViews
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    #metodos para reservas publicas
+    # metodos para reservas publicas
     path('', PublicBookingViewset.as_view()),
-    #metodos para reservas de los clientes
+    # metodos para reservas de los clientes
     path('get', BookingViewset.as_view()),
     path('get/<int:pk>', BookingViewset.as_view()),
 
-    #metodos para conf de reservas publicas 
+    # metodos para conf de reservas publicas y los horarios 
     path('setting/<str:user>', PublicConfBookingViewset.as_view()),
-    #metodos para conf de reservas 
+    # metodos para conf de reservas 
     path('setting', ConfBookingViewset.as_view()),
 ]
