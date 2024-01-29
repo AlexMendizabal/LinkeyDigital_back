@@ -34,18 +34,27 @@ class ConfBookingService:
         return booking_conf
     
     def create_or_update_conf_booking(self, dto):
+        update_fields = {}
+        if dto.max_personas is not None:
+            update_fields['max_personas'] = dto.max_personas
+        if dto.time_bet_booking is not None:
+            update_fields['time_bet_booking'] = dto.time_bet_booking
+        if dto.holiday is not None:
+            update_fields['holiday'] = dto.holiday
+        if dto.hora_inicio is not None:
+            update_fields['hora_inicio'] = dto.hora_inicio
+        if dto.hora_fin is not None:
+            update_fields['hora_fin'] = dto.hora_fin
+        if dto.status_conf is not None:
+            update_fields['status_conf'] = dto.status_conf
+        if dto.kids is not None:
+            update_fields['kids'] = dto.kids
+        if dto.teen is not None:
+            update_fields['teen'] = dto.teen
+
         booking_conf, created = ConfigurationBooking.objects.update_or_create(
             customer_user=dto.customer_user,
-            defaults={
-                'max_personas': dto.max_personas,
-                'time_bet_booking': dto.time_bet_booking,
-                'holiday': dto.holiday,
-                'hora_inicio': dto.hora_inicio,
-                'hora_fin': dto.hora_fin,
-                'status_conf': dto.status_conf,
-                'kids': dto.kids,
-                'teen': dto.teen,
-            }
+            defaults=update_fields
         )
         return booking_conf
 

@@ -27,7 +27,7 @@ class ConfBookingViewset(APIView):
         try:
             response = booking_service.create_or_update_conf_booking(dto)
         except Exception as e:
-            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response({"success": False, "error" : e}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         customer_email_serializers = ConfBookingSerializer(response, many=False)
         return Response({"success": True, "data": customer_email_serializers.data}, status=status.HTTP_200_OK)
 
@@ -35,14 +35,14 @@ class ConfBookingViewset(APIView):
         data = serializer.validated_data
         return ConfigurationBookingDto(
             customer_user=data["customer_user"],
-            max_personas=data.get("max_personas", 0),
-            time_bet_booking=data.get("time_bet_booking", 60),
-            holiday=data.get("holiday", []),
-            hora_inicio=data.get("hora_inicio", "08:00:00"),
-            hora_fin=data.get("hora_fin", "20:00:00"),
-            status_conf=data.get("status_conf", 0),
-            kids=data.get("kids", False),
-            teen=data.get("teen", False),
+            max_personas=data.get("max_personas", None),
+            time_bet_booking=data.get("time_bet_booking", None),
+            holiday=data.get("holiday", None),
+            hora_inicio=data.get("hora_inicio", None),
+            hora_fin=data.get("hora_fin", None),
+            status_conf=data.get("status_conf", None),
+            kids=data.get("kids", None),
+            teen=data.get("teen", None),
         )
 
 
