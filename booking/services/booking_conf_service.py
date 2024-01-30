@@ -27,7 +27,14 @@ class ConfBookingService:
             time_bet_booking = 0,
             holiday = "[]",
             hora_inicio = "07:00:00",
-            hora_fin = "20:00:00",
+            hora_fin = "11:00:00",
+            
+            hora_inicio_tarde = "15:00:00",
+            hora_fin_tarde = "17:00:00",
+            
+            hora_inicio_noche = None,
+            hora_fin_noche = None,
+
             status_conf =0 ,
             kids = False,
             teen = False)
@@ -41,10 +48,22 @@ class ConfBookingService:
             update_fields['time_bet_booking'] = dto.time_bet_booking
         if dto.holiday is not None:
             update_fields['holiday'] = dto.holiday
+
         if dto.hora_inicio is not None:
             update_fields['hora_inicio'] = dto.hora_inicio
         if dto.hora_fin is not None:
             update_fields['hora_fin'] = dto.hora_fin
+
+        if dto.hora_inicio_tarde is not None:
+            update_fields['hora_inicio_tarde'] = dto.hora_inicio_tarde
+        if dto.hora_fin_tarde is not None:
+            update_fields['hora_fin_tarde'] = dto.hora_fin_tarde
+
+        if dto.hora_inicio_noche is not None:
+            update_fields['hora_inicio_noche'] = dto.hora_inicio_noche
+        if dto.hora_fin_noche is not None:
+            update_fields['hora_fin_noche'] = dto.hora_fin_noche
+
         if dto.status_conf is not None:
             update_fields['status_conf'] = dto.status_conf
         if dto.kids is not None:
