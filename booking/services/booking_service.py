@@ -1,8 +1,6 @@
-from dataclasses import dataclass
-from rest_framework.generics import get_object_or_404
 from datetime import datetime, date
 
-from ..models import Booking, BookingDto
+from ..models import Booking
 
 
 class BookingService:
@@ -29,6 +27,10 @@ class BookingService:
         if customer_user:
             bookings = bookings.filter(customer_user=customer_user)
         return bookings
+    
+    def get_bookings_count(self, customer_user, status=0):
+        count = Booking.objects.filter(customer_user=customer_user, status_booking = status).count()
+        return count
     
     def create_booking(self, dto):
         booking = Booking.objects.create(

@@ -4,19 +4,11 @@ from booking.models import Booking, ConfigurationBooking
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = (
-            'id', 'customer_user', 'adults', 'kids', 'teen', 'date','created_at', 'nombre', 
-            'email', 'phone', 'status_booking', 'code')
+        fields = ('__all__')
     code = serializers.CharField(required=False)
 
 
 class ConfBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConfigurationBooking
-        fields = (
-            'id', 'customer_user', 'max_personas', 'time_bet_booking', 'holiday', 'max_reservas', 
-            'hora_inicio','hora_fin', 
-            'hora_inicio_tarde','hora_fin_tarde', 
-            'hora_inicio_noche','hora_fin_noche', 
-            'status_conf', 
-            'kids', 'teen', 'btn', 'phone', 'email')
+        fields = ('__all__')

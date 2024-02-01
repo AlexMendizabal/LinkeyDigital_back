@@ -7,16 +7,32 @@ from authentication.models import CustomerUser
 from rest_framework import status
 from django.db import transaction
 from administration.UtilitiesAdministration import UtilitiesAdm
+from booking.services import BookingService
 
 class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUser
         fields = '__all__'
 
+class CustomerUserSerializerWithBooking(CustomerUserSerializer):
+    class Meta:
+        model = CustomerUser
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        bookservice = BookingService()
+        booking_data = {}
+        for status in range(5):
+            booking_data[status] = bookservice.get_bookings_count(customer_user=instance.id, status=status)
+        representation['booking'] = booking_data
+
+        return representation
+
 
 class CustomerUserViewSet(APIView):
     def get(self, request):
-        customer_user_serializer = CustomerUserSerializer(request.user)
+        customer_user_serializer = CustomerUserSerializerWithBooking(request.user)
         return Response(customer_user_serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
