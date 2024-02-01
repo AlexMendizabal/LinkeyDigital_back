@@ -14,9 +14,9 @@ class ConfBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConfigurationBooking
         fields = (
-            'id', 'customer_user', 'max_personas', 'time_bet_booking', 'holiday', 
+            'id', 'customer_user', 'max_personas', 'time_bet_booking', 'holiday', 'max_reservas', 
             'hora_inicio','hora_fin', 
             'hora_inicio_tarde','hora_fin_tarde', 
             'hora_inicio_noche','hora_fin_noche', 
             'status_conf', 
-            'kids', 'teen')
+            'kids', 'teen', 'btn', 'phone', 'email')

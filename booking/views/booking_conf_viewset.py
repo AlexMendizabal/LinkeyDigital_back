@@ -36,21 +36,21 @@ class ConfBookingViewset(APIView):
         return ConfigurationBookingDto(
             customer_user=data["customer_user"],
             max_personas=data.get("max_personas", None),
+            max_reservas=data.get("max_reservas", None),
             time_bet_booking=data.get("time_bet_booking", None),
             holiday=data.get("holiday", None),
-
             hora_inicio=data.get("hora_inicio", None),
             hora_fin=data.get("hora_fin", None),
-            
             hora_inicio_tarde=data.get("hora_inicio_tarde", None),
             hora_fin_tarde=data.get("hora_fin_tarde", None),
-            
             hora_inicio_noche=data.get("hora_inicio_noche", None),
             hora_fin_noche=data.get("hora_fin_noche", None),
-
             status_conf=data.get("status_conf", None),
             kids=data.get("kids", None),
             teen=data.get("teen", None),
+            btn=data.get("btn", None),
+            phone=data.get("phone", None),
+            email=data.get("email", None),
         )
 
 

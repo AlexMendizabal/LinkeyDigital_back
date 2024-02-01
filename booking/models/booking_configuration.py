@@ -10,6 +10,7 @@ from authentication.models import CustomerUser
 class ConfigurationBookingDto:
     customer_user : int
     max_personas : int
+    max_reservas : int
     time_bet_booking : int
     holiday : str
     hora_inicio : str
@@ -21,12 +22,16 @@ class ConfigurationBookingDto:
     status_conf : int
     kids : bool
     teen : bool
+    btn : str
+    phone : str
+    email : str
 
 class ConfigurationBooking(models.Model):
 
     customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
-    max_personas = models.IntegerField(default= 20,  blank = True, validators=[MinValueValidator(0)])
-    time_bet_booking = models.IntegerField(blank = True, validators=[MinValueValidator(0)])
+    max_personas = models.IntegerField(default= 5,  blank = True, null=True, validators=[MinValueValidator(0)])
+    max_reservas = models.IntegerField(default= 10,  blank = True, null=True, validators=[MinValueValidator(0)])
+    time_bet_booking = models.IntegerField(default = 60, blank = True, validators=[MinValueValidator(0)])
     holiday = models.CharField(max_length=100, blank=True)
     # hora mañana
     hora_inicio = models.TimeField(default=time(7, 0, 0), blank=True, null=True)
@@ -41,6 +46,9 @@ class ConfigurationBooking(models.Model):
     kids = models.BooleanField(default=False)
     teen = models.BooleanField(default=False)
 
+    btn = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=20, blank=True)
+    email = models.CharField(max_length=20, blank=True)
 
 
 

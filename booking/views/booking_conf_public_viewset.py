@@ -21,7 +21,7 @@ class PublicConfBookingViewset(APIView):
         if not user:
             return Response({"succes": False}, status=status.HTTP_400_BAD_REQUEST)
         
-            # Apartado para obtener los dias disponibles
+        # Apartado para obtener los dias disponibles
         # bookingservice = BookingService()
         # try: 
         #     day = request.GET.get('day', date.today().isoformat())
@@ -40,7 +40,7 @@ class PublicConfBookingViewset(APIView):
         except Exception as e:
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
         if not response:
-            response = booking_service.create_default_conf_booking(cu=user)
+            response = booking_service.create_or_update_conf_booking(cu=user)
         if user:
             conf_booking_serializer = ConfBookingSerializer(response, many=False)
         else:
