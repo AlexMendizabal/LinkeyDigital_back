@@ -107,6 +107,7 @@ class CustomUserUtilities():
         else : 
             data = {"public_id": customer_user.public_id,
                     "username": customer_user.username,
+                    "is_booking": customer_user.is_booking,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers}
         return data
