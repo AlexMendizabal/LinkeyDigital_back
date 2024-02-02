@@ -98,6 +98,7 @@ class CustomUserUtilities():
         if customer_user_admin:
             data = {"public_id": customer_user.public_id,
                     "username": customer_user.username,
+                    "is_booking": customer_user.is_booking,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers,
                     "admin":    {"public_id": customer_user_admin.public_id,
