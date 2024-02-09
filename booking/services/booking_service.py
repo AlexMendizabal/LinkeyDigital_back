@@ -1,7 +1,6 @@
 from datetime import datetime, date
-
+from rest_framework.generics import get_object_or_404
 from ..models import Booking
-
 
 class BookingService:
     
@@ -16,6 +15,10 @@ class BookingService:
         if customer_user:
             bookings = bookings.filter(customer_user=customer_user)
         return bookings
+    
+    def get_booking_percode(self, code):
+        booking = get_object_or_404(Booking, code=code)
+        return booking
     
     def get_booking_perday(self, pk=None, customer_user=None, specific_date=None):
 

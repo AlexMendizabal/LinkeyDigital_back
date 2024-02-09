@@ -7,6 +7,10 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = ('__all__')
     code = serializers.CharField(required=False)
 
+class BookingSerializer_public(serializers.ModelSerializer):
+    class Meta:
+        model = Booking 
+        fields = ('id','date','code','status_booking',)
 
 class ConfBookingSerializer(serializers.ModelSerializer):
     class Meta:
