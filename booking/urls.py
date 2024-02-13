@@ -2,7 +2,8 @@ from rest_framework import routers
 from django.urls import path, include
 
 from booking.views import BookingViewset, ConfBookingViewset, PublicBookingViewset, PublicConfBookingViewset \
-    ,PUblicSearchBookingViewset
+    ,PUblicSearchBookingViewset, PublicBusyViewset
+
 
 router = routers.DefaultRouter()
 
@@ -20,4 +21,6 @@ urlpatterns = [
     
     # metodo public para ver reservas
     path('public/<int:codigo>', PUblicSearchBookingViewset.as_view()),
+    # metodos para get reservas ocupadas 
+    path('public/busy/<int:user>', PublicBusyViewset.as_view()),
 ]

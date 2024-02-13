@@ -7,6 +7,7 @@ from booking.services import ConfBookingService
 #from administration.UtilitiesAdministration import UtilitiesAdm
 
 from booking.serializer import ConfBookingSerializer
+from public.views import CustomUserUtilities
 
 #from public.views import CustomUserUtilities
 
@@ -22,8 +23,6 @@ class PublicConfBookingViewset(APIView):
         booking_service = ConfBookingService()
         #utilities = CustomUserUtilities()
         try:
-            # customer_user = utilities.getUsers(user)
-            # user_id = customer_user.id
             response = booking_service.get_conf_booking(customer_user=user)
         except Exception as e:
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)

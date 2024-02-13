@@ -20,16 +20,24 @@ class BookingService:
         booking = get_object_or_404(Booking, code=code)
         return booking
     
-    def get_booking_perday(self, pk=None, customer_user=None, specific_date=None):
+    def get_booking_perday(self, pk=None, customer_user=None, specific_date=None, specific_hour=False):
+        try:
+            date_obj = datetime.strptime(specific_date, "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            return None
+        
+        if specific_hour:
+            sh = date_obj.time()
+            bookings = Booking.objects.filter(date__date=date_obj.date(), date__time=sh).order_by('date')
+        else:
+            bookings = Booking.objects.filter(date__date=date_obj.date()).order_by('date')
 
-        # Convierte la cadena de fecha a un objeto DateTime
-        date_obj = datetime.strptime(specific_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-        bookings = Booking.objects.filter(date__date=date_obj.date())
         if pk:
             bookings = bookings.filter(pk=pk)
         if customer_user:
             bookings = bookings.filter(customer_user=customer_user)
-        return bookings
+        return list(bookings)
+
     
     def get_bookings_count(self, customer_user, status=0):
         count = Booking.objects.filter(customer_user=customer_user, status_booking = status).count()
