@@ -25,7 +25,6 @@ class OrderNewCardsViewSet(APIView):
             EmailThread(content=emailContent, ip=ip, user = request.user).start()
             return Response({"succes": True, "message": "enviado"}, status=status.HTTP_200_OK)
         except Exception as e:
-            print(e)
             return Response({"succes": False, "message": "error al enviar el correo"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -46,9 +45,7 @@ class EmailThread(threading.Thread):
                 ["ventas@soyyo.digital"],
                 fail_silently=False,
             )
-            print("Correo enviado exitosamente")
         except Exception as e:
-            print("Error al enviar el correo")
             return Response({"succes": False, "message": "error al enviar el correo"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

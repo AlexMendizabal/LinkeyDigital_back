@@ -32,12 +32,10 @@ class CreateUserThread(threading.Thread):
                 email = user.email
                 username = email.split('@')[0]
                 User = get_user_model()
-                print(self.licencia_id)
                 user = User.objects.create(uid=uid, email=email, username=username, licencia_id_id=self.licencia_id)
                 with self.lock:
                     self.corrects.append({"email": self.email})
             except Exception as e:
-                print(e)
                 auth.delete_user(user.uid)
                 with self.lock:
                     self.errors.append({"email": self.email, "error": str(e)})
@@ -71,7 +69,6 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
 
     for i in range(1, cant + 1):
         email = f"{correo}-{max_number + i}@soyyo.digital"
-        print(email)
         password = "soyyo.digital"
         thread = CreateUserThread(email=email, password=password, errors=errors, lock=lock, corrects=corrects, licencia_id=licencia_id)
         thread.start()

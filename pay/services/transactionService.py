@@ -61,7 +61,6 @@ class PayService:
                 price = price.price
                 monto += Decimal(price) * int(producto["cantidad"])
         except Exception as e:
-            print(e)
             raise Exception("El producto no está disponible") 
         return monto
     
@@ -71,7 +70,6 @@ class PayService:
             if not resp:
                 return None
         except Exception as e:
-            print(str(e))
             return None
         return resp
     
@@ -90,8 +88,8 @@ class PayService:
             resp.status = status
             resp.save()
             user = resp.customer_user
-            monto = resp.monto
-            data = {
+            monto = round(resp.monto, 2)
+            licencia = {
                 
                 "tipo_de_plan": "" ,
                 "fecha_inicio" : timezone.now() , 
@@ -101,10 +99,9 @@ class PayService:
             }
             #crea la licencia del usuario y lo actualiza
             utilities = Utilities()
-            response = utilities.createDTO(data)
-            user.licencia_id = response
+            response = utilities.create_licencia_DTO(licencia)
+            user.licencia_id_id = response
             user.save()
-            print("Creada licencia")
 
             #logica para buscar la cantiad de usuarios requeridos
             detalleProductos = DetalleTransaction.objects.filter(transaction_id = resp.id)
@@ -136,7 +133,6 @@ class PayService:
             # funcion para mandar al front
 
         except Exception as e:
-            print(str(e))
             return False
         
         return True

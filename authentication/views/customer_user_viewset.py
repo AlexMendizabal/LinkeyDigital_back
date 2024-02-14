@@ -110,7 +110,6 @@ class CustomerUserPutRubroViewSet(APIView):
                     customer_user_serializers.is_valid(raise_exception=True)
                     customer_user_serializers.save()
                 except Exception as e:
-                    print(e)
                     return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True}, status=status.HTTP_200_OK)
 

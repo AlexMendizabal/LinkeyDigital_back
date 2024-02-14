@@ -95,7 +95,6 @@ class LicenciaAdminViewSet(APIView):
                 return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
             response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=True if pk is None else True )
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
         UserSerializers = CustomerUserSerializer(response, many=True)
@@ -211,7 +210,7 @@ class Utilities():
             status=data["status"],
         )
     
-    def createDTO(self, data):
+    def create_licencia_DTO(self, data):
         serializer = LicenciaSerializer(data=data)
         if not serializer.is_valid():
             return False

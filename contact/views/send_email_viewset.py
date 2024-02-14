@@ -52,7 +52,6 @@ class EmailThread(threading.Thread):
             ["ventas@soyyo.digital"],
             fail_silently=False,
         )
-        print("Correo enviado exitosamente")
 
 
 

@@ -23,7 +23,6 @@ class UtilitiesAdm():
                 #preguntamos si es numerico, si lo es sifnifica que se obtuvo el id.. porlo que traeremos el user
                 # pero si no lo es significa que ya es tipo user...
                 if isinstance(user_al_que_le_aplica_los_cambios, int):
-                    print("buscado")
                     user_al_que_le_aplica_los_cambios = CustomerUser.objects.get(id = user_al_que_le_aplica_los_cambios)
 
                 if user_que_solicita.id != user_al_que_le_aplica_los_cambios.id:

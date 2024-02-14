@@ -25,7 +25,6 @@ class BlockersUsersViewSet(APIView):
                 return Response({"success": False, "error": "No tienes permisos de administrador."},
                 status=status.HTTP_403_FORBIDDEN)
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         responseSerializer = CustomerUserSerializer(response, many=False)
         return Response({"success": True, "data": responseSerializer.data},
@@ -48,7 +47,6 @@ class EditableUsersViewSet(APIView):
                 return Response({"success": False, "error": "No tienes permisos de administrador."},
                 status=status.HTTP_403_FORBIDDEN)
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         responseSerializer = CustomerUserSerializer(response, many=False)
         return Response({"success": True, "data": responseSerializer.data},
