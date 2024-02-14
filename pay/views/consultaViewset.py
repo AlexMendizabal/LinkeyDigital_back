@@ -18,7 +18,6 @@ class ConsultaViewSet(APIView):
         user_id = request.GET.get('user_id', request.user.id)
         user_id = int(user_id)
         if not utilitiesAdm.hasPermision(request.user, user_id ):
-            print(request.user, user_id )
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         user_id = request.GET.get('user_id', request.user.id)
@@ -27,7 +26,6 @@ class ConsultaViewSet(APIView):
         try:
             response = transaction_service.get_transactions(user_id)
         except Exception as e:
-            print(str(e))
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
         transaction_serializer = TransactionSerializerForGet(response, many=True)
@@ -59,7 +57,6 @@ class ConsultaExtendViewSet(APIView):
             else:
                 return Response(solicitud_pago, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         except Exception as e:
-            print(e)
             return {"success": False, "error": str(e)}
     # maybe deberia verificar que este pagado primero idk
     def put(self, request, pk=None):
@@ -75,7 +72,6 @@ class ConsultaExtendViewSet(APIView):
             transaction.save()
             transaction_serializer = TransactionSerializerForGet(transaction, many=False)
         except Exception as e:
-            print(e)
             return {"success": False, "error": str(e)}
         return Response({"success": True, "data": transaction_serializer.data }, status=status.HTTP_200_OK)
         

@@ -117,21 +117,6 @@ class Transaction(models.Model):
     discount_id = models.ForeignKey(Discount, on_delete=models.SET_NULL,blank=True, null=True )
     discount_value = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        # ... (resto del código)
-
-        if self.discount_id:
-            # Obtener el descuento asociado
-            discount = self.discount_id
-
-            # Calcular el valor de descuento y restarlo al monto
-            discount_value = discount.calculate_discount_value(self.monto)
-            self.monto -= discount_value
-
-            # Asignar el valor de descuento a la transacción
-            self.discount_value = discount_value
-
-        super().save(*args, **kwargs)
 
     def discount_type(self):
         if self.discount_id:

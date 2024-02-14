@@ -25,7 +25,6 @@ class EmailThread(threading.Thread):
             )
             msg.attach_alternative(self.body, "text/html")
             msg.send()
-            print("Correo enviado exitosamente")
         except Exception as e:
             print(e)
             print("Error al enviar el correo")
@@ -37,7 +36,6 @@ def SendEmail(subject, email, body ):
             EmailThread(body=body, email= email, subject=subject).start()
             return True
         except Exception as e:
-            print(e)
             return False
 
 

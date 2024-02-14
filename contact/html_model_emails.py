@@ -119,7 +119,6 @@ def getCorrects(corrects):
     if corrects:
         table = ''
         for email in corrects:
-            print(email)
             table = table + getTD(email["email"])
         msg = f'''<p>Queremos que tu experiencia sea inolvidable, por eso te presentamos estos simples pasos para que empieces con el pie derecho:</p>
                     <ol>

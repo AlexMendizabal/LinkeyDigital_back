@@ -45,7 +45,7 @@ class SolicitudViewSet(APIView):
                 transaction_service = PayService()
 
                 monto_pedido = float(transaction_service.get_price_by_id_producto(data["detalle"]))
-
+                #WAITING: Se debe poner el apartado de costos de envio
                 costo_envio = 0
                 ciudad = data.get("ciudad", "")
                 if ciudad != "Santa Cruz":
@@ -79,17 +79,9 @@ class SolicitudViewSet(APIView):
                 if "success" not in solicitud_pago:
                     data["id_transaccion"] = solicitud_pago["id_transaccion"]
                     data["customer_user"] = request.user.id
-
                     data["discount_id"] = None if cupon==None else cupon.id
-
-                    # Lo tengo que redondear para que no de error, porque así esta en las tablas
                     data["discount_value"] = round( descuento, 2)
-
-                    # Parece que el "monto" se está guarda incorrectamente y está restando el 'descuento'
-                    # A pesar de que claramente lo estoy redefiniendo aquí
-                    # ...
-                    data["monto"] = str( round(monto_pedido + costo_envio, 2) )
-
+                    
                     serializer = TransactionSerializer(data=data)
                     if not serializer.is_valid():
                         return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -117,7 +109,6 @@ class SolicitudViewSet(APIView):
                 }
                 return Response({"success": True, "data": sp}, status=status.HTTP_200_OK)
         except Exception as e:
-            print(e)
             return Response({"success": False, "error":str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
