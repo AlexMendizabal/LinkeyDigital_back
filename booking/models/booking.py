@@ -32,7 +32,7 @@ class Booking(models.Model):
     customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     nombre = models.CharField(max_length=50, blank=True)
-    email = models.CharField(max_length=50, blank=True)
+    email = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=50, blank=True)
     status_booking = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     code = models.CharField(max_length=10, unique=True)
