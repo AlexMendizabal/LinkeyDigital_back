@@ -20,6 +20,7 @@ class BookingDto:
     nombre: str
     email: str
     phone: str
+    description: str
     customer_user: int
 
 
@@ -36,6 +37,7 @@ class Booking(models.Model):
     phone = models.CharField(max_length=50, blank=True)
     status_booking = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     code = models.CharField(max_length=10, unique=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         # Genera un código único de 5 dígitos
