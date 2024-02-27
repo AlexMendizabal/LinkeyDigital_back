@@ -30,7 +30,7 @@ class ConfigurationBooking(models.Model):
 
     customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
     max_personas = models.IntegerField(default= 5,  blank = True, null=True, validators=[MinValueValidator(0)])
-    max_reservas = models.IntegerField(default= 10,  blank = True, null=True, validators=[MinValueValidator(0)])
+    max_reservas = models.IntegerField(default= 1,  blank = True, null=True, validators=[MinValueValidator(0)])
     time_bet_booking = models.IntegerField(default = 60, blank = True, validators=[MinValueValidator(0)])
     holiday = models.CharField(max_length=100, blank=True)
     # hora mañana
@@ -40,15 +40,15 @@ class ConfigurationBooking(models.Model):
     hora_inicio_tarde = models.TimeField(default=time(15, 0, 0) , blank=True,null=True)
     hora_fin_tarde = models.TimeField(default=time(17, 0, 0) , blank=True,null=True)
     # hora noche
-    hora_inicio_noche = models.TimeField(default=time(17, 0, 0), blank=True,null=True)
-    hora_fin_noche = models.TimeField(default=time(21, 0, 0), blank=True,null=True)
-    status_conf = models.IntegerField(default = 1, validators=[MinValueValidator(0)])
+    hora_inicio_noche = models.TimeField(default=time(19, 0, 0), blank=True,null=True)
+    hora_fin_noche = models.TimeField(default=time(19, 0, 0), blank=True,null=True)
+    status_conf = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     kids = models.BooleanField(default=False)
     teen = models.BooleanField(default=False)
 
     btn = models.CharField(max_length=20, blank=True)
     phone = models.CharField(max_length=20, blank=True)
-    email = models.CharField(max_length=20, blank=True)
+    email = models.CharField(max_length=100, blank=True)
 
 
 
