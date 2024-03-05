@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from pay.models.transaction import Discount, SavedDiscounts
+from pay.models.transaction import Discount, SavedDiscounts, Productos
 from authentication.models.customer_user import CustomerUser
 
 
@@ -19,4 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
 class SavedDiscountsSerializer(serializers.ModelSerializer):
     class Meta:
         model=SavedDiscounts
+        fields='__all__'
+
+class ProductsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Productos
         fields='__all__'
