@@ -42,5 +42,15 @@ que, a mi pareces, no tienen ningun sentido, intente reacrealos en un diagrama u
 realmente no parecen tener utilidad, estos modelos y metodos jamas de usaron y estan en el olvido
 pero darse la tarea de borrar todo es tiempo que no hay, y la verdad, ¿vale la pena? 
 
+********* pay y mercado pago **********************
+Debido a que el proyecto se esta lanzando en muchos paises, y que la pasarela de pagos implementada 
+con ScrumPay no es apta para aplicarse a otros, se implementara otras pasarelas de pago dentro
+del proyecto, como seran mercado pago y etc 
+por ahora quieren mantener los usuarios en diferentes servidores (por alguna razon que desconozco)
+por lo que el poryecto se estara ramificando, pero la idea es unificar todo en algun momento
+esa es la razon por la que mantendre los metodos de mercado pago en otro modulos a los ya creados, y 
+lo mismo para todas las otras pasarelas de pago
+Sin embargo la primera creada es "pay"
+
 
 
