@@ -4,6 +4,9 @@ from pay.models import Productos
 from pay.serializer import ProductsSerializer
 
 class ProductosListCreateView(generics.ListCreateAPIView):
+    permission_classes = []
+    authentication_classes = []
+
     queryset = Productos.objects.all()
     serializer_class = ProductsSerializer
 
