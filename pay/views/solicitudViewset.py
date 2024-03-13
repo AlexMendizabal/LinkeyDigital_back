@@ -4,11 +4,9 @@ from rest_framework import status
 
 from pay.services import PayService, ScrumPay
 
-from pay.models.transaction import Discount, Transaction
+from pay.models.transaction import Discount
 
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransactionSerializer
-
-from decimal import Decimal
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -45,11 +43,9 @@ class SolicitudViewSet(APIView):
                 transaction_service = PayService()
 
                 monto_pedido = float(transaction_service.get_price_by_id_producto(data["detalle"]))
-                #WAITING: Se debe poner el apartado de costos de envio
-                costo_envio = 0
+
                 ciudad = data.get("ciudad", "")
-                if ciudad != "Santa Cruz":
-                    costo_envio = 50
+                costo_envio = transaction_service.get_precio_envio(ciudad)
 
                 descuento = 0
                 verification_code = data.get("verificationCode", False)
@@ -71,7 +67,7 @@ class SolicitudViewSet(APIView):
                         descuento = 0                            
 
                 data["monto"] = str(monto_pedido - descuento + costo_envio)
-                data["codigoTransaccion"] = scrumPay.generar_codigo_unico()
+                data["codigoTransaccion"] = transaction_service.generar_codigo_unico()
                 data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
 
                 solicitud_pago = scrumPay.solicitudPago(data)
