@@ -7,6 +7,7 @@ from pay.views import SolicitudViewSet, ConsultaViewSet, ConsultaExtendViewSet, 
 from pay.views.discountViews import DiscountView, GetUserByDiscountView, UserDiscountsView, GetDiscountByVerificationCodeView
 
 from pay.views.savedDiscountsViews import SavedDiscountsView
+from pay.views.productsView import ProductosListCreateView, ProductosRetrieveUpdateDeleteView
 
 
 saved_discounts_router = routers.DefaultRouter()
@@ -38,7 +39,8 @@ urlpatterns = [
 
     path('discount/verification_code/<str:verification_code>/', GetDiscountByVerificationCodeView.as_view(), name='get_discount_by_verification_code'),
 
-   
+    path('productos/', ProductosListCreateView.as_view(), name='productos-list-create'),
+    path('productos/<int:pk>/', ProductosRetrieveUpdateDeleteView.as_view(), name='productos-retrieve-update-delete'),
     
     #path("")
 
