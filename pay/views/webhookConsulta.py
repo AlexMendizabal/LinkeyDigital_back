@@ -32,7 +32,6 @@ class webhook(APIView):
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
         #Logica para guardar datos
 
-        services = PayService
         response = services.guardar_datos_webHook(data["estatus"], resp)
         if response is None:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)

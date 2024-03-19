@@ -6,7 +6,6 @@ import mercadopago
 from django.db import transaction
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransactionSerializer
 from pay.services import PayService
-import json
 
 class MercadoPago(APIView):
     def post(self, request):
@@ -43,21 +42,24 @@ class MercadoPago(APIView):
                 #obtener el descuento 
                 verification_code = data.get("verificationCode", False)
                 descuento , cupon = transaction_service.get_discount(monto_pedido,verification_code)
-                
+                descuento = int(descuento)
                 sdk = mercadopago.SDK(MERCADOPAGO_SECRET_KEY)
                 # Obtener datos del formulario de pago
                 monto = monto_pedido - descuento + costo_envio
                 data["monto"] = str(monto)
-                data["codigoTransaccion"] = transaction_service.generar_codigo_unico()
+                codigoTransaccion = transaction_service.generar_codigo_unico()
+                data["codigoTransaccion"] = codigoTransaccion
                 data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
 
                 descripcion = request.data.get("descripcion")
 
                 preference_data = {
+                    #"notification_url" :  "http://requestbin.fullcontact.com/1ogudgk1",
+                    "external_reference" : codigoTransaccion,
                     "items": [{
                         "title": descripcion,
                         "quantity": 1,
-                        "currency_id": "BRL",  # Moneda (en este caso, pesos brasileros)
+                        "currency_id": "CLP",  # Moneda (en este caso, pesos brasileros)
                         "unit_price": monto
                     }]
                 }
@@ -67,7 +69,7 @@ class MercadoPago(APIView):
 
                 #Crear registro de transaccion
                 if "error" not in preference:
-                    data["id_transaccion"] = preference["id"]
+                    #data["id_transaccion"] = preference["id"]
                     data["customer_user"] = request.user.id
                     data["discount_id"] = None if cupon==None else cupon.id
                     data["discount_value"] = descuento

@@ -103,16 +103,17 @@ class PayService:
             raise Exception("El producto no está disponible") 
         return monto
     
-    def validar_id_tracaccion(id, codigo):
+    def validar_id_tracaccion(self, id, codigo):
         try:
-            resp = Transaction.objects.get(id_transaccion = id, codigoTransaccion = codigo)
+            #resp = Transaction.objects.get(id_transaccion = id, codigoTransaccion = codigo)
+            resp = Transaction.objects.get(codigoTransaccion = codigo)
             if not resp:
                 return None
         except Exception as e:
             return None
         return resp
     
-    def guardar_datos_webHook( estatus, resp):
+    def guardar_datos_webHook(self, estatus, resp):
         try:
             #cambiamos el status
             estatus = int(estatus)
