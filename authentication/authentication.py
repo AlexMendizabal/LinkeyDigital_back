@@ -9,9 +9,10 @@ from rest_framework.authentication import BaseAuthentication
 
 from soyyo_api import settings
 from .exceptions import FirebaseAuthException, InvalidToken, TokenNotFound, EmailNotVerified
+from soyyo_api.settings import NAME_FIRE_BASE
 
 cred = credentials.Certificate(os.path.join(
-    os.path.dirname(__file__), 'secrets/firebaseconfig.json'))
+    os.path.dirname(__file__), 'secrets/' + NAME_FIRE_BASE))
 
 app = firebase_admin.initialize_app(cred)
 

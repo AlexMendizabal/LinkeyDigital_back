@@ -200,3 +200,9 @@ EMAIL_USE_SSL = True
 # DATOS PARA MERCADO PAGO   
 
 MERCADOPAGO_SECRET_KEY = 'APP_USR-2751639853842806-031912-14aa9a3792529f1308f6f33dc25f85ac-1727623999'
+
+# Archivo de conf de firebase 
+NAME_FIRE_BASE = "firebaseconfig.json"
+chile_mode = True
+if chile_mode:
+    NAME_FIRE_BASE = "soyyochile-auth-firebase.json"
