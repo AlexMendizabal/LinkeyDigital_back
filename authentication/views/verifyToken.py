@@ -10,9 +10,10 @@ import firebase_admin
 from firebase_admin import auth, credentials
 from rest_framework import status
 from authentication.exceptions import FirebaseAuthException, InvalidToken, TokenNotFound
+from conf_fire_base import NAME_FIRE_BASE
 
 cred = credentials.Certificate(os.path.join(
-    os.path.dirname(__file__), '../secrets/firebaseconfig.json'))
+    os.path.dirname(__file__), '../secrets/' + NAME_FIRE_BASE))
 
 class VerifyToken(APIView):
     permission_classes = []

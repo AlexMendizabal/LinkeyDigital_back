@@ -99,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'soyyo5',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'psqlkj23!',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -196,8 +196,3 @@ EMAIL_HOST_USER = "contacto@soyyo.digital"
 EMAIL_HOST_PASSWORD = "RfNvVUid8iG5"
 
 EMAIL_USE_SSL = True
-
-# DATOS PARA MERCADO PAGO   
-
-MERCADOPAGO_PUBLIC_KEY = 'TEST-57b68601-ec3e-42f3-9937-2c7225fcb107'
-MERCADOPAGO_SECRET_KEY = 'TEST-6781745522807645-022613-2be9596b4397b964c0927a49e34b9134-194361398'

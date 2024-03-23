@@ -1,6 +1,4 @@
 import requests
-import string
-import secrets
 
 class ScrumPay():
     def __init__(self):
@@ -48,8 +46,4 @@ class ScrumPay():
 
 
 
-    def generar_codigo_unico(self):
-        caracteres = string.ascii_letters + string.digits  # Usar letras y dígitos
-        longitud = 10
-        codigo_unico = ''.join(secrets.choice(caracteres) for _ in range(longitud))
-        return codigo_unico
+

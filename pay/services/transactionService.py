@@ -1,5 +1,5 @@
 
-from pay.models import Transaction, DetalleTransaction
+from pay.models import Transaction, DetalleTransaction, Discount
 from pay.models import Productos
 
 from administration.views import LicenciaSerializer, Utilities
@@ -7,9 +7,12 @@ from administration.services import LicenciaService
 from authentication.views import CreateUserThread, create_users_in_threads
 from contact.services import SendEmail
 from contact import GetHtmlForEmail
+from django.shortcuts import get_object_or_404
 
 from decimal import Decimal
 from django.utils import timezone
+import string
+import secrets
 
 class PayService:
     
@@ -52,6 +55,42 @@ class PayService:
             cantidad=dto.cantidad,
         ) 
         return transaction
+    
+    #WAITING: Poner costo_envio en algun documento de conf, para no tener que estarlo buscando
+    def get_precio_envio(self, ciudad, pais="Bolivia"):
+        costo_envio = 0
+        if pais == "Bolivia" or pais == "bolivia":
+            if ciudad != "Santa Cruz":
+                costo_envio = 40
+        return costo_envio
+
+    def generar_codigo_unico(self):
+        caracteres = string.ascii_letters + string.digits  # Usar letras y dígitos
+        longitud = 10
+        codigo_unico = ''.join(secrets.choice(caracteres) for _ in range(longitud))
+        return codigo_unico
+    
+    def get_discount(self, monto_pedido, verification_code=False):
+        descuento = 0
+        cupon = None
+        if verification_code:
+            try:
+                cupon = get_object_or_404(Discount, verification_code=verification_code)
+                discount_rate = float(cupon.discount_rate)
+                if(cupon.discount_type == "percentage"):
+                    descuento = monto_pedido* discount_rate / 100
+
+                if(cupon.discount_type == "price"):
+                    descuento = discount_rate
+
+                if not cupon.es_valido():
+                    descuento = 0
+
+            except Exception:
+                descuento = 0 
+
+            descuento = round( descuento, 2)
+        return descuento , cupon
 
     def get_price_by_id_producto(self, detalles):
         try:
@@ -64,16 +103,17 @@ class PayService:
             raise Exception("El producto no está disponible") 
         return monto
     
-    def validar_id_tracaccion(id, codigo):
+    def validar_id_tracaccion(self, id, codigo):
         try:
-            resp = Transaction.objects.get(id_transaccion = id, codigoTransaccion = codigo)
+            #resp = Transaction.objects.get(id_transaccion = id, codigoTransaccion = codigo)
+            resp = Transaction.objects.get(codigoTransaccion = codigo)
             if not resp:
                 return None
         except Exception as e:
             return None
         return resp
     
-    def guardar_datos_webHook( estatus, resp):
+    def guardar_datos_webHook(self, estatus, resp):
         try:
             #cambiamos el status
             estatus = int(estatus)
