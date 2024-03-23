@@ -1,5 +1,5 @@
 import requests
-from soyyo_api.settings import MERCADOPAGO_SECRET_KEY
+from conf_fire_base import MERCADOPAGO_SECRET_KEY
 
 class MercadoPagoService():
     def __init__(self):

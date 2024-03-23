@@ -196,13 +196,3 @@ EMAIL_HOST_USER = "contacto@soyyo.digital"
 EMAIL_HOST_PASSWORD = "RfNvVUid8iG5"
 
 EMAIL_USE_SSL = True
-
-# DATOS PARA MERCADO PAGO   
-
-MERCADOPAGO_SECRET_KEY = 'TEST-6404068218311065-031515-6878cb09c6c588263b7e10be029e93ba-1727624293'
-
-# Archivo de conf de firebase 
-NAME_FIRE_BASE = "firebaseconfig.json"
-chile_mode = True
-if chile_mode:
-    NAME_FIRE_BASE = "soyyochile-auth-firebase.json"
