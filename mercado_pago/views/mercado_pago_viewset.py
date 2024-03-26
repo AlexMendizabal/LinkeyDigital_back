@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from conf_fire_base import MERCADOPAGO_SECRET_KEY
+from conf_fire_base import brasil_mode
 import mercadopago
 from django.db import transaction
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransactionSerializer
@@ -63,7 +64,17 @@ class MercadoPago(APIView):
                         "unit_price": monto
                     }]
                 }
-                
+                if brasil_mode:
+                    preference_data = {
+                        #"notification_url" :  "http://requestbin.fullcontact.com/1ogudgk1",
+                        "external_reference" : codigoTransaccion,
+                        "items": [{
+                            "title": descripcion,
+                            "quantity": 1,
+                            "currency_id": "BRL",  # Moneda (en este caso, pesos brasileros)
+                            "unit_price": monto
+                        }]
+                    }
                 preference_response = sdk.preference().create(preference_data)
                 preference = preference_response["response"]
 

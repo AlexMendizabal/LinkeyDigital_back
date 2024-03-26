@@ -17,7 +17,8 @@ class MercadoPagoWebhook(APIView):
         payService = PayService()
         if notification_type:
             if notification_type == 'payment':
-                payment_id = request.data.get('id')
+                payment_id = request.data.get('data')
+                payment_id = payment_id["id"]
                 payment = mercadoPagoService.get_payment(payment_id)
                 
                 resp = payService.validar_id_tracaccion(id = None, codigo = payment["external_reference"])
