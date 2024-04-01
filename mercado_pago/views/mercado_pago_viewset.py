@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from conf_fire_base import MERCADOPAGO_SECRET_KEY
-from conf_fire_base import brasil_mode
+from soyyo_api.settings import MERCADOPAGO_SECRET_KEY
+from soyyo_api.settings import brasil_mode
 import mercadopago
 from django.db import transaction
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransactionSerializer

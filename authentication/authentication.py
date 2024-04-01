@@ -9,7 +9,7 @@ from rest_framework.authentication import BaseAuthentication
 
 from soyyo_api import settings
 from .exceptions import FirebaseAuthException, InvalidToken, TokenNotFound, EmailNotVerified
-from conf_fire_base import NAME_FIRE_BASE
+from soyyo_api.settings import NAME_FIRE_BASE
 
 cred = credentials.Certificate(os.path.join(
     os.path.dirname(__file__), 'secrets/' + NAME_FIRE_BASE))
