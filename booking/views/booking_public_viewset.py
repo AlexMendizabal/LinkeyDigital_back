@@ -68,5 +68,6 @@ class PublicBookingViewset(APIView):
             phone=data["phone"],
             customer_user=data["customer_user"],
             description=data.get("description", ""),
+            booking_configuration=data.get("booking_configuration"),
         )
 

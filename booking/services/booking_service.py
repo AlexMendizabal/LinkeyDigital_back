@@ -53,7 +53,8 @@ class BookingService:
         teen = dto.teen,
         email = dto.email,
         phone = dto.phone,
-        description = dto.description)
+        description = dto.description,
+        booking_configuration = dto.booking_configuration)
         #booking.save()
         return booking
     

@@ -25,6 +25,7 @@ class ConfigurationBookingDto:
     btn : str
     phone : str
     email : str
+    description : str
 
 class ConfigurationBooking(models.Model):
 
@@ -49,6 +50,7 @@ class ConfigurationBooking(models.Model):
     btn = models.CharField(max_length=20, blank=True)
     phone = models.CharField(max_length=20, blank=True)
     email = models.CharField(max_length=100, blank=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
 
 
 
