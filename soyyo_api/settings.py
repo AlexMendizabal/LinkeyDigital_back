@@ -15,6 +15,8 @@ from pathlib import Path
 import dj_database_url
 from decouple import config
 
+from conf_fire_base import bolivia_mode
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -97,7 +99,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo5',
+        'NAME': 'soyyo6',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
@@ -105,18 +107,17 @@ DATABASES = {
     }
 }
 
-if os.getenv("DEV") == 'true':
+if not bolivia_mode:
     DATABASES = {
-        'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo',
+        'NAME': 'soyyo5',
         'USER': 'postgres',
-        'PASSWORD': 'psqlkj23',
+        'PASSWORD': 'psqlkj23!',
         'HOST': '127.0.0.1',
         'PORT': '5432',
-        }
     }
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
