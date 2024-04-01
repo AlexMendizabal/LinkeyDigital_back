@@ -8,7 +8,41 @@ from profile.models import CustomerUserWhatsapp, CustomerUserEmail, CustomerUser
 
 class PublicCustomerUserService:
 
+
     def get_profile(self, pk=None, customer_user=None):
+        print("pk:", pk)
+        print("customer_user:", customer_user)
+
+        if pk and customer_user:
+            # Obtener el perfil de usuario asociado directamente con el usuario consultado
+            customer_user_profile = get_object_or_404(CustomerUserProfile, pk=pk, customer_user=customer_user)
+        elif customer_user:
+            # Obtener el perfil de usuario asociado directamente con el usuario consultado
+            customer_user_profile = get_object_or_404(CustomerUserProfile, customer_user=customer_user)
+
+            today = date.today()
+            new_counter_value = customer_user_profile.counter + 1
+            print("new_counter_value:", new_counter_value)
+            print("Valor de pk en la consulta de actualización:", customer_user_profile.pk, customer_user)
+
+            # Actualizar el contador solo para el perfil del usuario consultado
+            CustomerUserProfile.objects.filter(pk=customer_user_profile.pk).update(counter=new_counter_value)
+            
+            view_profile, created = ViewProfile.objects.get_or_create(custom_user=customer_user_profile, timestamp__date=today)
+            view_profile.counter += 1
+
+            print("Usuario para el cual se incrementa el contador:", customer_user_profile.customer_user)
+            print("view_profile:", view_profile)
+            print("view_profile_counter:", view_profile.counter)
+            
+            view_profile.save()
+            return customer_user_profile
+
+
+    """ def get_profile(self, pk=None, customer_user=None):
+
+        print("pk:", pk)
+        print("customer_user:", customer_user)
         if pk and customer_user:
             customer_user_profile = get_object_or_404(CustomerUserProfile, pk=pk, customer_user=customer_user)
         elif customer_user:
@@ -18,11 +52,18 @@ class PublicCustomerUserService:
         #     customer_user_profile = CustomerUserProfile.objects.all()
         today = date.today()
         new_counter_value = customer_user_profile.counter + 1
+        print("new_counter_value:", new_counter_value)
+        print("Valor de pk en la consulta de actualización:", customer_user_profile.pk, customer_user)
         CustomerUserProfile.objects.filter(pk=customer_user_profile.pk).update(counter=new_counter_value)
         view_profile, created = ViewProfile.objects.get_or_create(custom_user = customer_user_profile,timestamp__date=today)
         view_profile.counter += 1
+        
+        print("view_profile:", view_profile)
+        print("view_profile_counter:", view_profile.counter)
+        
         view_profile.save()
-        return customer_user_profile
+        return customer_user_profile """
+        
 
     def get_whatsapp(self, pk=None, customer_user=None):
         if pk and customer_user:
