@@ -15,6 +15,8 @@ from pathlib import Path
 import dj_database_url
 from decouple import config
 
+from conf_fire_base import bolivia_mode
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,18 +66,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'soyyo_api.urls'
-
-# ********************************************************************
-# Debido a que son muchos servidores y solo un repositorio para mantener las actualizaciones 
-# de manera facil, se opto por crear estas conf 
-# el codigo sacara de aqui las configuraciones principales de firebase o mercado pago... o lo que se necesite 
-
-bolivia_mode = True
-chile_mode = False
-brasil_mode = False
-portugal_mode = False
-
-# ********************************************************************
 
 TEMPLATES = [
     {
@@ -207,21 +197,3 @@ EMAIL_HOST_USER = "contacto@soyyo.digital"
 EMAIL_HOST_PASSWORD = "RfNvVUid8iG5"
 
 EMAIL_USE_SSL = True
-
-# Archivo de conf de firebase 
-NAME_FIRE_BASE = "firebaseconfig.json"
-DOMINIO_NAME = "soyyo.digital"
-if chile_mode:
-    NAME_FIRE_BASE = "soyyochile-auth-firebase.json"
-    DOMINIO_NAME = "soyyochile.com"
-elif brasil_mode:
-    NAME_FIRE_BASE = "soueudigital-auth-firebase-brasil.json"
-    DOMINIO_NAME = "soueu.com.br"
-elif portugal_mode:
-    NAME_FIRE_BASE = "epadigital-auth-firebase-Portugal.json"
-    DOMINIO_NAME = "soyyo.digital"
-
-# conf mercado pago 
-MERCADOPAGO_SECRET_KEY = 'APP_USR-2751639853842806-031912-14aa9a3792529f1308f6f33dc25f85ac-1727623999'
-if brasil_mode:
-    MERCADOPAGO_SECRET_KEY = 'APP_USR-2751639853842806-031912-14aa9a3792529f1308f6f33dc25f85ac-1727623999'

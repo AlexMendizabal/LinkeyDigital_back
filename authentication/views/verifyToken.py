@@ -10,7 +10,7 @@ import firebase_admin
 from firebase_admin import auth, credentials
 from rest_framework import status
 from authentication.exceptions import FirebaseAuthException, InvalidToken, TokenNotFound
-from soyyo_api.settings import NAME_FIRE_BASE
+from conf_fire_base import NAME_FIRE_BASE
 
 cred = credentials.Certificate(os.path.join(
     os.path.dirname(__file__), '../secrets/' + NAME_FIRE_BASE))
