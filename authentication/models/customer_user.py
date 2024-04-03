@@ -18,10 +18,9 @@ class CustomerUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_sponsor=models.BooleanField(default=False)
     is_booking=models.BooleanField(default=False)
-    dependency_id=models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
+    is_sales_manager=models.BooleanField(default=False)
 
-    
-    
+    dependency_id=models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
 
     customer_user_admin = models.ForeignKey('self', null=True, blank=True, related_name='owner',
                                             on_delete=models.CASCADE)

@@ -15,7 +15,7 @@ from pathlib import Path
 import dj_database_url
 from decouple import config
 
-from conf_fire_base import bolivia_mode
+from conf_fire_base import BOLIVIA_MODE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,15 +99,15 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo6',
+        'NAME': 'soyyo5',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'POSTGRES',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
 
-if not bolivia_mode:
+if not BOLIVIA_MODE:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
