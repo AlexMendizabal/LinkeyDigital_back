@@ -1,10 +1,9 @@
 
-from pay.models import Transaction, DetalleTransaction, Discount
+from pay.models import Transaction, DetalleTransaction, Discount, DetalleTransaction
 from pay.models import Productos
 
-from administration.views import LicenciaSerializer, Utilities
-from administration.services import LicenciaService
-from authentication.views import CreateUserThread, create_users_in_threads
+from administration.views import Utilities
+from authentication.views import create_users_in_threads
 from contact.services import SendEmail
 from contact import GetHtmlForEmail
 from django.shortcuts import get_object_or_404
@@ -22,6 +21,13 @@ class PayService:
         else:
             return None
         return transaction
+    def get_detalle_transaccion(self, id_transaccion=None):
+        if id_transaccion:
+            transaction = DetalleTransaction.objects.filter(transaction = id_transaccion).order_by('id')
+        else:
+            return None
+        return transaction
+    
     def create_transaction(self, dto):
         transaction = Transaction.objects.create(
             customer_user=dto.customer_user,

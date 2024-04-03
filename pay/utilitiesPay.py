@@ -21,6 +21,16 @@ class TransactionSerializerForGet(serializers.ModelSerializer):
         fields = (
             'id', 'status')
         
+class TransactionSerializerForAll(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('__all__')
+        
+class DetalleTransactionSerializerForAll(serializers.ModelSerializer):
+    class Meta:
+        model = DetalleTransaction
+        fields = ('__all__')
+
 class DetalleTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetalleTransaction
