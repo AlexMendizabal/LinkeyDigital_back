@@ -8,6 +8,7 @@ from rest_framework import status
 from django.db import transaction
 from administration.UtilitiesAdministration import UtilitiesAdm
 from booking.services import BookingService
+from firebase_admin import auth
 
 class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,10 +66,23 @@ class CustomerUserViewSet(APIView):
         return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
 
     def delete(self, request):
-        return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        #userProfile = get_object_or_404(CustomerUser, id=request.user.id)
-        #userProfile.delete()
-        #return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
+        #return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({"status": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            customer_user = request.GET.get('user_id')
+            userProfile = get_object_or_404(CustomerUser, id=customer_user)
+            uid = userProfile.uid
+            userProfile.delete()
+        except:
+            return Response({'msg': 'error al borrar de db'}, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            auth.delete_user(uid)
+        except:
+            return Response({'msg': 'error al borrar de firebase'}, status=status.HTTP_404_NOT_FOUND)
+        
+        return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
 
 class CustomerAdminViewSet(APIView):
     def put(self, request, customer_id):
