@@ -109,6 +109,7 @@ class CustomUserUtilities():
             data = {"public_id": customer_user.public_id,
                     "username": customer_user.username,
                     "is_booking": customer_user.is_booking,
+                    "is_sales_manager": customer_user.is_sales_manager,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers,
                     "admin":    {"public_id": customer_user_admin.public_id,
@@ -118,6 +119,7 @@ class CustomUserUtilities():
             data = {"public_id": customer_user.public_id,
                     "username": customer_user.username,
                     "is_booking": customer_user.is_booking,
+                    "is_sales_manager": customer_user.is_sales_manager,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers}
         return data
