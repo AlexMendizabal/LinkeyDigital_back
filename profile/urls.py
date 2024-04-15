@@ -9,6 +9,8 @@ from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSe
     CustomerUserLicensProfileViewSet, StaticsForSuperViewSet, CustomerUserProfileForAdmViewSet , \
     customer_user_custom_order_viewset
 
+from profile.views.customer_user_profile_log import view_profile_log
+
 router = routers.DefaultRouter()
 
 urlpatterns = [
@@ -95,5 +97,5 @@ urlpatterns = [
     path('phone', CustomerUserPhoneViewSet.as_view(), name="customer_user_phone_get_or_create_or_update"),
     path('phone/<int:pk>', CustomerUserPhoneViewSet.as_view(), name="customer_user_phone_get_one"),
 
-   
+   path('log/<int:custom_user_id>/', view_profile_log, name='view_all_profiles'),
 ]
