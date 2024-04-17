@@ -17,7 +17,7 @@ class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
 class CustomerUserCustomSocialMediaStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
-        fields = ('title', 'counter', 'image', 'type', 'url')
+        fields = ('title', 'counter', 'image', 'type', 'url', 'created_at','update_at')
 
 class CustomerUserStatisticsSerializer(serializers.ModelSerializer):
     class Meta:

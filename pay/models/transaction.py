@@ -122,29 +122,3 @@ class Transaction(models.Model):
         if self.discount_id:
             return self.discount_id.discount_type
         return None
-
-
-class SavedDiscounts(models.Model):
-    discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
-    product = models.ForeignKey(Productos, on_delete=models.CASCADE)
-    customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
-    id_sponsor = models.ForeignKey(CustomerUser, related_name='sponsor_discounts', on_delete=models.CASCADE)
-    discount_type = models.CharField(max_length=10, choices=[('price', 'Price Value'), ('percentage', 'Percentage Value')], default="percentage")
-    discount_rate = models.DecimalField(max_digits=5, decimal_places=2)
-    previous_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    new_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    emission_date = models.DateField(auto_now_add=True)
-
-
-    def save(self, *args, **kwargs):
-        # Obtén el tipo de descuento y la tasa de descuento del modelo Discount relacionado
-        discount_type = self.discount.discount_type
-        discount_rate = self.discount.discount_rate
-
-        # Calcula el nuevo precio aplicando el descuento
-        if discount_type == 'price':
-            self.new_price = self.previous_price - discount_rate
-        elif discount_type == 'percentage':
-            self.new_price = self.previous_price * (1 - (discount_rate / 100))
-
-        super(SavedDiscounts, self).save(*args, **kwargs)
