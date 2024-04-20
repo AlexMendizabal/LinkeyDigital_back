@@ -359,6 +359,7 @@ class customerUserUtilities():
                 "twitch": "icons8-twitch-96.png",
                 "twitter": "icons8-twitter-96.png",
                 "youtube": "icons8-youtube-96.png",
+                "contact": "icons8-contact-96.png"
             }
         if isinstance(customer_custom_social_media.data, list):
             # Si es una colección de objetos
