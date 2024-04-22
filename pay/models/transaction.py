@@ -126,9 +126,9 @@ class Transaction(models.Model):
 
 class SavedDiscounts(models.Model):
     discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
-    product = models.ForeignKey(Productos, on_delete=models.CASCADE)
-    customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
-    id_sponsor = models.ForeignKey(CustomerUser, related_name='sponsor_discounts', on_delete=models.CASCADE)
+    product = models.ForeignKey(Productos, on_delete=models.DO_NOTHING)
+    customer_user = models.ForeignKey(CustomerUser, on_delete=models.DO_NOTHING)
+    id_sponsor = models.ForeignKey(CustomerUser, related_name='sponsor_discounts', on_delete=models.DO_NOTHING)
     discount_type = models.CharField(max_length=10, choices=[('price', 'Price Value'), ('percentage', 'Percentage Value')], default="percentage")
     discount_rate = models.DecimalField(max_digits=5, decimal_places=2)
     previous_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])

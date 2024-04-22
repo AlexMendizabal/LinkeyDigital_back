@@ -176,6 +176,18 @@ class LicenciaSuperViewSet(APIView):
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
     
+
+    def delete(self, request, pk=None):
+        if not request.user.is_superuser:
+            return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
+        licencia_service = LicenciaService()
+
+        try:
+            licencia_service.delete_licencia(licencia_id=pk)
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
 class LicenciaCoonectViewSet(APIView):
     def patch(self, request, pk=None):
         ids = []
