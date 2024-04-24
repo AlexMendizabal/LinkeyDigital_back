@@ -267,3 +267,6 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python
+
+# Aqui para el conf fire base y otros
+conf_fire_base.py

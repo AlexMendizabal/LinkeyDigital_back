@@ -21,7 +21,6 @@ class webhook(APIView):
             "codigoTransaccion",
             "estatus"
         ]
-        print("Ejecutado webhook")
         if not all(field in data for field in required_fields):
             return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -33,7 +32,6 @@ class webhook(APIView):
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
         #Logica para guardar datos
 
-        services = PayService
         response = services.guardar_datos_webHook(data["estatus"], resp)
         if response is None:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)

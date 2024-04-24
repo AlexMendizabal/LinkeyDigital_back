@@ -38,7 +38,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
     class Meta:
         model = CustomerUser
-        fields = ('id','email','is_editable','rubro', 'username', 'public_id', 'profile', 'phone_number', 'is_sponsor')
+        fields = ('id','email','is_editable','rubro', 'username', 'public_id', 'profile', 'phone_number', 'is_sponsor','is_booking','is_sales_manager')
         read_only_fields = ('profile',)
     def get_profile(self, user):
         profile = CustomerUserProfile.objects.get(customer_user=user)
@@ -95,7 +95,6 @@ class LicenciaAdminViewSet(APIView):
                 return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
             response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=True if pk is None else True )
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
         UserSerializers = CustomerUserSerializer(response, many=True)
@@ -177,6 +176,18 @@ class LicenciaSuperViewSet(APIView):
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
     
+
+    def delete(self, request, pk=None):
+        if not request.user.is_superuser:
+            return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
+        licencia_service = LicenciaService()
+
+        try:
+            licencia_service.delete_licencia(licencia_id=pk)
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
 class LicenciaCoonectViewSet(APIView):
     def patch(self, request, pk=None):
         ids = []
@@ -211,7 +222,7 @@ class Utilities():
             status=data["status"],
         )
     
-    def createDTO(self, data):
+    def create_licencia_DTO(self, data):
         serializer = LicenciaSerializer(data=data)
         if not serializer.is_valid():
             return False

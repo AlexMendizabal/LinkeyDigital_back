@@ -15,6 +15,8 @@ from pathlib import Path
 import dj_database_url
 from decouple import config
 
+from conf_fire_base import DATABASES_CONF, BOLIVIA_MODE
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,6 +47,8 @@ INSTALLED_APPS = [
     'profile',
     'contact',
     'pay',
+    'mercado_pago',
+    'booking',
  
 ]
 
@@ -92,29 +96,17 @@ DATABASES = {
     }
 }
 """
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo5',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-
-if os.getenv("DEV") == 'true':
-    DATABASES = {
-        'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'soyyo',
-        'USER': 'postgres',
-        'PASSWORD': 'psqlkj23',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        }
-    }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'soyyo6',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+DATABASES = DATABASES_CONF
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

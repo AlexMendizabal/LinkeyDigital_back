@@ -1,0 +1,6 @@
+from .booking_viewset import BookingViewset
+from .booking_conf_viewset import ConfBookingViewset
+from .booking_public_viewset import PublicBookingViewset
+from .booking_conf_public_viewset import PublicConfBookingViewset
+from .public_search_booking_viewset import PUblicSearchBookingViewset
+from .public_busy_viewset import PublicBusyViewset

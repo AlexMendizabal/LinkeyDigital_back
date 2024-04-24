@@ -8,9 +8,18 @@ from rest_framework.generics import get_object_or_404
 from pay.models import Transaction, TransactionDto
 from pay.services import PayService, ScrumPay
 
-from pay.utilitiesPay import UtilitiesPay, TransactionSerializerForGet
+from pay.utilitiesPay import UtilitiesPay, TransactionSerializerForGet, TransactionSerializerForAll \
+    ,DetalleTransactionSerializerForAll
 
 class ConsultaViewSet(APIView):
+
+    def convert_detalles_to_serializer(self,detalle,trans):
+        transaction_service = PayService()
+        detalle = transaction_service.get_detalle_transaccion(trans["id"])
+        detalle_serializer = DetalleTransactionSerializerForAll(detalle, many=True)
+        trans["Detalle"] = detalle_serializer.data
+        return trans
+
     def get(self, request):
 
         utilitiesAdm = UtilitiesAdm()
@@ -18,7 +27,6 @@ class ConsultaViewSet(APIView):
         user_id = request.GET.get('user_id', request.user.id)
         user_id = int(user_id)
         if not utilitiesAdm.hasPermision(request.user, user_id ):
-            print(request.user, user_id )
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
         user_id = request.GET.get('user_id', request.user.id)
@@ -26,12 +34,21 @@ class ConsultaViewSet(APIView):
         transaction_service = PayService()
         try:
             response = transaction_service.get_transactions(user_id)
+            transaction_serializer = TransactionSerializerForAll(response, many=True)
+            
+            data = []
+            if isinstance(transaction_serializer.data, list):
+                # Si es una colección de objetos
+                for trans in transaction_serializer.data:
+                    data.append(self.convert_detalles_to_serializer(trans["id"],trans))
+            else:
+                    trans = transaction_serializer.data
+                    data.append(self.convert_detalles_to_serializer(trans["id"],trans))
         except Exception as e:
-            print(str(e))
             return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
-        transaction_serializer = TransactionSerializerForGet(response, many=True)
-        return Response({"success": True, "data": transaction_serializer.data}, status=status.HTTP_200_OK)
+        
+        return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
 
 
         
@@ -59,7 +76,6 @@ class ConsultaExtendViewSet(APIView):
             else:
                 return Response(solicitud_pago, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         except Exception as e:
-            print(e)
             return {"success": False, "error": str(e)}
     # maybe deberia verificar que este pagado primero idk
     def put(self, request, pk=None):
@@ -75,7 +91,6 @@ class ConsultaExtendViewSet(APIView):
             transaction.save()
             transaction_serializer = TransactionSerializerForGet(transaction, many=False)
         except Exception as e:
-            print(e)
             return {"success": False, "error": str(e)}
         return Response({"success": True, "data": transaction_serializer.data }, status=status.HTTP_200_OK)
         

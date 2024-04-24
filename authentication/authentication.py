@@ -9,9 +9,10 @@ from rest_framework.authentication import BaseAuthentication
 
 from soyyo_api import settings
 from .exceptions import FirebaseAuthException, InvalidToken, TokenNotFound, EmailNotVerified
+from conf_fire_base import NAME_FIRE_BASE
 
 cred = credentials.Certificate(os.path.join(
-    os.path.dirname(__file__), 'secrets/firebaseconfig.json'))
+    os.path.dirname(__file__), 'secrets/' + NAME_FIRE_BASE))
 
 app = firebase_admin.initialize_app(cred)
 
@@ -32,7 +33,6 @@ class FirebaseAuthentication(BaseAuthentication):
         try:
             decoded_token = auth.verify_id_token(id_token = token)
         except Exception as e:
-            print(e)
             raise InvalidToken()
         try:
             uid = decoded_token.get('uid')
@@ -70,6 +70,5 @@ class FirebaseAuthentication(BaseAuthentication):
 
                 user = User.objects.create(uid=uid, email=email, username=username)
         except Exception as e:
-            print('this is problem', e)
             raise TokenNotFound()
         return user, None

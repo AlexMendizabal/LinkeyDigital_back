@@ -16,6 +16,7 @@ class PublicCustomerUserViewSet(APIView):
     authentication_classes = []
 
     def get(self, request, public_id):
+
         utilities = CustomUserUtilities()
         customer_user = utilities.getUsers(public_id)
         if not customer_user:
@@ -48,12 +49,21 @@ class PublicCustomerUserViewSet(APIView):
     
 
 class CustomUserUtilities():
+    _cached_profile = None
+
     def get_profile(self, customer_user_public_service, customer_user):
+
+        if self._cached_profile is not None:
+            return self._cached_profile
+
         try:
             response = customer_user_public_service.get_profile(None, customer_user.pk)
         except Exception as e:
-            return Response({"succes": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        
         customer_profile_serializers = CustomerUserProfileSerializer(response, many=False)
+    
+        self._cached_profile = customer_profile_serializers
         return customer_profile_serializers
 
 
@@ -98,6 +108,8 @@ class CustomUserUtilities():
         if customer_user_admin:
             data = {"public_id": customer_user.public_id,
                     "username": customer_user.username,
+                    "is_booking": customer_user.is_booking,
+                    "is_sales_manager": customer_user.is_sales_manager,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers,
                     "admin":    {"public_id": customer_user_admin.public_id,
@@ -106,6 +118,8 @@ class CustomUserUtilities():
         else : 
             data = {"public_id": customer_user.public_id,
                     "username": customer_user.username,
+                    "is_booking": customer_user.is_booking,
+                    "is_sales_manager": customer_user.is_sales_manager,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers}
         return data

@@ -12,7 +12,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             'ciudad','codigoTransaccion', 'urlRespuesta',
             'discount_value', 'discount_id',
             'id_transaccion','correo', 'telefono')
-        extra_kwargs = {'customer_user': {'required': True}, 'id_transaccion': {'required': True},
+        extra_kwargs = {'customer_user': {'required': True}, 
                          'monto' :{'required': True} }
         
 class TransactionSerializerForGet(serializers.ModelSerializer):
@@ -21,6 +21,16 @@ class TransactionSerializerForGet(serializers.ModelSerializer):
         fields = (
             'id', 'status')
         
+class TransactionSerializerForAll(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('__all__')
+        
+class DetalleTransactionSerializerForAll(serializers.ModelSerializer):
+    class Meta:
+        model = DetalleTransaction
+        fields = ('__all__')
+
 class DetalleTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetalleTransaction
@@ -47,7 +57,7 @@ class UtilitiesPay():
             ciudad =data.get("ciudad", None),
             codigoTransaccion=data["codigoTransaccion"],
             urlRespuesta =data["urlRespuesta"],
-            id_transaccion =data["id_transaccion"],
+            id_transaccion  =data.get("id_transaccion", None),
             correo =data["correo"],
             telefono =data.get("telefono", None),
             discount_id=data.get("discount_id", None),

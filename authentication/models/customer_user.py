@@ -17,13 +17,13 @@ class CustomerUser(AbstractUser):
     update_at = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
     is_sponsor=models.BooleanField(default=False)
+    is_booking=models.BooleanField(default=False)
+    is_sales_manager=models.BooleanField(default=False)
+
     dependency_id=models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
 
-    
-    
-
     customer_user_admin = models.ForeignKey('self', null=True, blank=True, related_name='owner',
-                                            on_delete=models.CASCADE)
+                                            on_delete=models.SET_NULL)
     is_active = models.BooleanField(default=True)
     is_editable = models.BooleanField(default=True)
     username = models.CharField(max_length=50, blank=False, unique=True)
@@ -34,7 +34,7 @@ class CustomerUser(AbstractUser):
     identification_genre = models.CharField(max_length=100, blank=True)
     rubro = models.CharField(max_length=100, blank=True)
 
-    licencia_id = models.ForeignKey(Licencia, on_delete=models.CASCADE , null=True)
+    licencia_id = models.ForeignKey(Licencia, on_delete=models.SET_NULL, null=True)
     #history = HistoricalRecords()
 
 # este metodo es para bloquar cuando el usuario ya no tenga acceso por falta de licencia

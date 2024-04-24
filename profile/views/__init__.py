@@ -1,7 +1,7 @@
 from .social_media_viewset import SocialMediaSerializer, SocialmediaViewSet
 from .design_profile_viewset import DesignProfileSerializer, DesignProfileViewSet
 from .customer_user_custom_social_media_viewset import CustomerUserCustomSocialMediaSerializer, \
-    CustomerUserCustomSocialMediaViewSet, CustomerUserCustomSocialMediaByUserViewSet, \
+    CustomerUserCustomSocialMediaViewSet, \
     CustomerUserCustomSocialMediaByAllUserViewSet, customerUserUtilities
 from .customer_user_social_media_viewset import CustomerUserSocialMediaSerializer, CustomerUserSocialMediaViewSet
 from .customer_user_email_viewset import CustomerUserEmailSerializer, CustomerUserEmailViewSet

@@ -1,15 +1,17 @@
 
-from pay.models import Transaction, DetalleTransaction
+from pay.models import Transaction, DetalleTransaction, Discount, DetalleTransaction
 from pay.models import Productos
 
-from administration.views import LicenciaSerializer, Utilities
-from administration.services import LicenciaService
-from authentication.views import CreateUserThread, create_users_in_threads
+from administration.views import Utilities
+from authentication.views import create_users_in_threads
 from contact.services import SendEmail
 from contact import GetHtmlForEmail
+from django.shortcuts import get_object_or_404
 
 from decimal import Decimal
 from django.utils import timezone
+import string
+import secrets
 
 class PayService:
     
@@ -19,6 +21,13 @@ class PayService:
         else:
             return None
         return transaction
+    def get_detalle_transaccion(self, id_transaccion=None):
+        if id_transaccion:
+            transaction = DetalleTransaction.objects.filter(transaction = id_transaccion).order_by('id')
+        else:
+            return None
+        return transaction
+    
     def create_transaction(self, dto):
         transaction = Transaction.objects.create(
             customer_user=dto.customer_user,
@@ -52,6 +61,42 @@ class PayService:
             cantidad=dto.cantidad,
         ) 
         return transaction
+    
+    #WAITING: Poner costo_envio en algun documento de conf, para no tener que estarlo buscando
+    def get_precio_envio(self, ciudad, pais="Bolivia"):
+        costo_envio = 0
+        if pais == "Bolivia" or pais == "bolivia":
+            if ciudad != "Santa Cruz":
+                costo_envio = 40
+        return costo_envio
+
+    def generar_codigo_unico(self):
+        caracteres = string.ascii_letters + string.digits  # Usar letras y dígitos
+        longitud = 10
+        codigo_unico = ''.join(secrets.choice(caracteres) for _ in range(longitud))
+        return codigo_unico
+    
+    def get_discount(self, monto_pedido, verification_code=False):
+        descuento = 0
+        cupon = None
+        if verification_code:
+            try:
+                cupon = get_object_or_404(Discount, verification_code=verification_code)
+                discount_rate = float(cupon.discount_rate)
+                if(cupon.discount_type == "percentage"):
+                    descuento = monto_pedido* discount_rate / 100
+
+                if(cupon.discount_type == "price"):
+                    descuento = discount_rate
+
+                if not cupon.es_valido():
+                    descuento = 0
+
+            except Exception:
+                descuento = 0 
+
+            descuento = round( descuento, 2)
+        return descuento , cupon
 
     def get_price_by_id_producto(self, detalles):
         try:
@@ -61,21 +106,20 @@ class PayService:
                 price = price.price
                 monto += Decimal(price) * int(producto["cantidad"])
         except Exception as e:
-            print(e)
             raise Exception("El producto no está disponible") 
         return monto
     
-    def validar_id_tracaccion(id, codigo):
+    def validar_id_tracaccion(self, id, codigo):
         try:
-            resp = Transaction.objects.get(id_transaccion = id, codigoTransaccion = codigo)
+            #resp = Transaction.objects.get(id_transaccion = id, codigoTransaccion = codigo)
+            resp = Transaction.objects.get(codigoTransaccion = codigo)
             if not resp:
                 return None
         except Exception as e:
-            print(str(e))
             return None
         return resp
     
-    def guardar_datos_webHook( estatus, resp):
+    def guardar_datos_webHook(self, estatus, resp):
         try:
             #cambiamos el status
             estatus = int(estatus)
@@ -90,8 +134,8 @@ class PayService:
             resp.status = status
             resp.save()
             user = resp.customer_user
-            monto = resp.monto
-            data = {
+            monto = round(resp.monto, 2)
+            licencia = {
                 
                 "tipo_de_plan": "" ,
                 "fecha_inicio" : timezone.now() , 
@@ -101,10 +145,9 @@ class PayService:
             }
             #crea la licencia del usuario y lo actualiza
             utilities = Utilities()
-            response = utilities.createDTO(data)
-            user.licencia_id = response
+            response = utilities.create_licencia_DTO(licencia)
+            user.licencia_id_id = response
             user.save()
-            print("Creada licencia")
 
             #logica para buscar la cantiad de usuarios requeridos
             detalleProductos = DetalleTransaction.objects.filter(transaction_id = resp.id)
@@ -136,7 +179,6 @@ class PayService:
             # funcion para mandar al front
 
         except Exception as e:
-            print(str(e))
             return False
         
         return True

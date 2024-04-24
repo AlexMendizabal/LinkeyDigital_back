@@ -13,7 +13,7 @@ class DetalleTransactionDto:
 
 class DetalleTransaction(models.Model):
 
-    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Productos, on_delete=models.DO_NOTHING)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     cantidad = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
