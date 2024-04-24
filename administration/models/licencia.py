@@ -21,7 +21,7 @@ class LicenciaDto:
 
 class Licencia(models.Model):
 
-    customer_user_admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    customer_user_admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     tipo_de_plan = models.CharField(max_length=50, blank=True)
     fecha_inicio = models.DateTimeField()
     cobro = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])

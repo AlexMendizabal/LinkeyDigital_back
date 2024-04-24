@@ -13,6 +13,10 @@ class LicenciaService:
         else :
             licencias = None
         return licencias
+    
+    def delete_licencia(self,licencia_id):
+        Licencia.objects.filter(id=licencia_id).delete()
+        
     #retorna los usuarios adjuntos a una licencia menos al administrador(esta solicitud es solo para admins)
     def get_Users(self, licencia_id=None, custom_user_admin_id = None, with_admin = False):
         if with_admin and licencia_id and custom_user_admin_id:
