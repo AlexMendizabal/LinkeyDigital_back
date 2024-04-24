@@ -32,9 +32,11 @@ class CustomerUserCustomSocialMediaSerializer(serializers.ModelSerializer):
 class CustomerUserCustomSocialMediaViewSet(APIView):
     def get(self, request, pk=None):
         try:
+            user_id = request.GET.get('user_id', request.user.id)
+
             social_media_service = SocialMediaService()
             try:
-                response = social_media_service.get_custom_social_media(pk, request.user.id)
+                response = social_media_service.get_custom_social_media(pk, user_id)
             except Exception as e:
                 return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
@@ -45,7 +47,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             return Response({"success": True, "data": data},
                             status=status.HTTP_200_OK)
         except Exception as e:
-            print(e)
+            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
         user_id = request.GET.get('user_id', request.user.id)
@@ -62,7 +64,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         if not utilitiesAdm.hasPermision(request.user, user ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
-        data = request.data.copy()
+        data = request.data
         data["customer_user"] = user.id
         if 'type' not in data :
             data["type"] = "socialMedia"
@@ -89,7 +91,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
                             response = utilities.replace_url_in_file_type(data,response)
                             response.save()
         except Exception as e:
-            print(e)
             return Response({"success": False, "error" : str(e)}, status=status.HTTP_404_NOT_FOUND)
 
         customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=False)
@@ -111,24 +112,23 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
             except Exception as e:
                 pass
 
-        if 'title' in request.data:
-            if request.data.get('title').replace(" ", "") == "":
-                CustomerUserCustomSocialMedia.objects.filter(customer_user=request.user.id, pk=pk).delete()
-                return Response({"success": True})
-
-        if 'url' in request.data:
-            if request.data.get('url').replace(" ", "") == "":
-                CustomerUserCustomSocialMedia.objects.filter(customer_user=request.user.id, pk=pk).delete()
-                return Response({"success": True})
-
         if 'type' in request.data and request.data['type'] == 'image':
             if 'imageQR' in request.data and not isinstance(request.data['imageQR'], str):
                 try:
                     utilities = customerUserUtilities()
                     customer_user_custom_social_media = utilities.replace_url_in_image_type(request.data,customer_user_custom_social_media)
                 except Exception as e:
-                    print(e)
                     return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
+                
+        elif 'type' in request.data and request.data['type'] == 'file':
+            if 'file' in request.data and not isinstance(request.data['file'], str):
+                try:
+                    utilities = customerUserUtilities()
+                    customer_user_custom_social_media = utilities.replace_url_in_file_type(request.data,customer_user_custom_social_media)
+                except Exception as e:
+                    return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
+            else: 
+                return Response({"success": False, "msg" : "Se solicito type file pero no se encontro un file"}, status=status.HTTP_400_BAD_REQUEST)
 
         customer_user_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(
             instance=customer_user_custom_social_media,
@@ -139,9 +139,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
 
         return Response({"success": True, "data": customer_user_custom_social_media_serializers.data},
                         status=status.HTTP_200_OK)
-
-    #WAITING: se debe cambiar la logica de borrado... de manera que en lugar de guardar 
-    # img por img se guarde una y vaya preguntando si hay otro registro que aun usa esa msima foto
 
     def delete (self, request, pk=None):
         social_media_service = SocialMediaService()
@@ -154,128 +151,6 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         try:
             social_media_service.delete_custom_social_media(cusm = custom_social_media)
             return Response({"success": True}, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
-    
-class CustomerUserCustomSocialMediaByUserViewSet(APIView):
-    # retorna los custom social media del usuario que se mande
-    def get(self, request, user_id=None):
-        try:
-            utilitiesAdm = UtilitiesAdm()
-            if not utilitiesAdm.hasPermision(request.user, user_id ):
-                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-            
-            social_media_service = SocialMediaService()
-            try:
-                response = social_media_service.get_custom_social_media(customer_user = user_id)
-            except Exception as e:
-                return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
-
-            customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=True)
-            utilitiesC = customerUserUtilities()
-            data = utilitiesC.put_image_with_type(customer_custom_social_media_serializers)
-            return Response({"success": True, "data":data},
-                            status=status.HTTP_200_OK)
-        except Exception as e:
-            print(e)
-# crea los social media para los usuarios de la licencia 
-    def post(self, request, user_id=None, pk=None):
-
-        utilitiesAdm = UtilitiesAdm()
-        if not utilitiesAdm.hasPermision(request.user, user_id ):
-            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        customer_user_custom_social_media = get_object_or_404(CustomerUser,
-                                                              id=user_id)
-        
-        data = request.data.copy()
-        data["customer_user"] = customer_user_custom_social_media.id
-        if 'type' not in data :
-            data["type"] = "socialMedia"
-        serializer = CustomerUserCustomSocialMediaSerializer(data=data)
-
-        if not serializer.is_valid():
-            return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        utilities = customerUserUtilities()
-        dto = utilities.buid_dto_from_validated_data(serializer)
-        social_media_service = SocialMediaService()
-
-        try:
-            response = social_media_service.create_custom_social_media(dto)
-            if 'type' in data and data['type'] == 'image':
-                if 'imageQR' in data and not isinstance(data['imageQR'], str):
-                    try:
-                        response = utilities.replace_url_in_image_type(data,response)
-                        response.save()
-                    except Exception as e:
-                        print(e)
-                        return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            print(e)
-            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-
-        customer_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(response, many=False)
-        utilitiesC = customerUserUtilities()
-        data = utilitiesC.put_image_with_type(customer_custom_social_media_serializers)
-        return Response({"success": True, "data": data},
-                        status=status.HTTP_200_OK)
-# actualizar los custom social media para los usuarios en la licencia 
-    def put(self, request, user_id=None ,pk=None):
-               
-        customer_user_custom_social_media = get_object_or_404(CustomerUserCustomSocialMedia,
-                                                              id=pk)
-
-        utilitiesAdm = UtilitiesAdm()
-        if not utilitiesAdm.hasPermision(request.user, customer_user_custom_social_media.customer_user ):
-            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-
-        if 'image' in request.data and customer_user_custom_social_media.image != "custom_social_media/undefined.png":
-            try:
-                os.remove(customer_user_custom_social_media.image.path)
-            except Exception as e:
-                pass
-
-        if 'title' in request.data:
-            if request.data.get('title').replace(" ", "") == "":
-                CustomerUserCustomSocialMedia.objects.filter(customer_user=user_id, pk=pk).delete()
-                return Response({"success": True})
-
-        if 'url' in request.data:
-            if request.data.get('url').replace(" ", "") == "":
-                CustomerUserCustomSocialMedia.objects.filter(customer_user=user_id, pk=pk).delete()
-                return Response({"success": True})
-        
-        if 'type' in request.data and request.data['type'] == 'image':
-            if 'imageQR' in request.data and not isinstance(request.data['imageQR'], str):
-                try:
-                    utilities = customerUserUtilities()
-                    customer_user_custom_social_media = utilities.replace_url_in_image_type(request.data,customer_user_custom_social_media)
-                except Exception as e:
-                    print(e)
-                    return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
-
-        customer_user_custom_social_media_serializers = CustomerUserCustomSocialMediaSerializer(
-            instance=customer_user_custom_social_media,
-            data=request.data, partial=True)
-
-        customer_user_custom_social_media_serializers.is_valid(raise_exception=True)
-        customer_user_custom_social_media_serializers.save()
-
-        utilitiesC = customerUserUtilities()
-        data = utilitiesC.put_image_with_type(customer_user_custom_social_media_serializers)
-
-        return Response({"success": True, "data": data},
-                        status=status.HTTP_200_OK)
-    
-    def delete (self, request, user_id=None ,pk=None):
-
-        social_media_service = SocialMediaService()
-        utilitiesAdm = UtilitiesAdm()
-        if not utilitiesAdm.hasPermision(request.user, user_id ):
-            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-        try:
-            response = social_media_service.delete_custom_social_media(pk, user_id)
-            return Response({"success": True, "data": response}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
@@ -293,7 +168,6 @@ class CustomerUserCustomSocialMediaByAllUserViewSet(APIView):
             customer_user_list = CustomerUser.objects.filter(id__in=ids)
 
         except Exception as e:
-            print(e)
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
         
         #responses = []
@@ -321,12 +195,10 @@ class CustomerUserCustomSocialMediaByAllUserViewSet(APIView):
                                     response = utilities.replace_url_in_image_type(data_copy,response)
                                     response.save()
                                 except Exception as e:
-                                    print(e)
                                     return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
                         #responses.append(response)
                     except Exception as e:
-                        print(e)
                         return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
                 else:
                     return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -393,7 +265,6 @@ class customerUserUtilities():
             if not customer_user_custom_social_media.url.endswith("custom_social_media/undefined.png") and not self.is_safe_url(customer_user_custom_social_media.url):
                 os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, customer_user_custom_social_media.url.replace(settings.MEDIA_URL, ''))))
         except Exception as e:
-            print(e)
             pass
         imagen = data['imageQR']
         nombre_imagen = imagen.name.replace(" ", "")
@@ -409,7 +280,6 @@ class customerUserUtilities():
             if not self.is_safe_url(cucsm.url):
                 self.delete_invalid_file(cucsm.url)
         except Exception as e:
-            print(e)
             pass
         
         file = data['file']
@@ -435,7 +305,6 @@ class customerUserUtilities():
                 file_path = url.replace(settings.MEDIA_URL, "")
                 os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, file_path)))
         except Exception as e:
-            print(e)
             pass
 
     def is_valid_file_type(self, file):
@@ -450,16 +319,17 @@ class customerUserUtilities():
             for cucsm in objs:
                 file_path_relative =  cucsm.url.replace(settings.MEDIA_URL, "")
                 file_path_absolute = os.path.normpath(os.path.join(settings.MEDIA_ROOT, file_path_relative))
-                
-                print("Relative path:", file_path_relative)
-                print("Absolute path:", file_path_absolute)
-                file_size_bytes = os.path.getsize( file_path_absolute)
-                file_size_mb = file_size_bytes #/ (1024 * 1024)  
-                AlmacenamientoUsado += file_size_mb
+                if os.path.exists(file_path_absolute):
+                    file_size_bytes = os.path.getsize( file_path_absolute)
+                    file_size_mb = file_size_bytes #/ (1024 * 1024)  
+                    AlmacenamientoUsado += file_size_mb
+                else: 
+                    social_media_service = SocialMediaService()
+                    social_media_service.delete_custom_social_media(cusm = cucsm)
+
         except Exception as e:
-            print(e)
             return False
         
         return AlmacenamientoUsado <= max
 
-    #TODO: Editar los metodos put
+
