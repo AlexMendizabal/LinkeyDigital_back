@@ -4,7 +4,7 @@ from rest_framework import routers
 from profile.views import CustomerUserProfileViewSet, CustomerUserWhatsappViewSet, CustomerUserReservaViewSet,\
     CustomerUserEmailViewSet, CustomerUserMapViewSet, CustomerUserPhoneViewSet, CustomerUserSocialMediaViewSet, CustomerUserImageViewSet, \
     CustomerUserCustomSocialMediaViewSet, CustomerUserStatistics, DesignProfileViewSet, SocialmediaViewSet, \
-    ViewsViewSet, CustomerUserCustomSocialMediaByUserViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
+    ViewsViewSet, CustomerUserCustomSocialMediaByAllUserViewSet,\
     StaticsForAdminViewSet, CustomerUserWithoutStatics, CustomerUserAllProfileViewSet, \
     CustomerUserLicensProfileViewSet, StaticsForSuperViewSet, CustomerUserProfileForAdmViewSet , \
     customer_user_custom_order_viewset
@@ -48,13 +48,6 @@ urlpatterns = [
     path('view/<int:month>/<int:year>/<int:profile>', ViewsViewSet.as_view(),  name="get_views"),
 
 #**************** APARTADO para administradores *********************
-
-     # README:  retorna los custom social media del usuario que se mande
-     # se puede crear los social media para los usuarios de la licencia 
-     # actualizar los custom social media para los usuarios en la licencia 
-     # se pueden borrar custom social media para algunos usuarios 
-    path('custom_social_media_for_user/<int:user_id>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
-    path('custom_social_media_for_user/<int:user_id>/<int:pk>', CustomerUserCustomSocialMediaByUserViewSet.as_view(),  name="custom_user_for_user"),
 
     # WAITING: Se debe evitar ids repetidos... se podria hacer una funcion para ahorrar la parte de buscar users en el id
     # README: Esta url sirve para aregrar varios el mismo tiepo

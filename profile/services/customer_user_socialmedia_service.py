@@ -59,11 +59,10 @@ class SocialMediaService:
                 os.remove(cusm.image.path)
             except Exception as e:
                 pass
-        if cusm.type=="image" :
+        elif cusm.type=="image" or cusm.type=="file" :
             try:
                 if not cusm.url.endswith("custom_social_media/undefined.png") and not cusm.url.startswith("http"):
                     os.remove(os.path.normpath(os.path.join(settings.MEDIA_ROOT, cusm.url.replace(settings.MEDIA_URL, ''))))
             except Exception as e:
                 pass
-        # Borra el objeto de la base de datos
         cusm.delete()
