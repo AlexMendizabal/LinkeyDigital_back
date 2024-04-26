@@ -64,7 +64,7 @@ class CustomerUserCustomSocialMediaViewSet(APIView):
         if not utilitiesAdm.hasPermision(request.user, user ):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
 
-        data = request.data
+        data = request.data.copy()
         data["customer_user"] = user.id
         if 'type' not in data :
             data["type"] = "socialMedia"
