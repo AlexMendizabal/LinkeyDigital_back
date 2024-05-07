@@ -12,12 +12,12 @@ from administration.UtilitiesAdministration import UtilitiesAdm
 class CustomerUserProfileStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserProfile
-        fields = ('counter', 'image', 'public_name')
+        fields = ('id', 'counter', 'image', 'public_name','customer_user_id')
 
 class CustomerUserCustomSocialMediaStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUserCustomSocialMedia
-        fields = ('title', 'counter', 'image', 'type', 'url')
+        fields = ('title', 'counter', 'image', 'type', 'url', 'created_at','update_at')
 
 class CustomerUserStatisticsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,28 +35,37 @@ class CustomerUserStatistics(APIView):
             user = request.user
         else:
             try:
-                user = CustomerUser.objects.get(id = user_id)
+                user = CustomerUser.objects.get(id=user_id)
             except Exception as e:
                 return Response({"success": False, 'message': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
         utilitiesAdm = UtilitiesAdm()
-        if not utilitiesAdm.hasPermision(request.user, user ):
+        if not utilitiesAdm.hasPermision(request.user, user):
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-            
+
         utilities = Utilities()
         profile_service = ProfileService()
         social_media_service = SocialMediaService()
 
         customer_profile_serializers = utilities.get_profile(profile_service, None, user_id)
         customer_custom_social_media_serializers = utilities.get_custom_social_media(social_media_service, None,
-                                                                                user_id)
+                                                                                      user_id)
 
         customer_custom_social_media_serializers_formated = customer_custom_social_media_serializers if customer_custom_social_media_serializers else None
 
-        return Response({"success": True, "data": {
-            "profile": customer_profile_serializers.data['counter'],
+        # Obtener el ID del CustomerUserProfile
+        customer_profile_id = customer_profile_serializers.id
+
+        # Agregar id y customer_user_id al diccionario de datos devuelto
+        data = {
+            "id": customer_profile_id,
+            "customer_user_id": user_id,
+            "profile": customer_profile_serializers.counter,
             "custom_social_list": customer_custom_social_media_serializers_formated,
-        }}, status=status.HTTP_200_OK)
+        }
+
+        return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+
 
 class StaticsForAdminViewSet(APIView):
     def get(self, request):
@@ -109,8 +118,7 @@ class Utilities():
             response = profile_service.get_profile(pk, customer_user)
         except Exception as e:
             return Response(None)
-        customer_profile_serializers = CustomerUserProfileStatisticsSerializer(response, many=False)
-        return customer_profile_serializers
+        return response 
 
     def get_profile_and_social_medias_by_licencia(self, profile_service, contact_service, licencia_id):
         try:

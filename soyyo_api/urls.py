@@ -28,5 +28,6 @@ urlpatterns = [
                   path('adm/', include('administration.urls')),
                   path('pay/', include('pay.urls')),
                   path('booking/', include('booking.urls')),
-                  path('mercado_pago/', include('mercado_pago.urls'))
+                  path('mercado_pago/', include('mercado_pago.urls')),
+                  path('client_contact/', include('client_contact.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

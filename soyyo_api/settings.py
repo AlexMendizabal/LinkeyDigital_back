@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'pay',
     'mercado_pago',
     'booking',
+    'client_contact',
+    
  
 ]
 
