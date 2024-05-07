@@ -1,1 +1,1 @@
-from .auth_services import AuthServices
+from .auth_services import AuthServices, FireBaseConf

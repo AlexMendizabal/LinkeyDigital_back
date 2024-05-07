@@ -7,7 +7,10 @@ from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, Custome
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    # public methodds
     path('login', AuthenticatedView.as_view()),
+
+    #private 
     path('register', RegisterUser.as_view()),
 
     path('user', CustomerUserViewSet.as_view(), name="user_list_or_create_or_update_or_delete"),
