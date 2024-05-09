@@ -27,9 +27,9 @@ class AuthenticatedView(APIView):
                     user_firebase = fireBaseConf.loginFireBase(email, password, mod)
                     # si encuentra el user
                     if user_firebase: 
-                        user = authServices.make_register_in_alt_server(f"JWT {user_firebase["idToken"]}", mod)
+                        user = authServices.make_register_in_alt_server(f"JWT {user_firebase['idToken']}", mod)
                         if not user: return Response({"Mensaje": "Error al conectar servidores"}, status=status.HTTP_404_NOT_FOUND)
-                        return Response({'Token': f"JWT {user_firebase["idToken"]}" , 
+                        return Response({'Token': f"JWT {user_firebase['idToken']}" , 
                          'email' : user["data"]["email"],
                          'username' : user["data"]["username"],
                          'region' : mod
@@ -39,8 +39,8 @@ class AuthenticatedView(APIView):
         # caso de que si lo haya encontrado... seguira con su vida normal sacando el user de la db :v    
         user = authServices.getUser(uid=user_firebase["localId"])
 
-        return Response({'Token': f"JWT {user_firebase["idToken"]}" , 
-                         'email' : user_firebase["email"],
+        return Response({'Token': f"JWT {user_firebase['idToken']}" , 
+                         'email' : user_firebase['email'],
                          'username' : user.username,
                          'region' : "Bob"
                          })
