@@ -1,12 +1,10 @@
 from django.urls import path, include
 from rest_framework import routers
 
-
 from pay.views import SolicitudViewSet, ConsultaViewSet, ConsultaExtendViewSet, webhook
-
 from pay.views.discountViews import DiscountView, GetUserByDiscountView, UserDiscountsView, GetDiscountByVerificationCodeView
-
 from pay.views.productsView import ProductosListCreateView, ProductosRetrieveUpdateDeleteView
+from pay.views.allTransactionsView import AllTransactionsView
 
 router = routers.DefaultRouter() 
 router.register(r'discount', DiscountView, 'discount')
@@ -36,7 +34,7 @@ urlpatterns = [
     path('productos/', ProductosListCreateView.as_view(), name='productos-list-create'),
     path('productos/<int:pk>/', ProductosRetrieveUpdateDeleteView.as_view(), name='productos-retrieve-update-delete'),
     
-
+    path('transactions/', AllTransactionsView.as_view(), name='all_transactions'),
 ]
 
 # TODO: a consulta extend agregarle el datelle de la compra 
