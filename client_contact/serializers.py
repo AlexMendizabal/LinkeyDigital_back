@@ -13,5 +13,5 @@ class ClientContactConfigurationSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Register
-        fields = ['id', 'customer_user_id', 'name', 'country_code', 'phone', 'email', 'comment', 'created_at']
+        fields = ['id', 'customer_user_id', 'name', 'country_code', 'phone', 'email','status', 'comment', 'created_at']
 
