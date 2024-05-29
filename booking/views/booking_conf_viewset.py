@@ -51,6 +51,8 @@ class ConfBookingViewset(APIView):
             btn=data.get("btn", None),
             phone=data.get("phone", None),
             email=data.get("email", None),
+            title=data.get("title", None),
+
         )
 
 

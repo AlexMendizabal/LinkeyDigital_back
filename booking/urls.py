@@ -26,7 +26,6 @@ urlpatterns = [
     # metodos para get reservas ocupadas 
     path('public/busy/<int:user>', PublicBusyViewset.as_view()),
 
-
     #método para múltiples configuraciones por usuario
     path('conf/<int:customer_user_id>/', ConfBookingListView.as_view(), name='conf_booking_list'),
     path('conf/<int:customer_user_id>/create', ConfBookingCreateView.as_view(), name='conf_booking_create'),

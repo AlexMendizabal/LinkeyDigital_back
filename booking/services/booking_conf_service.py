@@ -59,6 +59,8 @@ class ConfBookingService:
             update_fields['email'] = dto.email
         if dto.description is not None:
             update_fields['description'] = dto.description
+        if dto.title is not None:
+            update_fields['title'] = dto.title
 
         booking_conf, created = ConfigurationBooking.objects.update_or_create(
             customer_user=dto.customer_user,

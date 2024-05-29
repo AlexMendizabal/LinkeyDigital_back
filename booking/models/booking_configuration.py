@@ -26,6 +26,7 @@ class ConfigurationBookingDto:
     phone : str
     email : str
     description : str
+    title : str
 
 class ConfigurationBooking(models.Model):
 
@@ -47,7 +48,8 @@ class ConfigurationBooking(models.Model):
     kids = models.BooleanField(default=False)
     teen = models.BooleanField(default=False)
 
-    btn = models.CharField(max_length=20, blank=True)
+    title = models.CharField(max_length=30, default="Programar Reserva")
+    btn = models.CharField(max_length=60, blank=True)
     phone = models.CharField(max_length=20, blank=True)
     email = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=255, blank=True, null=True)
