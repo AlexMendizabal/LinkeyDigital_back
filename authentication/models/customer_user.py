@@ -19,6 +19,7 @@ class CustomerUser(AbstractUser):
     is_sponsor=models.BooleanField(default=False)
     is_booking=models.BooleanField(default=False)
     is_sales_manager=models.BooleanField(default=False)
+    is_ecommerce=models.BooleanField(default=False)
 
     dependency_id=models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
 

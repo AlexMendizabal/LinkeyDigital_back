@@ -110,6 +110,7 @@ class CustomUserUtilities():
                     "username": customer_user.username,
                     "is_booking": customer_user.is_booking,
                     "is_sales_manager": customer_user.is_sales_manager,
+                    "is_ecommerce": customer_user.is_ecommerce,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers,
                     "admin":    {"public_id": customer_user_admin.public_id,
@@ -120,6 +121,7 @@ class CustomUserUtilities():
                     "username": customer_user.username,
                     "is_booking": customer_user.is_booking,
                     "is_sales_manager": customer_user.is_sales_manager,
+                    "is_ecommerce": customer_user.is_ecommerce,
                     "profile": customer_profile_serializers.data,
                     "custom_social_media": customer_custom_social_media_serializers}
         return data
