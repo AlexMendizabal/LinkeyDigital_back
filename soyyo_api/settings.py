@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'mercado_pago',
     'booking',
     'client_contact',
+    'ecommerce',
     
  
 ]

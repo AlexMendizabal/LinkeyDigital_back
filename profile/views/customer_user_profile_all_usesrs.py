@@ -20,7 +20,7 @@ class CustomerUserSerializerLow(serializers.ModelSerializer):
     class Meta:
         model = CustomerUser
         fields = (
-            'id','email', 'phone_number','public_id', 'rubro', 'is_editable', 'date_joined', 'is_active', 'customeruserprofile', 'username', 'is_admin', 'licencia_id', 'is_superuser','dependency_id','is_sponsor','is_booking','is_sales_manager')
+            'id','email', 'phone_number','public_id', 'rubro', 'is_editable', 'date_joined', 'is_active', 'customeruserprofile', 'username', 'is_admin', 'licencia_id', 'is_superuser','dependency_id','is_sponsor','is_booking','is_sales_manager','is_ecommerce')
 
 
 class CustomerUserAllProfileViewSet(APIView):
@@ -70,6 +70,7 @@ class CustomerUserAllProfileViewSet(APIView):
                     "is_sponsor": user["is_sponsor"],
                     "is_booking": user["is_booking"],
                     "is_sales_manager":user["is_sales_manager"],
+                    "is_ecommerce":user["is_ecommerce"],
                     "dependency_id": user["dependency_id"],
                 }
             }
