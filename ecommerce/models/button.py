@@ -6,6 +6,7 @@ class Button(models.Model):
     customer_user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
     button_title = models.CharField(max_length=45)
     url = models.URLField(max_length=120)
+    color = models.CharField(max_length=7, default='#000000')
     enabled = models.BooleanField(default=False)
 
     def __str__(self):

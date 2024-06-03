@@ -232,7 +232,8 @@ class customerUserUtilities():
                 "twitter": "icons8-twitter-96.png",
                 "youtube": "icons8-youtube-96.png",
                 "contact": "icons8-contact-96.png",
-                "store": "icons8-store-96.png"
+                "store": "icons8-store-96.png",
+                "mainLink": "icons8-estrellas-64.png",
             }
         if isinstance(customer_custom_social_media.data, list):
             # Si es una colección de objetos
