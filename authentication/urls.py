@@ -2,7 +2,9 @@ from rest_framework import routers
 from django.urls import path, include
 
 from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, CustomerUserPutRubroViewSet \
-   ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyToken, AuthenticationSpecialViewset
+   ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyToken, AuthenticationSpecialViewset \
+
+from .views.list_sponsor_user_viewset import ListSponsorUsersView
 
 router = routers.DefaultRouter()
 
@@ -27,7 +29,7 @@ urlpatterns = [
     path('verifyToken', VerifyToken.as_view(), name="verifyEmail"),
 
     # Metodo para reiniciar users
-    path('reset', AuthenticationSpecialViewset.as_view(), name="reset_user")
+    path('reset', AuthenticationSpecialViewset.as_view(), name="reset_user"),
 
-
+    path('sponsors/', ListSponsorUsersView.as_view(), name='list_sponsor_users')
 ]
