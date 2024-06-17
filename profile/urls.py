@@ -69,7 +69,7 @@ urlpatterns = [
 #**************** APARTADO para superUsuarios *********************
     #README: Metodo que traer todos los perfiles administradores
     path('allEmpresas/', CustomerUserAllProfileViewSet.as_view(), name="get_all_users"),
-
+    
     #README: Metodo que traer perfil de usuarios en la licencia del admin(aca se debe mandar la licencia requerida)
     path('myUsers/<int:licencia_id>', CustomerUserLicensProfileViewSet.as_view(), name="get_all_enterprises"),
     #README: Traera las metricas generales para el super admin
