@@ -95,7 +95,12 @@ class CustomerUserAllProfileViewSet(APIView):
         data = []
         for user in user_serializers.data:
             new_object = {
-                "licencia": user["licencia_id"],
+                "licencia": {
+                    "id": user["licencia_id"]["id"],
+                    "fecha_inicio": user["licencia_id"]["fecha_inicio"],
+                    "fecha_fin": user["licencia_id"]["fecha_fin"],
+                    "duracion": user["licencia_id"]["duracion"]
+                },
                 "profile": user["customeruserprofile"],
                 "custom_user": {
                     "id": user["id"],
