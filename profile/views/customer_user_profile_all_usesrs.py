@@ -40,7 +40,8 @@ class CustomerUserAllProfileViewSet(APIView):
             users = users.filter(
                 Q(username__icontains=search_value) |
                 Q(id__icontains=search_value) |
-                Q(email__icontains=search_value)
+                Q(email__icontains=search_value) |
+                Q(licencia_id__nombre__icontains=search_value)
             )
 
             # Obtener otros filtros de parámetros GET
