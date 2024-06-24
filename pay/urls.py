@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from pay.views import SolicitudViewSet, ConsultaViewSet, ConsultaExtendViewSet, webhook
 from pay.views.discountViews import DiscountView, GetUserByDiscountView, UserDiscountsView, GetDiscountByVerificationCodeView
-from pay.views.productsView import ProductosListCreateView, ProductosRetrieveUpdateDeleteView
+from pay.views.productsView import ProductosListCreateView, ProductosRetrieveUpdateDeleteView, ProductosListView
 from pay.views.allTransactionsView import AllTransactionsView
 
 router = routers.DefaultRouter() 
@@ -33,7 +33,8 @@ urlpatterns = [
 
     path('productos/', ProductosListCreateView.as_view(), name='productos-list-create'),
     path('productos/<int:pk>/', ProductosRetrieveUpdateDeleteView.as_view(), name='productos-retrieve-update-delete'),
-    
+    path('productos/list/', ProductosListView.as_view(), name='productos-list'),
+
     path('transactions/', AllTransactionsView.as_view(), name='all_transactions'),
 ]
 
