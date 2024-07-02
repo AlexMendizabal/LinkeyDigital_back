@@ -98,7 +98,7 @@ class LicenciaAdminViewSet(APIView):
 
             #implementacion de paginacion
             page_number = request.GET.get('page', 1)
-            items_per_page = 100    
+            items_per_page = 10    
             paginator = Paginator(response, items_per_page)
             try:
                 page = paginator.page(page_number)
