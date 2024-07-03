@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
+from django.core.paginator import Paginator
 
 
 from administration.models import Licencia
@@ -94,11 +95,41 @@ class LicenciaAdminViewSet(APIView):
             if not utilitiesAdm.hasPermision(request.user, user ):
                 return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
             response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=True if pk is None else True )
+
+            #implementacion de paginacion
+            page_number = request.GET.get('page', 1)
+            items_per_page = 10    
+            paginator = Paginator(response, items_per_page)
+            try:
+                page = paginator.page(page_number)
+            except Exception as e:
+                print(e)
+                return Response({"success": False, "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
-        UserSerializers = CustomerUserSerializer(response, many=True)
-        return Response({"success": True, "data": UserSerializers.data  }, status=status.HTTP_200_OK)
+        UserSerializers = CustomerUserSerializer(page, many=True)
+
+        data = []
+        for user in UserSerializers.data:
+            new_object = {
+                "id": user["id"],
+                "email": user["email"],
+                "is_editable": user["is_editable"],
+                "rubro": user["rubro"],
+                "username": user["username"],
+                "public_id": user["public_id"],                
+                "profile": user["profile"],
+                "phone_number": user["phone_number"],
+                "is_sponsor": user["is_sponsor"],
+                "is_booking": user["is_booking"],
+                "is_sales_manager": user["is_sales_manager"],
+                "is_ecommerce": user["is_ecommerce"],
+            }
+            data.append(new_object)
+
+        return Response({"success": True, "pages": paginator.num_pages, "data": data  }, status=status.HTTP_200_OK)
   
 # apartado para los super usuarios
 class LicenciaSuperViewSet(APIView):
