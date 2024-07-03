@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from django.core.paginator import Paginator
-
+from django.db.models import Q
 
 from administration.models import Licencia
 from administration.services import LicenciaService
@@ -87,8 +87,11 @@ class LicenciaViewSet(APIView):
 #apartado para usuarios administradores 
 class LicenciaAdminViewSet(APIView):
     def get(self, request, pk=None):
+        # Obtener el parámetro de búsqueda
+        search_value = request.GET.get('search_value', '')
+
+        # Obtener todos los usuarios con licencia
         licencia_service = LicenciaService()
-        #Si se manda Pk es porque la peticion es de un superAdmin
         try:
             user = get_object_or_404(CustomerUser, id=pk) if pk is not None else request.user
             utilitiesAdm = UtilitiesAdm()
@@ -96,7 +99,14 @@ class LicenciaAdminViewSet(APIView):
                 return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
             response = licencia_service.get_Users(user.licencia_id_id,request.user.id, with_admin=True if pk is None else True )
 
-            #implementacion de paginacion
+            # Filtrar usuarios según los tres campos simultáneamente usando Q objects
+            response = response.filter(
+                Q(username__icontains=search_value) |
+                Q(id__icontains=search_value) |
+                Q(email__icontains=search_value)
+            )
+
+            # Implementación de paginación
             page_number = request.GET.get('page', 1)
             items_per_page = 10    
             paginator = Paginator(response, items_per_page)
@@ -109,6 +119,7 @@ class LicenciaAdminViewSet(APIView):
         except Exception as e:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
 
+        # Serializar los usuarios paginados
         UserSerializers = CustomerUserSerializer(page, many=True)
 
         data = []
@@ -263,5 +274,3 @@ class Utilities():
 
         response = licenciaService.createLicencia(dto)
         return response
-
-
