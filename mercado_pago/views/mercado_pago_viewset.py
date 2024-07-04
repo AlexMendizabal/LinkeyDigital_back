@@ -1,8 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from conf_fire_base import MERCADOPAGO_SECRET_KEY
-from conf_fire_base import BRASIL_MODE
+from conf_fire_base import MERCADOPAGO_SECRET_KEY, BRASIL_MODE, DOMINIO_NAME
 import mercadopago
 from django.db import transaction
 from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransactionSerializer
@@ -50,7 +49,7 @@ class MercadoPago(APIView):
                 data["monto"] = str(monto)
                 codigoTransaccion = transaction_service.generar_codigo_unico()
                 data["codigoTransaccion"] = codigoTransaccion
-                data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
+                data["urlRespuesta"] = f"https://www.{DOMINIO_NAME}/#/payment-completed"
 
                 descripcion = request.data.get("descripcion")
 

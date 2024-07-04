@@ -8,6 +8,7 @@ import threading
 from threading import Lock
 from authentication.models import CustomerUser
 from rest_framework.generics import get_object_or_404
+from conf_fire_base import DOMINIO_NAME
 
 from authentication.exceptions import FirebaseAuthException, TokenNotFound
 
@@ -57,7 +58,7 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
         correo = "usuario"
 
     User = get_user_model()
-    users = User.objects.filter(email__startswith=correo, email__endswith='@soyyo.digital')
+    users = User.objects.filter(email__startswith=correo, email__endswith=f'@{DOMINIO_NAME}')
 
     numbers = [int(re.search(re.escape(correo) + r'-(\d+)@', user.email).group(1)) for user in users if re.search(re.escape(correo) + r'-(\d+)@', user.email)]
 
@@ -68,8 +69,8 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
     lock = Lock()
 
     for i in range(1, cant + 1):
-        email = f"{correo}-{max_number + i}@soyyo.digital"
-        password = "soyyo.digital"
+        email = f"{correo}-{max_number + i}@{DOMINIO_NAME}"
+        password = DOMINIO_NAME
         thread = CreateUserThread(email=email, password=password, errors=errors, lock=lock, corrects=corrects, licencia_id=licencia_id)
         thread.start()
         threads.append(thread)
