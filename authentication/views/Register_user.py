@@ -55,7 +55,7 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
         licencia_id = user.licencia_id
 
     if not correo:
-        correo = "usuario"
+        correo = "Test-julio"
 
     User = get_user_model()
     users = User.objects.filter(email__startswith=correo, email__endswith=f'@{DOMINIO_NAME}')

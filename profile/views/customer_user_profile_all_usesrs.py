@@ -42,6 +42,8 @@ class CustomerUserAllProfileViewSet(APIView):
                 Q(username__icontains=search_value) |
                 Q(id__icontains=search_value) |
                 Q(email__icontains=search_value)
+            ).exclude(
+                Q(email__startswith='visitante') | Q(email__startswith='expositor')
             )
 
             # Obtener otros filtros de parámetros GET
