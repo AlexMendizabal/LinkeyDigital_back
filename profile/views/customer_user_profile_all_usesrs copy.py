@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from rest_framework import status
 from administration.views import LicenciaSerializer
 from profile.views import CustomerUserProfileSerializer
-from django.db.models import Q
+from django.db.models import Q, Case, When, Value, IntegerField
 
 class CustomerUserSerializerLow(serializers.ModelSerializer):
     licencia_id = LicenciaSerializer()
@@ -73,8 +73,14 @@ class CustomerUserAllProfileViewSet(APIView):
             if is_ecommerce is not None:
                 users = users.filter(is_ecommerce=is_ecommerce.lower() == 'true')
 
-            # Ordenar usuarios por fecha de unión
-            users = sorted(users, key=lambda user: user.date_joined, reverse=True)
+            # Crear un campo de ordenamiento personalizado para priorizar coincidencias exactas del ID
+            users = users.annotate(
+                id_order=Case(
+                    When(id=search_value, then=Value(1)),
+                    default=Value(0),
+                    output_field=IntegerField()
+                )
+            ).order_by('-id_order', '-date_joined')
 
         except Exception as e:
             print(e)
@@ -95,12 +101,7 @@ class CustomerUserAllProfileViewSet(APIView):
         data = []
         for user in user_serializers.data:
             new_object = {
-                "licencia": {
-                    "id": user["licencia_id"]["id"],
-                    "fecha_inicio": user["licencia_id"]["fecha_inicio"],
-                    "fecha_fin": user["licencia_id"]["fecha_fin"],
-                    "duracion": user["licencia_id"]["duracion"]
-                },
+                "licencia": user["licencia_id"],
                 "profile": user["customeruserprofile"],
                 "custom_user": {
                     "id": user["id"],
