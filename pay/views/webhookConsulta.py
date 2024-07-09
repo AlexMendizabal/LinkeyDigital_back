@@ -26,7 +26,7 @@ class webhook(APIView):
         
         #Logica para valir datos 
 
-        services = PayService
+        services = PayService()
         resp = services.validar_id_tracaccion(id = data["id_transaccion"], codigo = data["codigoTransaccion"])
         if not resp:
             return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)

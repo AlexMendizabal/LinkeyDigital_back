@@ -11,6 +11,8 @@ from pay.utilitiesPay import UtilitiesPay, TransactionSerializer, DetalleTransac
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
+from conf_fire_base import DOMINIO_NAME
+
 class SolicitudViewSet(APIView):
 
     
@@ -68,7 +70,7 @@ class SolicitudViewSet(APIView):
 
                 data["monto"] = str(monto_pedido - descuento + costo_envio)
                 data["codigoTransaccion"] = transaction_service.generar_codigo_unico()
-                data["urlRespuesta"] = "https://www.soyyo.digital/#/payment-completed"
+                data["urlRespuesta"] = f"https://www.{DOMINIO_NAME}/#/payment-completed"
 
                 solicitud_pago = scrumPay.solicitudPago(data)
                 

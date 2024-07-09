@@ -9,6 +9,7 @@ from authentication.exceptions import FirebaseAuthException, TokenNotFound
 from administration.views import Utilities, LicenciaSerializer
 from administration.services import LicenciaService
 from ..views import CustomerUserSerializer
+from conf_fire_base import DOMINIO_NAME
 
 class CreateAdmin(APIView):
     def post(self, request):
@@ -35,7 +36,7 @@ class CreateAdmin(APIView):
         try:
             user = auth.create_user(
                 email=correo,
-                password="soyyo.digital"
+                password=DOMINIO_NAME
             )
             uid = user.uid            
         except Exception as e:
