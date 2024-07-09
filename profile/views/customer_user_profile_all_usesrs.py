@@ -27,7 +27,13 @@ class CustomerUserSerializerLow(serializers.ModelSerializer):
 
 class CustomerUserAllProfileViewSet(APIView):
     def get(self, request):
-        search_value = request.GET.get('search_value', '')
+        # Obtener parámetros de búsqueda
+        username = request.GET.get('username')
+        user_id = request.GET.get('id')
+        email = request.GET.get('email')
+        licencia_id = request.GET.get('licencia_id')
+        role = request.GET.get('role')
+
 
         if not request.user.is_superuser:
             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
@@ -37,42 +43,42 @@ class CustomerUserAllProfileViewSet(APIView):
         try:
             users = profile_service.get_all_users_v2(type=None)  # Ajusta según tu lógica de obtención de usuarios
 
-            # Filtrar usuarios según los tres campos simultáneamente usando Q objects
-            users = users.filter(
-                Q(username__icontains=search_value) |
-                Q(id__icontains=search_value) |
-                Q(email__icontains=search_value)
-            )
+            # Lista de filtros a aplicar
+            filters = []
 
-            # Obtener otros filtros de parámetros GET
-            is_active = request.GET.get('is_active')
-            is_admin = request.GET.get('is_admin')
-            is_superuser = request.GET.get('is_superuser')
-            is_sponsor = request.GET.get('is_sponsor')
-            is_booking = request.GET.get('is_booking')
-            is_sales_manager = request.GET.get('is_sales_manager')
-            is_ecommerce = request.GET.get('is_ecommerce')
+            if username:
+                filters.append(Q(username__icontains=username))
+            if user_id:
+                filters.append(Q(id=user_id))
+            if email:
+                filters.append(Q(email__icontains=email))
+            if licencia_id:
+                filters.append(Q(licencia_id=licencia_id))
 
-            # Nuevo filtro para is_active=False
-            is_inactive = request.GET.get('is_inactive')
 
-            # Aplicar filtros adicionales si están presentes
-            if is_active is not None:
-                users = users.filter(is_active=is_active.lower() == 'true')
-            if is_inactive is not None:
-                users = users.filter(is_active=False)
-            if is_admin is not None:
-                users = users.filter(is_admin=is_admin.lower() == 'true')
-            if is_superuser is not None:
-                users = users.filter(is_superuser=is_superuser.lower() == 'true')
-            if is_sponsor is not None:
-                users = users.filter(is_sponsor=is_sponsor.lower() == 'true')
-            if is_booking is not None:
-                users = users.filter(is_booking=is_booking.lower() == 'true')
-            if is_sales_manager is not None:
-                users = users.filter(is_sales_manager=is_sales_manager.lower() == 'true')
-            if is_ecommerce is not None:
-                users = users.filter(is_ecommerce=is_ecommerce.lower() == 'true')
+                # Mapeo de roles a campos de modelo
+            role_mapping = {
+                'is_admin': 'is_admin',
+                'is_superuser': 'is_superuser',
+                'is_booking': 'is_booking',
+                'is_ecommerce': 'is_ecommerce',
+                'is_sales_manager': 'is_sales_manager',
+                'is_sponsor': 'is_sponsor',
+                'is_active': 'is_active',
+                'is_inactive': Q(is_active=False)
+            }
+
+            # Aplicar filtro según el rol especificado
+            if role and role in role_mapping:
+                filter_condition = role_mapping[role]
+                if filter_condition == 'is_inactive':
+                    users = users.filter(filter_condition)
+                else:
+                    filters.append(Q(**{filter_condition: True}))
+
+            # Aplicar todos los filtros acumulativamente usando Q objects
+            if filters:
+                users = users.filter(*filters)
 
             # Ordenar usuarios por fecha de unión
             users = sorted(users, key=lambda user: user.date_joined, reverse=True)
