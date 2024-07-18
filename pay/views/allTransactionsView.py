@@ -10,10 +10,10 @@ class AllTransactionsView(APIView):
             status_param = request.query_params.get('status')
             if status_param is not None:
                 # Filtrar las transacciones por estado
-                transactions = Transaction.objects.filter(status=status_param)
+                transactions = Transaction.objects.filter(status=status_param).exclude(status=10).order_by("-id")
             else:
                 # Obtener todas las transacciones si no se proporciona el parámetro de estado
-                transactions = Transaction.objects.all()
+                transactions = Transaction.objects.all().exclude(status=10).order_by("-id")
             # Serializar los datos de las transacciones personalizando los campos
             transaction_serializer = AllTransactionSerializer(transactions, many=True)
             # Devolver la respuesta con los datos serializados
