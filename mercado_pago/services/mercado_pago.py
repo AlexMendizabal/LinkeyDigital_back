@@ -13,8 +13,6 @@ class MercadoPagoService():
 
     def get_payment(self, id):
         url = self.url + "/v1/payments/" + str(id)
-        if REGION_ACTUAL == "br":
-            url = self.url + "/merchant_orders/" + str(id)
         try:
             response = requests.get(url, headers=self.headers)
             if response.status_code == 200:
