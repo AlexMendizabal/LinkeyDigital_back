@@ -56,6 +56,7 @@ class MercadoPago(APIView):
                 preference_data = {
                     #"notification_url" :  "http://requestbin.fullcontact.com/1ogudgk1",
                     "external_reference" : codigoTransaccion,
+                    "callback_url": "https://www.soyyochile.com/#/payment-completed",
                     "items": [{
                         "title": descripcion,
                         "quantity": 1,
@@ -67,6 +68,7 @@ class MercadoPago(APIView):
                     preference_data = {
                         #"notification_url" :  "http://requestbin.fullcontact.com/1ogudgk1",
                         "external_reference" : codigoTransaccion,
+                        "callback_url": "https://www.soueu.com.br/#/payment-completed",
                         "items": [{
                             "title": descripcion,
                             "quantity": 1,
