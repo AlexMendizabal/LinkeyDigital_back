@@ -162,21 +162,20 @@ class PayService:
                  errors, corrects = create_users_in_threads(cantidad, correo_inicio, response.id)
 
             #funcion para mandar correo 
-            # subject = "¡Confirmación de Pago Exitosa!"
-            # email = user.email
+            subject = "¡Confirmación de Pago Exitosa!"
+            email = user.email
 
-            # if cantidad > 0 :
-            #     body = GetHtmlForEmail(user,monto,corrects)
-            # else :
-            #     body = GetHtmlForEmail(user,monto)
-            # #SendEmail(subject,email,body)
+            if cantidad > 0 :
+                body = GetHtmlForEmail(user,monto,corrects)
+            else :
+                body = GetHtmlForEmail(user,monto)
+            SendEmail(subject,email,body)
 
             # # funcion para mandar correo al supervisor 
 
-            # subject = "¡Copia de confirmación de Pago Exitosa!"
-            # email = "contacto@soyyo.digital"
-            #SendEmail(subject,email,body)
-            # funcion para mandar al front
+            subject = "¡Copia de confirmación de Pago Exitosa!"
+            email = "contacto@soyyo.digital"
+            SendEmail(subject,email,body)
 
         except Exception as e:
             return False
