@@ -13,6 +13,8 @@ from django.utils import timezone
 import string
 import secrets
 
+from conf_fire_base import REGION_ACTUAL
+
 class PayService:
     
     def get_transactions(self, customer_user=None):
@@ -161,21 +163,29 @@ class PayService:
             if cantidad > 0 :
                  errors, corrects = create_users_in_threads(cantidad, correo_inicio, response.id)
 
-            #funcion para mandar correo 
-            subject = "¡Confirmación de Pago Exitosa!"
-            email = user.email
+            if REGION_ACTUAL == "br":
+                #funcion para mandar correo 
+                subject = "Confirmação de Pagamento Bem-Sucedida!"
+                email = user.email
 
+                # # funcion para mandar correo al supervisor 
+                subject_s = "Cópia de confirmação de Pagamento Bem-Sucedido!"
+                email_s = "contacto@soyyo.digital"
+            elif REGION_ACTUAL == "bob":
+                #funcion para mandar correo 
+                subject = "¡Confirmación de Pago Exitosa!"
+                email = user.email
+
+                # # funcion para mandar correo al supervisor 
+                subject_s = "¡Copia de confirmación de Pago Exitosa!"
+                email_s = "contacto@soyyo.digital"
+            
             if cantidad > 0 :
-                body = GetHtmlForEmail(user,monto,corrects)
+                body = GetHtmlForEmail(user,monto,corrects,REGION_ACTUAL)
             else :
                 body = GetHtmlForEmail(user,monto)
             SendEmail(subject,email,body)
-
-            # # funcion para mandar correo al supervisor 
-
-            subject = "¡Copia de confirmación de Pago Exitosa!"
-            email = "contacto@soyyo.digital"
-            SendEmail(subject,email,body)
+            SendEmail(subject_s,email_s,body)
 
         except Exception as e:
             return False
