@@ -183,7 +183,7 @@ class PayService:
             if cantidad > 0 :
                 body = GetHtmlForEmail(user,monto,corrects,REGION_ACTUAL)
             else :
-                body = GetHtmlForEmail(user,monto)
+                body = GetHtmlForEmail(user,monto,REGION_ACTUAL)
             SendEmail(subject,email,body)
             SendEmail(subject_s,email_s,body)
 

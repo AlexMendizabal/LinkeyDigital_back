@@ -134,7 +134,7 @@ def GetHtmlForEmail(user,monto, corrects = None, region="bob"):
 
 
 
-
+        {body}
 
 
         </html>
