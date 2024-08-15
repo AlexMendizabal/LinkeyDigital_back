@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from django.core.mail import send_mail, EmailMultiAlternatives  
+from conf_fire_base import REGION_ACTUAL
 
 import threading
 
@@ -11,7 +12,10 @@ class EmailThread(threading.Thread):
     def __init__(self, subject , email, body ):
         self.subject = subject
         self.email = email
-        self.sender = "ventas@soyyo.digital"
+        if REGION_ACTUAL == "br":
+            self.sender = "contato@soueu.com.br"
+        else: 
+            self.sender = "ventas@soyyo.digital"
         self.body = body
         threading.Thread.__init__(self)
 
