@@ -18,8 +18,8 @@ def GetHtmlForEmail(user,monto, corrects = None, region="bob"):
                         <p>Atenciosamente,</p>
                         <p>A equipe do Soy Yo Digital</p>
                         <p>P.S. Se tiver qualquer dúvida ou preocupação, estamos a apenas uma mensagem de distância. Não hesite em nos contatar a qualquer momento. Estamos aqui para você!</p>
-                        <div class="centered-link"><a href="https://soueu.com.br">Clique aqui</a></div>
-                        <div class="QR"><img src="https://api.soyyo.digital/media/SoyYo%20Digital-QRCode.png" alt=""></div>
+                        <div class="centered-link"><a href="https://www.soueu.com.br/u/#/soueu.digital">Clique aqui</a></div>
+                        <div class="QR"><img src="https://api.soueu.com.br/media/SouEuDigital-QRCode.png" alt=""></div>
                     </div>
                 </div>
             </body>
