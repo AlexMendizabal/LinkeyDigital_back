@@ -15,7 +15,8 @@ from pathlib import Path
 import dj_database_url
 from decouple import config
 
-from conf_fire_base import DATABASES_CONF, BOLIVIA_MODE
+from conf_fire_base import DATABASES_CONF, BOLIVIA_MODE, EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -183,9 +184,9 @@ STATICFILES_DIRS = (
 
 
 
-EMAIL_HOST = "mail.soyyo.digital"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "contacto@soyyo.digital" 
-EMAIL_HOST_PASSWORD = "RfNvVUid8iG5"
+EMAIL_HOST = EMAIL_HOST
+EMAIL_PORT = EMAIL_PORT
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
 EMAIL_USE_SSL = True

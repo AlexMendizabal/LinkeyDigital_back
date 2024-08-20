@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from django.core.mail import send_mail
+from conf_fire_base import REGION_ACTUAL
 
 import threading
 
@@ -32,7 +33,10 @@ class EmailThread(threading.Thread):
     def __init__(self, content: EmailContent, ip, user ):
         self.subject = "Solicitud para nuevas cartas de: " + user.username
         self.recipient_list = [user.email]
-        self.sender = "contacto@soyyo.digital"
+        if REGION_ACTUAL == "br":
+            self.sender = "contato@soueu.com.br"
+        else: 
+            self.sender = "contacto@soyyo.digital"
         self.body = f"Se lleno una solicitud con la siguiente información:\nNombre: {user.username}\nEmail: {user.email}\nTeléfono: {user.phone_number}\nUser_id: {user.id}\nPublic_id: {user.public_id}\nIP de solicitud: {ip} \nEste usuario esta solicitando la cantidad de tarjetas: {content.numberCards}"
         threading.Thread.__init__(self)
 
