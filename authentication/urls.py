@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, CustomerUserPutRubroViewSet \
    ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyToken, AuthenticationSpecialViewset \
-
+    , CustomerUserListViewSet
 from .views.list_sponsor_user_viewset import ListSponsorUsersView
 
 router = routers.DefaultRouter()
@@ -16,6 +16,8 @@ urlpatterns = [
     path('register', RegisterUser.as_view()),
 
     path('user', CustomerUserViewSet.as_view(), name="user_list_or_create_or_update_or_delete"),
+    # Metodo para listar a los users (creado especificamente para visualizar a los que no tienen licencia(empresa))
+    path('user_list', CustomerUserListViewSet.as_view(), name="user_list"),
     # Metodo para cambiar el rubro de muchos usuarios
     path('rubro', CustomerUserPutRubroViewSet.as_view(), name="user_list_or_create_or_update_or_delete"),
 

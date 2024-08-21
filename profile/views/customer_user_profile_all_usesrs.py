@@ -87,7 +87,6 @@ class CustomerUserAllProfileViewSet(APIView):
             print(e)
             return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
-        # Paginación como lo tienes implementado actualmente
         page_number = request.GET.get('page', 1)
         items_per_page = 100
         paginator = Paginator(users, items_per_page)
