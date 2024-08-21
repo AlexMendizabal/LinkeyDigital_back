@@ -82,6 +82,24 @@ class AuthServices:
             user = get_object_or_404(CustomerUser, uid=uid)
         return user 
     
+    def getUsers(self, is_active=None, licencia_id=None, sin_licencia=None):
+        filters = {}
+
+        if is_active is not None:
+            filters['is_active'] = is_active
+
+        # Manejar el filtro de licencia
+        if licencia_id is not None:
+            # Caso 1: Filtro por una licencia específica
+            filters['licencia_id'] = licencia_id
+        elif sin_licencia is not None:
+            filters['licencia_id__isnull'] = bool(sin_licencia)
+
+        # Aplicar el filtro y retornar los usuarios filtrados
+        user = CustomerUser.objects.filter(**filters).order_by("id")
+
+        return user
+
         # metodos con el sdk
     def changeEmailFireBase(self, uid, new_email, region = REGION_ACTUAL):
         # Parte para cambiar correo a traves de firebase

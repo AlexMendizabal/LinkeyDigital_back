@@ -9,6 +9,7 @@ from django.db import transaction
 from administration.UtilitiesAdministration import UtilitiesAdm
 from booking.services import BookingService
 from authentication.services import AuthServices
+from django.core.paginator import Paginator
 #from firebase_admin import auth
 
 class CustomerUserSerializer(serializers.ModelSerializer):
@@ -95,6 +96,34 @@ class CustomerUserViewSet(APIView):
         #     return Response({'msg': 'error al borrar de firebase'}, status=status.HTTP_404_NOT_FOUND)
         
         return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
+
+class CustomerUserListViewSet(APIView):
+    def get(self, request):
+
+        # Busca la licencia, si no existe regresa todos
+        licencia_id = request.GET.get('licencia_id', None)
+        # se pregunta si se quiere users con licencia o no... si no existe regresara todos 
+        sin_licencia = request.GET.get('sin_licencia', None) 
+        if isinstance(sin_licencia, str):
+            sin_licencia = sin_licencia.lower() == 'true'
+        # users que fueron "eliminados"
+        is_active = request.GET.get('is_active', None)
+
+        authServices = AuthServices()
+        users = authServices.getUsers(is_active=is_active, sin_licencia = sin_licencia, licencia_id = licencia_id)
+
+        # Paginacion
+        page_number = request.GET.get('page', 1)
+        items_per_page = 100
+        paginator = Paginator(users, items_per_page)
+        try:
+            page = paginator.page(page_number)
+        except Exception as e:
+            print(e)
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)        
+
+        customer_user_serializer = CustomerUserSerializerWithBooking(page, many=True)
+        return Response( {"success": True, "data": customer_user_serializer.data, "pages": paginator.num_pages}, status=status.HTTP_200_OK)
 
 class CustomerAdminViewSet(APIView):
     def put(self, request, customer_id):
