@@ -4,6 +4,8 @@ from rest_framework import routers
 from administration.views import LicenciaViewSet, LicenciaSuperViewSet, LicenciaCoonectViewSet,\
       LicenciaAdminViewSet, BlockersUsersViewSet, EditableUsersViewSet
 
+from administration.views.licencias_viewset import ListAdminViewSet
+
 router = routers.DefaultRouter()
 
 urlpatterns = [
@@ -28,6 +30,10 @@ urlpatterns = [
 
     # README: Retorna las usuarios adjuntados de la licencia del admin, si eres superadmin
     path('licenciaadm/<int:pk>', LicenciaAdminViewSet.as_view(), name="get_licencias_adm_employee"),
+
+    # Licenciaadm pero sin incluir la paginación, útil para listar empleados en la funcion contact
+    path('listadm/<int:pk>', ListAdminViewSet.as_view(), name="get_list_adm_employee"),
+
 
     #README: end points para bloquear usuarios... cambia el bolleano(si es true pasa a false y viceversa)
     path('edit/<int:pk>', EditableUsersViewSet.as_view(), name="block_or_desblock_user"),

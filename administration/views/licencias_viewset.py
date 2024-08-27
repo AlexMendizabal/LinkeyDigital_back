@@ -142,6 +142,52 @@ class LicenciaAdminViewSet(APIView):
 
         return Response({"success": True, "pages": paginator.num_pages, "data": data  }, status=status.HTTP_200_OK)
   
+
+class ListAdminViewSet(APIView):
+    def get(self, request, pk=None):
+        # Obtener el parámetro de búsqueda
+        search_value = request.GET.get('search_value', '')
+
+        # Obtener todos los usuarios con licencia
+        licencia_service = LicenciaService()
+        try:
+            user = get_object_or_404(CustomerUser, id=pk) if pk is not None else request.user
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, user ):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            response = licencia_service.get_Users(user.licencia_id_id, request.user.id, with_admin=True if pk is None else True)
+
+            # Filtrar usuarios según los tres campos simultáneamente usando Q objects
+            response = response.filter(
+                Q(username__icontains=search_value) |
+                Q(id__icontains=search_value) |
+                Q(email__icontains=search_value)
+            )
+
+            # Serializar los usuarios sin paginación
+            UserSerializers = CustomerUserSerializer(response, many=True)
+
+            data = []
+            for user in UserSerializers.data:
+                new_object = {
+                    "id": user["id"],
+                    "email": user["email"],
+                    "rubro": user["rubro"],
+                    "username": user["username"],
+                    "public_id": user["public_id"],                
+                    "profile": user["profile"],
+                    "phone_number": user["phone_number"],
+                    
+                }
+                data.append(new_object)
+
+            return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+
 # apartado para los super usuarios
 class LicenciaSuperViewSet(APIView):
     def get(self, request, pk=None):
