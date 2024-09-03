@@ -68,7 +68,7 @@ class SolicitudViewSet(APIView):
                     except Exception:
                         descuento = 0                            
 
-                data["monto"] = str(monto_pedido - descuento + costo_envio)
+                data["monto"] = str(round(monto_pedido - descuento + costo_envio, 2))
                 data["codigoTransaccion"] = transaction_service.generar_codigo_unico()
                 data["urlRespuesta"] = f"https://www.{DOMINIO_NAME}/#/payment-completed"
 
