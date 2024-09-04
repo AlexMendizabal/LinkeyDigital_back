@@ -105,12 +105,12 @@ class ProfileService:
     
     def get_all_users_v2(self, type=""):
         if type=="admin":
-            users = CustomerUser.objects.filter(is_admin=True, licencia_id__isnull=False).order_by('id')
+            users = CustomerUser.objects.filter(is_admin=True, licencia_id__isnull=False).order_by('id').exclude(is_active=False)
             return users
         if type=="user":
-            users = CustomerUser.objects.filter(is_admin=False, is_superuser=False, licencia_id__isnull=False).order_by('id')
+            users = CustomerUser.objects.filter(is_admin=False, is_superuser=False, licencia_id__isnull=False).order_by('id').exclude(is_active=False)
             return users
-        users = CustomerUser.objects.filter(licencia_id__isnull=False).order_by('id')
+        users = CustomerUser.objects.filter(licencia_id__isnull=False).order_by('id').exclude(is_active=False)
         return users
     
     def get_profile(self, pk=None, customer_user=None):
