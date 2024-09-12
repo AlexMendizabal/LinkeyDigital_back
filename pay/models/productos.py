@@ -30,7 +30,7 @@ class Productos(models.Model):
     description = models.CharField(max_length=300)
     image = models.ImageField(upload_to="productos_images", blank=True, default="productos_images/undefined.png") 
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
-    type = models.CharField(max_length=60, choices=TYPE_CHOICES, blank=True, default="")
+    type = models.CharField(max_length=60, choices=TYPE_CHOICES, blank=True, default="tarjeta")
     order = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):

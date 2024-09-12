@@ -145,47 +145,54 @@ class PayService:
                 "duracion" : 730, 
                 "status" : 1
             }
-            #crea la licencia del usuario y lo actualiza
-            utilities = Utilities()
-            response = utilities.create_licencia_DTO(licencia)
-            user.licencia_id_id = response
-            user.save()
 
+            # booleano para ver si hay tarjetas en la compra o no
+            new_user_bool = False
             #logica para buscar la cantiad de usuarios requeridos
             detalleProductos = DetalleTransaction.objects.filter(transaction_id = resp.id)
             #ponemos -1 porque el usuario que compro ya tiene cuenta.
             cantidad = -1
+            # accesorio
             for detalle in detalleProductos:
-                cantidad += int(detalle.cantidad)
-            #crea los usuarios restantes en la licencia y ademas les pone la misma licencia
-            #creada anteriormente 
-            correo_inicio = user.username
-            if cantidad > 0 :
-                 errors, corrects = create_users_in_threads(cantidad, correo_inicio, response.id)
+                if detalle.producto.type == "tarjeta": 
+                    cantidad += int(detalle.cantidad)
+                    new_user_bool = True
 
-            if REGION_ACTUAL == "br":
-                #funcion para mandar correo 
-                subject = "Confirmação de Pagamento Bem-Sucedida!"
-                email = user.email
+            if new_user_bool:
+                #crea la licencia del usuario y lo actualiza
+                utilities = Utilities()
+                response = utilities.create_licencia_DTO(licencia)
+                user.licencia_id_id = response
+                user.save()
+                #crea los usuarios restantes en la licencia y ademas les pone la misma licencia
+                #creada anteriormente 
+                correo_inicio = user.username
+                if cantidad > 0 :
+                    errors, corrects = create_users_in_threads(cantidad, correo_inicio, response.id)
 
-                # # funcion para mandar correo al supervisor 
-                subject_s = "Cópia de confirmação de Pagamento Bem-Sucedido!"
-                email_s = "contacto@soyyo.digital"
-            elif REGION_ACTUAL == "bob":
-                #funcion para mandar correo 
-                subject = "¡Confirmación de Pago Exitosa!"
-                email = user.email
+                if REGION_ACTUAL == "br":
+                    #funcion para mandar correo 
+                    subject = "Confirmação de Pagamento Bem-Sucedida!"
+                    email = user.email
 
-                # # funcion para mandar correo al supervisor 
-                subject_s = "¡Copia de confirmación de Pago Exitosa!"
-                email_s = "contacto@soyyo.digital"
-            
-            if cantidad > 0 :
-                body = GetHtmlForEmail(user,monto,corrects,REGION_ACTUAL)
-            else :
-                body = GetHtmlForEmail(user,monto, region= REGION_ACTUAL)
-            SendEmail(subject,email,body)
-            SendEmail(subject_s,email_s,body)
+                    # # funcion para mandar correo al supervisor 
+                    subject_s = "Cópia de confirmação de Pagamento Bem-Sucedido!"
+                    email_s = "contacto@soyyo.digital"
+                elif REGION_ACTUAL == "bob":
+                    #funcion para mandar correo 
+                    subject = "¡Confirmación de Pago Exitosa!"
+                    email = user.email
+
+                    # # funcion para mandar correo al supervisor 
+                    subject_s = "¡Copia de confirmación de Pago Exitosa!"
+                    email_s = "contacto@soyyo.digital"
+                
+                if cantidad > 0 :
+                    body = GetHtmlForEmail(user,monto,corrects,REGION_ACTUAL)
+                else :
+                    body = GetHtmlForEmail(user,monto, region= REGION_ACTUAL)
+                # SendEmail(subject,email,body)
+                # SendEmail(subject_s,email_s,body)
 
         except Exception as e:
             return False
