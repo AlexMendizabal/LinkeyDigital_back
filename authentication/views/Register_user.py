@@ -9,42 +9,42 @@ from threading import Lock
 from authentication.models import CustomerUser
 from rest_framework.generics import get_object_or_404
 from conf_fire_base import DOMINIO_NAME
+from concurrent.futures import ThreadPoolExecutor
 
-from authentication.exceptions import FirebaseAuthException, TokenNotFound
+from authentication.exceptions import FirebaseAuthException, TokenNotFound, Conflict
 
-class CreateUserThread(threading.Thread):
-    def __init__(self, email, password, errors, lock, corrects, licencia_id):
-        super(CreateUserThread, self).__init__()
-        self.email = email
-        self.password = password
-        self.errors = errors
-        self.lock = lock
-        self.corrects = corrects
-        self.licencia_id = licencia_id
+def create_user_task(email, password, errors, lock, corrects, licencia_id):
+    try:
+        # Intentamos crear el usuario en Firebase
+        user = auth.create_user(
+            email=email,
+            password=password
+        )
+    except Exception as e:
+        print("Error con Firebase")
+        with lock:
+            errors.append({"email": email, "error": str(e)})
+        return
 
-    def run(self):
-        try:
-            user = auth.create_user(
-                email=self.email,
-                password=self.password
-            )
-            try:
-                uid = user.uid
-                email = user.email
-                username = email.split('@')[0]
-                User = get_user_model()
-                user = User.objects.create(uid=uid, email=email, username=username, licencia_id_id=self.licencia_id)
-                with self.lock:
-                    self.corrects.append({"email": self.email})
-            except Exception as e:
-                auth.delete_user(user.uid)
-                with self.lock:
-                    self.errors.append({"email": self.email, "error": str(e)})
-                raise FirebaseAuthException()
-        except Exception as e:
-            with self.lock:
-                self.errors.append({"email": self.email, "error": str(e)})
-            raise e
+    try:
+        uid = user.uid
+        email = user.email
+        username = email.split('@')[0]
+        User = get_user_model()
+        
+        # Creamos el usuario en la base de datos local
+        local_user = User.objects.create(uid=uid, email=email, username=username, licencia_id_id=licencia_id)
+        
+        # Registramos el éxito
+        with lock:
+            corrects.append({"email": email})
+    except Exception as e:
+        # Si falla la creación en la base de datos, eliminamos el usuario de Firebase
+        auth.delete_user(user.uid)
+        print("Error con la base de datos")
+        with lock:
+            errors.append({"email": email, "error": str(e)})
+        
 
 def create_users_in_threads(cant, correo, licencia_id, user_id=None):
     if not licencia_id and user_id:
@@ -55,28 +55,36 @@ def create_users_in_threads(cant, correo, licencia_id, user_id=None):
         licencia_id = user.licencia_id
 
     if not correo:
-        correo = "Test-julio"
-
+        correo = "soyyo"
+    correo = correo.lower()
     User = get_user_model()
     users = User.objects.filter(email__startswith=correo, email__endswith=f'@{DOMINIO_NAME}')
 
     numbers = [int(re.search(re.escape(correo) + r'-(\d+)@', user.email).group(1)) for user in users if re.search(re.escape(correo) + r'-(\d+)@', user.email)]
-
     max_number = max(numbers) if numbers else 0
+
     threads = []
     errors = []
     corrects = []
     lock = Lock()
 
-    for i in range(1, cant + 1):
-        email = f"{correo}-{max_number + i}@{DOMINIO_NAME}"
-        password = DOMINIO_NAME
-        thread = CreateUserThread(email=email, password=password, errors=errors, lock=lock, corrects=corrects, licencia_id=licencia_id)
-        thread.start()
-        threads.append(thread)
+    # Usamos ThreadPoolExecutor para manejar los hilos
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = []
+        for i in range(1, cant + 1):
+            email = f"{correo}-{max_number + i}@{DOMINIO_NAME}"
+            password = DOMINIO_NAME
 
-    for thread in threads:
-        thread.join()
+            # Ejecutamos la creación del usuario en un nuevo hilo
+            future = executor.submit(create_user_task, email, password, errors, lock, corrects, licencia_id)
+            futures.append(future)
+
+        # Esperamos que todos los hilos terminen
+        for future in futures:
+            try:
+                future.result()  # Esto asegura que cualquier excepción en los hilos sea capturada
+            except Exception as e:
+                errors.append(f"Error creando usuario: {str(e)}")
 
     return errors, corrects
 

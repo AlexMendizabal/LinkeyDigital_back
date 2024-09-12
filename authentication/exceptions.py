@@ -28,3 +28,8 @@ class NotFound(APIException):
     status_code = 404
     default_detail = 'NOT FOUND'
     default_code = 'NOT_FOUND'
+
+class Conflict(APIException):
+    status_code = 409
+    default_detail = 'Conflict'
+    default_code = 'Conflict'
