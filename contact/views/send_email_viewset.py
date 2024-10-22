@@ -53,7 +53,7 @@ class EmailThread(threading.Thread):
             self.subject,
             self.body,
             self.sender,
-            ["ventas@soyyo.digital"],
+            ["ignacio@soyyo.digital"],
             fail_silently=False,
         )
 

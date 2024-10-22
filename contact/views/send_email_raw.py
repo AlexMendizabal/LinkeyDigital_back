@@ -19,7 +19,7 @@ class SendEmailRawViewSet(APIView):
             emailTypes = [
                 {"to": "soporte@soyyo.digital", "title": "Solicitud de soporte"},
                 {"to": "soporte@soyyo.digital", "title": "Extensión de licencia"},
-                {"to": "ventas@soyyo.digital", "title": "Solicitud de Soy Yo"},
+                {"to": "ignacio@soyyo.digital", "title": "Solicitud de Soy Yo"},
             ]
 
             emailFormat = emailTypes[ request.data['type'] ]
