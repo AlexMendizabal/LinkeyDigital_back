@@ -34,7 +34,11 @@ class ConfigurationBooking(models.Model):
     max_personas = models.IntegerField(default= 5,  blank = True, null=True, validators=[MinValueValidator(0)])
     max_reservas = models.IntegerField(default= 1,  blank = True, null=True, validators=[MinValueValidator(0)])
     time_bet_booking = models.IntegerField(default = 60, blank = True, validators=[MinValueValidator(0)])
-    holiday = models.CharField(max_length=100, blank=True)
+    holiday = models.CharField(
+        max_length=100, 
+        blank=True, 
+        default='[true,false,false,false,false,false,true]'
+    )
     # hora mañana
     hora_inicio = models.TimeField(default=time(7, 0, 0), blank=True, null=True)
     hora_fin = models.TimeField(default=time(11, 0, 0), blank=True, null=True)
