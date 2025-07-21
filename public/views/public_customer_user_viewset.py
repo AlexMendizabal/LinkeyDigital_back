@@ -16,7 +16,7 @@ class PublicCustomerUserViewSet(APIView):
     authentication_classes = []
 
     def get(self, request, public_id):
-
+        from django.http import HttpResponseRedirect
         utilities = CustomUserUtilities()
         customer_user = utilities.getUsers(public_id)
         if not customer_user:
@@ -24,27 +24,10 @@ class PublicCustomerUserViewSet(APIView):
         if not customer_user.has_access_to_protected_views():
             return Response({"succes": False, "message": "El usuario no tiene licencia"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
-        customer_user_admin = utilities.getAdminLicencia(customer_user)
-        customer_user_public_service = PublicCustomerUserService()
-
-        customer_profile_serializers = utilities.get_profile(customer_user_public_service, customer_user)
-        customer_custom_social_media_serializers = utilities.get_custom_social_media(customer_user_public_service,
-                                                                                    customer_user, True)
-
-        customer_profile_serializers_admin = None
-        customer_custom_social_media_serializers_admin = None
-
-        if customer_user_admin:
-            customer_profile_serializers_admin = utilities.get_profile(customer_user_public_service,
-                                                                       customer_user_admin)
-            customer_custom_social_media_serializers_admin = utilities.get_custom_social_media(
-                customer_user_public_service, customer_user_admin, True)
-
-        data = utilities.makeData(customer_user, customer_profile_serializers, customer_custom_social_media_serializers,
-                                  customer_user_admin, customer_profile_serializers_admin,
-                                  customer_custom_social_media_serializers_admin)
-        return Response({"success": True, "data": data},
-                        status=status.HTTP_200_OK)
+        # Redirección temporal a la nueva web
+        username = customer_user.username
+        redirect_url = f"https://dicobol.net/u/{username}"
+        return HttpResponseRedirect(redirect_url)
 
     
 
