@@ -1,1 +1,0 @@
-from .mercado_pago import MercadoPagoService

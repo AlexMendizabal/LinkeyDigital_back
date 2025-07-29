@@ -44,7 +44,7 @@ class EmailThread(threading.Thread):
         if REGION_ACTUAL == "br":
             self.sender = "contato@soueu.com.br"
         else: 
-            self.sender = "contacto@soyyo.digital"
+            self.sender = "contacto@linkey.digital"
         self.body = f"Se lleno una solicitud con la siguiente información:\nNombre: {content.name}\nDepartamento: {content.department}\nEmail: {content.email}\nTeléfono: {content.phone}\nPlan seleccionado: {content.plan}\nNúmero de tarjetas: {content.numberCards}\nIP de solicitud: {ip}"
         threading.Thread.__init__(self)
 
@@ -53,7 +53,7 @@ class EmailThread(threading.Thread):
             self.subject,
             self.body,
             self.sender,
-            ["ignacio@soyyo.digital"],
+            ["ignacio@linkey.digital"],
             fail_silently=False,
         )
 

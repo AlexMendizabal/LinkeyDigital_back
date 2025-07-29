@@ -15,7 +15,7 @@ class EmailThread(threading.Thread):
         if REGION_ACTUAL == "br":
             self.sender = "contato@soueu.com.br"
         else: 
-            self.sender = "ignacio@soyyo.digital"
+            self.sender = "ignacio@linkey.digital"
         self.body = body
         threading.Thread.__init__(self)
 

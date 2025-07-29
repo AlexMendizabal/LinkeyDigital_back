@@ -17,9 +17,9 @@ class SendEmailRawViewSet(APIView):
 
         try:
             emailTypes = [
-                {"to": "soporte@soyyo.digital", "title": "Solicitud de soporte"},
-                {"to": "soporte@soyyo.digital", "title": "Extensión de licencia"},
-                {"to": "ignacio@soyyo.digital", "title": "Solicitud de Soy Yo"},
+                {"to": "soporte@linkey.digital", "title": "Solicitud de soporte"},
+                {"to": "soporte@linkey.digital", "title": "Extensión de licencia"},
+                {"to": "ignacio@linkey.digital", "title": "Solicitud de Soy Yo"},
             ]
 
             emailFormat = emailTypes[ request.data['type'] ]
@@ -35,7 +35,7 @@ class EmailThread(threading.Thread):
     def __init__(self, emailFormat, content):
         self.subject = emailFormat["title"]
         self.sendTo = emailFormat["to"]
-        self.sender = "contacto@soyyo.digital"
+        self.sender = "contacto@linkey.digital"
         self.body = '\n'.join( [ f"{key} : {value}" for key,value in content.items() ] )
         threading.Thread.__init__(self)
 

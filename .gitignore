@@ -70,7 +70,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-
+.htaccess
 # Translations
 *.mo
 

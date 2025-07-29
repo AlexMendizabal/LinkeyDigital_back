@@ -42,8 +42,8 @@ def GetHtmlForEmail(user,monto, corrects = None, region="bob"):
                     <p>Un cordial saludo,</p>
                     <p>El equipo de Soy Yo Digital</p>
                     <p>P.D. Si tienes cualquier pregunta o inquietud, estamos a solo un mensaje de distancia. No dudes en contactarnos en cualquier momento. ¡Estamos aquí para ti!</p>
-                    <div class="centered-link"><a href="https://soyyo.digital/soyyodigital">Click aquí</a></div>
-                    <div class="QR"><img src="https://api.soyyo.digital/media/SoyYo%20Digital-QRCode.png" alt=""></div>
+                    <div class="centered-link"><a href="https://linkey.digital/soyyodigital">Click aquí</a></div>
+                    <div class="QR"><img src="https://api.linkey.digital/media/SoyYo%20Digital-QRCode.png" alt=""></div>
                 </div>
             </div>
         </body> """
@@ -151,7 +151,7 @@ def getCorrects(corrects, region="bob"):
         if region == "br":
             msg = f'''<p>Queremos que sua experiência seja inesquecível, por isso apresentamos estes passos simples para você começar com o pé direito:</p>
                         <ol>
-                            <li>Vá até o nosso painel de administração em <a href="www.soueu.com.br/admin">www.soyyo.digital/admin</a></li>
+                            <li>Vá até o nosso painel de administração em <a href="www.soueu.com.br/admin">www.linkey.digital/admin</a></li>
                             <li>Faça login em cada conta usando os seguintes e-mails:
                                 <ul>
                                     <table>
@@ -170,7 +170,7 @@ def getCorrects(corrects, region="bob"):
         else : 
             msg = f'''<p>Queremos que tu experiencia sea inolvidable, por eso te presentamos estos simples pasos para que empieces con el pie derecho:</p>
                         <ol>
-                            <li>Dirígete a nuestro panel de administración en <a href="www.soyyo.digital/admin">www.soyyo.digital/admin</a></li>
+                            <li>Dirígete a nuestro panel de administración en <a href="www.linkey.digital/admin">www.linkey.digital/admin</a></li>
                             <li>Ingresa a cada cuenta utilizando los siguientes correos:
                                 <ul>
                                     <table>
@@ -196,6 +196,6 @@ def getTD(email, region="bob"):
     else: 
         msg = f'''  <tr>
                         <td>{email}</td>
-                        <td>soyyo.digital</td>
+                        <td>linkey.digital</td>
                     </tr>'''
     return msg

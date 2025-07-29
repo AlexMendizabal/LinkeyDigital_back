@@ -177,7 +177,7 @@ class PayService:
 
                     # # funcion para mandar correo al supervisor 
                     subject_s = "Cópia de confirmação de Pagamento Bem-Sucedido!"
-                    email_s = "contacto@soyyo.digital"
+                    email_s = "contacto@linkey.digital"
                 elif REGION_ACTUAL == "bob":
                     #funcion para mandar correo 
                     subject = "¡Confirmación de Pago Exitosa!"
@@ -185,7 +185,7 @@ class PayService:
 
                     # # funcion para mandar correo al supervisor 
                     subject_s = "¡Copia de confirmación de Pago Exitosa!"
-                    email_s = "contacto@soyyo.digital"
+                    email_s = "contacto@linkey.digital"
                 
                 if cantidad > 0 :
                     body = GetHtmlForEmail(user,monto,corrects,REGION_ACTUAL)
