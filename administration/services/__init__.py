@@ -1,2 +1,0 @@
-from .licencia_service import LicenciaService
-from .blocker_service import BlockersService

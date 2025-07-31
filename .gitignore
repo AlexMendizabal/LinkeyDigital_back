@@ -15,9 +15,39 @@ media
 # in your Git repository. Update and uncomment the following line accordingly.
 # <django-project-name>/staticfiles/
 
-# Firebase secrets
-authentication/secrets/firebaseconfig.json
+# Firebase/Google secrets y archivos sensibles
+authentication/secrets/
+apps/authentication/secrets/
+*serviceAccount*.json
+*firebase*.json
+*credentials*.json
+*secret*.json
+*key*.json
+*private*.json
 
+# Configuración sensible y archivos locales
+conf_fire_base.py
+*.env
+*.local
+*.pem
+*.crt
+*.key
+
+# Bases de datos y archivos de ejemplo
+*.sqlite3
+*.sqlite
+identifier.sqlite
+
+# Carpeta de media y archivos subidos
+media/
+
+# Carpeta de archivos estáticos generados
+static/
+staticfiles/
+
+# PyCharm y VSCode
+.idea/
+.vscode/
 ### Django.Python Stack ###
 # Byte-compiled / optimized / DLL files
 *.py[cod]
@@ -56,19 +86,19 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit tests / coverage reports
 htmlcov/
 .tox/
 .nox/
 .coverage
 .coverage.*
 .cache
-nosetests.xml
+nosetestss.xml
 coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
-.pytest_cache/
+.pytests_cache/
 cover/
 .htaccess
 # Translations
@@ -190,7 +220,7 @@ cython_debug/
 
 # Installer logs
 
-# Unit test / coverage reports
+# Unit tests / coverage reports
 
 # Translations
 
@@ -273,3 +303,7 @@ pyrightconfig.json
 
 # Aqui para el conf fire base y otros
 conf_fire_base.py
+apps/authentication/secrets/firebaseconfig.json
+apps/authentication/secrets/firebaseconfig.json
+/apps/authentication/secrets
+/apps/authentication/secrets

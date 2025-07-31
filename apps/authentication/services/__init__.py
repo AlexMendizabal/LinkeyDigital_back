@@ -1,0 +1,1 @@
+## Firebase removido. No se exporta nada.

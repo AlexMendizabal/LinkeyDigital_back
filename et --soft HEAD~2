@@ -1,0 +1,513 @@
+[33mcommit 6413cd09b2f64f5797de2a07ee17d5732b74f7c4[m[33m ([m[1;36mHEAD -> [m[1;32mAlex_Rama_Reestructurada[m[33m)[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Thu Jul 31 12:11:09 2025 -0400
+
+    Update .gitignore
+
+[33mcommit ee88a75d8753439d258fb32ed395892eed6d882c[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Thu Jul 31 12:10:16 2025 -0400
+
+    agregando secretos al ignore
+
+[33mcommit 6e447a3772dd0a7ffce16db9a0a7f882a430cbac[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Thu Jul 31 12:06:17 2025 -0400
+
+    Reescturado y funcional localhost
+
+[33mcommit fb4742a14e5d5d0ff054d18cb7a6c8ca68888af9[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Wed Jul 30 17:05:06 2025 -0400
+
+    Nueva reestructuracion
+
+[33mcommit dfa0ec0168ca5a0439d18a80e4980b3e2253afad[m[33m ([m[1;31morigin/Alex_Rama_Reestructurada[m[33m, [m[1;31morigin/Alex_Rama[m[33m, [m[1;32mAlex_Rama[m[33m)[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Wed Jul 30 10:19:44 2025 -0400
+
+    Docs
+
+[33mcommit 77098fca10ade64e5f14ca59958d050db2338ac5[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Tue Jul 29 15:23:25 2025 -0400
+
+    Limpieza y instrucciones
+
+[33mcommit 24cbd880ab8112faf15c6c785ba3fe30d97d273e[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Mon Jul 21 15:36:18 2025 -0400
+
+    Remove firebaseconfig.json from git and add to .gitignore
+
+[33mcommit 3bad28d282878b719fdf03f56b89e649c60ac123[m
+Author: Alex Mendizabal <alex.sonny@ricorp.tech>
+Date:   Mon Jul 21 15:07:14 2025 -0400
+
+    teste
+
+[33mcommit dc8895da3dd4f5420a7f10a36a7d138c43351a87[m[33m ([m[1;32mkenneth[m[33m)[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Fri Nov 1 10:12:25 2024 -0400
+
+    agregando array default de booking conf holiday
+
+[33mcommit 653f0f35502eb59a4723344de271a9258c6c6723[m[33m ([m[1;32mDevelop[m[33m)[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Oct 22 21:40:42 2024 +0300
+
+    Cambio al correo de ignacion
+    
+    Ahora ya no se notificara al correo de ventas de soy yo digital, si no que se notificara al de ignacio@soyyo.digital
+
+[33mcommit 8994a75e54c3cf0a425b341a70ea89d5120918f5[m
+Merge: cbb78f0 504b982
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Thu Sep 12 18:01:24 2024 +0100
+
+    Merge pull request #34 from RIA-VENTURES/fix_productos
+    
+    fix productos
+
+[33mcommit 504b982f404d6f6898d63732e3f868bb1a3af27a[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu Sep 12 20:00:47 2024 +0300
+
+    fix productos
+    
+    Se arreglo el tema de las compras a articulos, de manera que ahora no se crean users por comprar articulos
+
+[33mcommit cbb78f00fc9f0d4ac113c01140211822d3106dea[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Sep 4 23:56:26 2024 +0300
+
+    fix users borrados
+
+[33mcommit 454e70d3a028510056c9cda5ceec24f992e3bd7c[m
+Merge: 167729f ac34717
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Tue Sep 3 16:46:22 2024 +0100
+
+    Merge pull request #33 from RIA-VENTURES/test
+    
+    Test
+
+[33mcommit ac34717c759bef9a451901c1d4533d3a50daaed7[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Fri Aug 30 17:02:40 2024 -0400
+
+    descuentos: redondear monto a 2 decimales
+
+[33mcommit cc5e30bfc46752246bd475e3f87e8d175279f044[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Tue Aug 27 16:58:57 2024 -0400
+
+    adisión de datos para producto y get employeeslist sin paginación para contact
+
+[33mcommit 167729f4ff1423631c65911101c578a9b6049b70[m
+Merge: 8457316 84ec618
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Wed Aug 21 21:33:37 2024 +0100
+
+    Merge pull request #32 from RIA-VENTURES/users_deleted
+    
+    Users deleted
+
+[33mcommit 84ec6186ce4be2d74af8601f38893af61c695e8a[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Aug 21 21:32:48 2024 +0100
+
+    fix error in files
+    
+    Se agrega unas lienas para controlar un error de instancias al mandar archivos
+
+[33mcommit fe7da02b56a250cfd9bd8500fb3cd6b8b40402c4[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Aug 21 15:32:28 2024 +0100
+
+    Users Listt
+    
+    Se implemento un endpoint para obtener la lista de los users, ademas se le puso paginacion y sus end points determinados para poder buscar sin complicaciones
+
+[33mcommit 84573165857cc2477e9d087582e50946b980f17b[m
+Merge: b6a8fbe 0e7df58
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Tue Aug 20 12:37:12 2024 +0100
+
+    Merge pull request #31 from RIA-VENTURES/mercado_pago_test
+    
+    Mercado pago test
+
+[33mcommit 0e7df58dfc3ea200fb706beb49300d28d806f22a[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu Aug 15 23:41:14 2024 +0100
+
+    fix credenciales emails
+
+[33mcommit daf1c48482c07b5a3010188b1c66cbbf50021906[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu Aug 15 23:04:25 2024 +0100
+
+    details email
+    
+    Se actulizo el correo por donde se manda la informacion de soueu
+
+[33mcommit bff895347502e6c085e139f3c7110510834b865d[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Aug 14 12:11:16 2024 +0100
+
+    fix 2 detalles de Brasil Mercado pago
+
+[33mcommit 17fa2eba5eef23c2ff5cca5296bfd4079734b2a8[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Aug 14 11:48:53 2024 +0100
+
+    fix traducciones emails
+
+[33mcommit 291adf88ea74702a78004fc78be1c279105f2760[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Aug 14 11:17:27 2024 +0100
+
+    implementacion de traducciones
+
+[33mcommit 125d6c6ec13c4dfea97be00107d9cb91621f0d50[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Aug 13 22:20:11 2024 +0100
+
+    reposicion de confirmacion por correo
+
+[33mcommit 67f5ef5145ac690b660c451b7e33d1ecb70970cb[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Aug 13 21:27:17 2024 +0100
+
+    details mercado pago
+
+[33mcommit cc0d698672953aa30b755b7ca8899a2b3160e617[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Mon Aug 12 21:13:03 2024 +0100
+
+    update br
+
+[33mcommit b6a8fbe615d8500b6e24cf2211e146a20559b8c2[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Mon Aug 12 15:50:55 2024 +0100
+
+    update Brasil
+
+[33mcommit da343812c9519a373823cda2558c6e601c355c4d[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu Aug 8 15:38:18 2024 +0100
+
+    detalles mercado pago
+    
+    Se agrego una forma mas eficiente de hacer consultas a mercado pago Brazil para recibir la data de confirmacion
+
+[33mcommit fcc5f01ddee5cde0a8f8f94401d876901346bb7f[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu Jul 18 12:46:03 2024 +0200
+
+    fix transacciones
+
+[33mcommit 138f6c8a85316f9a5974b62dd06289ff63847f77[m
+Merge: 98a0a1c 263d22e
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Jul 9 21:35:45 2024 +0300
+
+    Merge branch 'Develop' into pagination
+
+[33mcommit 98a0a1c0de6aeefc52dfdeeece5c991f0340536a[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Tue Jul 9 14:14:18 2024 -0400
+
+    buscador superadmin mejorado
+
+[33mcommit 263d22e3713f6062be18e0e65d3baef64be2dcf0[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Jul 9 01:09:41 2024 +0300
+
+    fix webhook mercado pago
+
+[33mcommit 142a50aea5e846cf50fbe07fe9021acc92f3b9a2[m
+Merge: 6bcecb2 1072c88
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Mon Jul 8 19:45:35 2024 +0300
+
+    Merge pull request #29 from RIA-VENTURES/pagination
+    
+    agregando buscador para superadmin y admin
+
+[33mcommit 1072c88c46129564f2fba4794feec935af6af456[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Mon Jul 8 10:27:47 2024 -0400
+
+    agregando buscador para superadmin y admin
+
+[33mcommit 6bcecb2374b6fedd9a00eff8f731491e4ff85804[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu Jul 4 19:38:36 2024 +0300
+
+    fix correos y dominios
+
+[33mcommit 9692ca5316a637eee5c7ae8760f87f6d6d67e792[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Wed Jul 3 12:30:08 2024 -0400
+
+    aplicar búsqueda en admin
+
+[33mcommit dbeb4bf91492cb898c6144594ac03deda821db00[m
+Merge: 7f4dc20 93bc39a
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Wed Jul 3 15:58:16 2024 +0300
+
+    Merge pull request #27 from RIA-VENTURES/paginacion_test
+    
+    Paginacion test
+
+[33mcommit 93bc39ac99eccdc05a797191cdb318f1db5be114[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Jul 3 15:55:06 2024 +0300
+
+    fix filtros customer_user_profile
+
+[33mcommit 146cdaf3e84d92b8d16f423acfb9e0fb16e6b5e1[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Jul 3 00:48:51 2024 +0300
+
+    paginacion_fix
+
+[33mcommit 2926f78fb624b737869e87105ea233bfbc551e9f[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Jul 2 12:48:32 2024 +0300
+
+    fix metodo
+    
+    Este metodo tuvo una actualizacion mal implementada
+    por lo que ya se arreglo para su buen uso
+
+[33mcommit 5d7c67c17f76512f120ba0cf34f1f4c8bf649dc7[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Jul 2 12:38:14 2024 +0300
+
+    paginacion para trabajadores
+
+[33mcommit 7f4dc2018e35679e2d2a8d819027e53ff6e8d7a1[m
+Merge: 8eb1058 afe34c5
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Mon Jun 24 23:58:48 2024 +0300
+
+    Merge pull request #26 from RIA-VENTURES/busqueda
+    
+    aplicando busqueda por id_licencia
+
+[33mcommit afe34c5fbe8edc1366fcbdc2b6dd22c7cd989588[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Mon Jun 24 16:45:43 2024 -0400
+
+    aplicando busqueda por id_licencia
+
+[33mcommit 8eb1058122a96055843e2746d13609a4a89f75ed[m
+Merge: 7339bfb 4fff94b
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Tue Jun 18 16:44:53 2024 +0300
+
+    Merge pull request #24 from RIA-VENTURES/ecommerce-button
+    
+    agregando paginación de usuarios
+
+[33mcommit 4fff94b95f9cd53452f12ce05dab97acc2e962a3[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Mon Jun 17 15:16:53 2024 -0400
+
+    agregando paginación de usuarios
+
+[33mcommit 7339bfbbc010f0c203748998cac2e33d1e8160df[m
+Merge: 06f281a 1f1634c
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Thu Jun 13 18:09:19 2024 +0300
+
+    Merge pull request #22 from RIA-VENTURES/ecommerce-button
+    
+    imagen para dubir documentos
+
+[33mcommit 1f1634ca92c51f4c81695fc37385e77c653d1dbd[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Wed Jun 12 17:27:53 2024 -0400
+
+    imagen para dubir documentos
+
+[33mcommit 06f281aec298f12919071ca30d66005b75a0569e[m
+Merge: 529a6a2 d513f76
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Tue Jun 4 18:09:57 2024 +0300
+
+    Merge pull request #21 from RIA-VENTURES/ecommerce-button
+    
+    color de boton perdonaizable en boton de ecommerce
+
+[33mcommit d513f761a3580e66ca1dea823a4e342c5928b151[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Mon Jun 3 14:53:00 2024 -0400
+
+    color de boton perdonaizable en boton de ecommerce
+
+[33mcommit 529a6a279e18ba5fc8e83dc697438a25254ed281[m
+Merge: 16c7b49 d277769
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Sat Jun 1 00:23:57 2024 +0300
+
+    Merge pull request #20 from RIA-VENTURES/ecommerce-button
+    
+    agregando boton de enlace hacia ecommerce
+
+[33mcommit d2777696fff8926be71713a83990b3de05de5e00[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Fri May 31 16:18:45 2024 -0400
+
+    agregando boton de enlace hacia ecommerce
+
+[33mcommit 16c7b490549dadb7362d06d36624e7c5240118e8[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Wed May 29 12:14:04 2024 -0400
+
+    agreando boton de booking personalizado
+
+[33mcommit 7f34acc486fad902ad380b02e5716080c9f13ef1[m
+Merge: 9565e32 7d23642
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Thu May 16 20:28:01 2024 +0300
+
+    Merge pull request #19 from RIA-VENTURES/Develop
+    
+    Develop
+
+[33mcommit 7d236428e1aadd97e916fb0bcb159e512d173281[m
+Merge: 4ad20cf cead06a
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Mon May 13 19:17:59 2024 +0300
+
+    Merge pull request #18 from RIA-VENTURES/client_contact_fix
+    
+    agregando correcciones a client contact
+
+[33mcommit cead06ade1704981763dc8aeae10a2b0e7f00d66[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Mon May 13 11:09:03 2024 -0400
+
+    agregando correcciones a client contact
+
+[33mcommit 4ad20cf3d2d428eb802366494b514f7bb887aa05[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu May 9 23:42:10 2024 +0300
+
+    fix requeriments --all update
+
+[33mcommit fccfafc0299f71baa374c1adf529dfd07d3ab667[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu May 9 23:37:34 2024 +0300
+
+    update de requeriments txt
+
+[33mcommit 283420847e267ddd4e1062e0e0cf0c29b11df49c[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Thu May 9 23:30:52 2024 +0300
+
+    fix problemas con (") a (')
+
+[33mcommit 9c04993ae2d47db247e72a90e42d1649403d7536[m
+Merge: dc5e2a4 cbfc0ab
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Thu May 9 23:17:44 2024 +0300
+
+    Merge pull request #17 from RIA-VENTURES/e-comerce_end_point
+    
+    Se agrego la funcionalidad para poder buscar users en otros servidores y hacer login con los mismos devolviendo el token
+
+[33mcommit 9565e325391cddc6e58c4d181b24f52e469c5d7f[m
+Merge: c0b83ad dc5e2a4
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Tue May 7 18:42:32 2024 +0300
+
+    Merge pull request #16 from RIA-VENTURES/Develop
+    
+    Develop
+
+[33mcommit cbfc0ab18edcbc85c84aa2493c7aaa8b00d86c67[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue May 7 18:42:06 2024 +0300
+
+    settign
+    
+    se agrego la funcion que permite verificar multiples servidores en firebase
+
+[33mcommit dc5e2a492261bf5519195e621086d364b57b4956[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Fri Apr 26 12:21:15 2024 +0300
+
+    fix customer user social medai
+    
+    Se arreglo un problema al manipular un objeto
+
+[33mcommit 9be719a42397b10b31e92d2a3631e01e9dbe2170[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Fri Apr 26 11:50:08 2024 +0300
+
+    fix migrations problems
+    
+    Hubo un problema bastante grande con los modelos
+    afortunadamente ya se reparo, y puede seguir el flojo normal del proyecto
+
+[33mcommit 44d83455c08c8c499d0b532b45f0d3b4226b7ff3[m
+Merge: 40b2813 8091448
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Thu Apr 25 18:43:17 2024 +0300
+
+    Merge pull request #15 from RIA-VENTURES/client_contact
+    
+    Client contact
+
+[33mcommit c0b83ad9ae092514e40b37f6c5765ad31e13f8ee[m
+Merge: 697535c 40b2813
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Wed Apr 24 11:36:23 2024 +0300
+
+    Merge pull request #14 from RIA-VENTURES/Develop
+    
+    Develop
+
+[33mcommit 40b281352095b98993ca62ae243eb9c5e6ebc727[m
+Merge: 8819b87 3f7b5e1
+Author: Augusto Nicolas <70610540+AugustoNicolas@users.noreply.github.com>
+Date:   Wed Apr 24 11:34:40 2024 +0300
+
+    Merge pull request #13 from RIA-VENTURES/files
+    
+    Se completo la parte de files
+
+[33mcommit 3f7b5e18cadfd82fd16c3878f53d96bbecabf758[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Apr 24 11:34:09 2024 +0300
+
+    Se completo la parte de files
+    
+    SE arreglo los archivos files para ser lanzados con exito, ademas se elimino problemas de end points no usados y se adaptaron correctamente otros para el buen funcionamiento del web site
+
+[33mcommit 8091448d6698f20ce310b2b65a2dfd654bf21469[m
+Merge: 2423fda 8819b87
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Wed Apr 24 08:38:49 2024 +0300
+
+    Merge branch 'Develop' into client_contact
+
+[33mcommit 2423fda8cb0d0bf0711e4803f7b001f26c807af2[m
+Author: kenntjm12 <kenntjm12@gmail.com>
+Date:   Wed Apr 24 00:25:50 2024 -0400
+
+    crud privado y publico para client contact
+
+[33mcommit 8819b8718d152e8e76a2dc6b8a4f6778720d62eb[m
+Author: AugustoNicolas <pepe.nico5@hotmail.com>
+Date:   Tue Apr 23 00:02:00 2024 +0300
+
+    update_user and stuff
+    
+    Se cambiaron metodos para actualizar users con firebase, elimiar users, limpiar sus datos, etc

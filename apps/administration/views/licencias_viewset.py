@@ -1,0 +1,322 @@
+from rest_framework.views import APIView
+from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.generics import get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+
+from apps.administration.models import Licencia
+from apps.administration.services import Licenciaservices
+
+#from authentication.views import CustomerUserserializers
+from apps.authentication.models import CustomerUser
+from apps.profile.models import CustomerUserProfile
+from apps.administration.UtilitiesAdministration import UtilitiesAdm
+
+
+from django.utils import timezone
+import datetime
+
+class Licenciaserializers(serializers.ModelSerializer):
+    fecha_fin = serializers.CharField (default="No definida")
+    class Meta:
+        model = Licencia
+        fields = (
+            'id', 'customer_user_admin', 'tipo_de_plan', 'fecha_fin', 'fecha_inicio', 'cobro', 'duracion','status')
+        extra_kwargs = {'cobro': {'required': True}, 
+                        'duracion': {'required': True}}
+        read_only_fields = ('fecha_fin',)
+
+class CustomerUserProfileserializersLow(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerUserProfile
+        fields = (
+            'id','public_name', 'customer_user',
+            'image')
+        
+class CustomerUserserializers(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+    class Meta:
+        model = CustomerUser
+        fields = ('id','email','is_editable','rubro', 'username', 'public_id', 'profile', 'phone_number', 'is_sponsor','is_booking','is_sales_manager','is_ecommerce')
+        read_only_fields = ('profile',)
+    def get_profile(self, user):
+        profile = CustomerUserProfile.objects.get(customer_user=user)
+        profile_serializers = CustomerUserProfileserializersLow(profile)
+        return profile_serializers.data
+        
+
+        
+# apartado para usuarios genericos  
+class LicenciaViewSet(APIView):
+    def get(self, request):
+        user_id = request.GET.get('user_id', request.user.id)
+
+        if user_id == request.user.id:
+            user = request.user
+        else:
+            try:
+                user = CustomerUser.objects.get(id = user_id)
+            except Exception as e:
+                return Response({"success": False, 'message': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+
+        utilitiesAdm = UtilitiesAdm()
+        if not utilitiesAdm.hasPermision(request.user, user ):
+            return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if user.licencia_id is None:
+            return Response({"success": False, "message": "El usuario no tiene licencia_id"}, status=status.HTTP_404_NOT_FOUND)
+        licencia_services = Licenciaservices()
+        try:
+            response = licencia_services.get_licencia(user.licencia_id_id)
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
+
+        licenciaserializers = Licenciaserializers(response, many=False)
+
+        #####   proceso para agregar fecha fin al objeto 
+        utilities = Utilities()
+        fecha_fin_str = utilities.calcular_fecha_fin(licenciaserializers.data['fecha_inicio'], licenciaserializers.data['duracion'])
+        data = licenciaserializers.data.copy ()
+        data['fecha_fin'] = fecha_fin_str
+        return Response({"success": True, "data": data }, status=status.HTTP_200_OK)
+    
+
+#apartado para usuarios administradores 
+class LicenciaAdminViewSet(APIView):
+    def get(self, request, pk=None):
+        # Obtener el parámetro de búsqueda
+        search_value = request.GET.get('search_value', '')
+
+        # Obtener todos los usuarios con licencia
+        licencia_services = Licenciaservices()
+        try:
+            user = get_object_or_404(CustomerUser, id=pk) if pk is not None else request.user
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, user ):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            response = licencia_services.get_Users(user.licencia_id_id,request.user.id, with_admin=True if pk is None else True )
+
+            # Filtrar usuarios según los tres campos simultáneamente usando Q objects
+            response = response.filter(
+                Q(username__icontains=search_value) |
+                Q(id__icontains=search_value) |
+                Q(email__icontains=search_value)
+            )
+
+            # Implementación de paginación
+            page_number = request.GET.get('page', 1)
+            items_per_page = 10    
+            paginator = Paginator(response, items_per_page)
+            try:
+                page = paginator.page(page_number)
+            except Exception as e:
+                print(e)
+                return Response({"success": False, "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
+
+        # Serializar los usuarios paginados
+        Userserializers = CustomerUserserializers(page, many=True)
+
+        data = []
+        for user in Userserializers.data:
+            new_object = {
+                "id": user["id"],
+                "email": user["email"],
+                "is_editable": user["is_editable"],
+                "rubro": user["rubro"],
+                "username": user["username"],
+                "public_id": user["public_id"],                
+                "profile": user["profile"],
+                "phone_number": user["phone_number"],
+                "is_sponsor": user["is_sponsor"],
+                "is_booking": user["is_booking"],
+                "is_sales_manager": user["is_sales_manager"],
+                "is_ecommerce": user["is_ecommerce"],
+            }
+            data.append(new_object)
+
+        return Response({"success": True, "pages": paginator.num_pages, "data": data  }, status=status.HTTP_200_OK)
+  
+
+class ListAdminViewSet(APIView):
+    def get(self, request, pk=None):
+        # Obtener el parámetro de búsqueda
+        search_value = request.GET.get('search_value', '')
+
+        # Obtener todos los usuarios con licencia
+        licencia_services = Licenciaservices()
+        try:
+            user = get_object_or_404(CustomerUser, id=pk) if pk is not None else request.user
+            utilitiesAdm = UtilitiesAdm()
+            if not utilitiesAdm.hasPermision(request.user, user ):
+                return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            response = licencia_services.get_Users(user.licencia_id_id, request.user.id, with_admin=True if pk is None else True)
+
+            # Filtrar usuarios según los tres campos simultáneamente usando Q objects
+            response = response.filter(
+                Q(username__icontains=search_value) |
+                Q(id__icontains=search_value) |
+                Q(email__icontains=search_value)
+            )
+
+            # Serializar los usuarios sin paginación
+            Userserializers = CustomerUserserializers(response, many=True)
+
+            data = []
+            for user in Userserializers.data:
+                new_object = {
+                    "id": user["id"],
+                    "email": user["email"],
+                    "rubro": user["rubro"],
+                    "username": user["username"],
+                    "public_id": user["public_id"],                
+                    "profile": user["profile"],
+                    "phone_number": user["phone_number"],
+                    
+                }
+                data.append(new_object)
+
+            return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+
+# apartado para los super usuarios
+class LicenciaSuperViewSet(APIView):
+    def get(self, request, pk=None):
+        if request.user.is_superuser == 0:
+            return Response({"succes": False, "message": "El usuario no tiene acceso"}, status=status.HTTP_404_NOT_FOUND)
+        licencia_services = Licenciaservices()
+        try:
+            response = licencia_services.get_licencias_super()
+        except Exception as e:
+            return Response({"succes": False}, status=status.HTTP_404_NOT_FOUND)
+
+        licenciaserializers = Licenciaserializers(response, many=True)
+
+        data = []
+        for licencia in licenciaserializers.data:
+            # Calcular el valor de fecha_fin y agregarlo al diccionario
+            utilities = Utilities()
+            licencia ['fecha_fin'] = utilities.calcular_fecha_fin(licencia ['fecha_inicio'], licencia ['duracion'])
+            # Añadir el diccionario modificado a la lista
+            data.append (licencia)
+
+        return Response({"success": True, "data": licenciaserializers.data}, status=status.HTTP_200_OK)
+    
+    def post(self, request, pk=None):
+        #validacion de los campos 
+        if request.user.is_superuser == False :
+            return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
+        if 'duracion' not in request.data :
+            return Response({"succes": False, "message": "el campo duracion es obligatorio"}, status=status.HTTP_400_BAD_REQUEST)
+        if 'status' not in request.data :
+            return Response({"succes": False, "message": "el campo de status es obligatorio"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'fecha_inicio' not in request.data :
+            request.data["fecha_inicio"] = timezone.now()
+
+        serializers = Licenciaserializers(data=request.data)
+        if not serializers.is_valid():
+            return Response({"status": "error", "data": serializers.errors}, status=status.HTTP_400_BAD_REQUEST)
+        utilities = Utilities()
+        dto = utilities.buid_dto_from_validated_data(serializers)
+        licenciaservices = Licenciaservices()
+
+        # Obtener el valor de customer_user_admin del request.data
+        customer_user_admin = request.data.get('customer_user_admin', None) 
+   
+        try:
+            response = licenciaservices.createLicencia(dto,customer_user_admin)
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+        licencia_serializers = Licenciaserializers(response, many=False)
+        return Response({"success": True, "data": licencia_serializers.data},
+                        status=status.HTTP_200_OK)
+    
+    def patch(self, request, pk=None):
+        if request.user.is_superuser == False :
+            return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
+        licencia_services = Licenciaservices()
+ 
+        type = request.data.get('tipo_de_plan', None)
+        cobro = request.data.get('cobro', None)
+        duracion = request.data.get('duracion', None)
+        estado = request.data.get('status', None)
+        customer_user_admin = request.data.get('customer_user_admin', None)
+
+        try:
+            licencia = licencia_services.updateLicencia(pk=pk, type=type, cobro=cobro, duracion=duracion, status=estado, customer_user_admin=customer_user_admin)
+            licenciaserializers = Licenciaserializers(licencia, many=False)
+            utilities = Utilities() 
+            # Crear un nuevo diccionario con los datos del serializador
+            data = licenciaserializers.data.copy ()
+            # Agregar el campo fecha_fin al diccionario
+            data ['fecha_fin'] = utilities.calcular_fecha_fin(licenciaserializers.data['fecha_inicio'], licenciaserializers.data['duracion'])
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+        return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+    
+
+    def delete(self, request, pk=None):
+        if not request.user.is_superuser:
+            return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
+        licencia_services = Licenciaservices()
+
+        try:
+            licencia_services.delete_licencia(licencia_id=pk)
+        except Exception as e:
+            return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
+class LicenciaCoonectViewSet(APIView):
+    def patch(self, request, pk=None):
+        ids = []
+        licencia_services = Licenciaservices()
+        for reg in request.data:
+            try :
+                usr=licencia_services.connectLicencia(pk,reg["id"] )
+            except Exception as e:
+                return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+        return Response({"success": True}, status=status.HTTP_200_OK)
+    
+from dateutil.parser import parse
+from datetime import timedelta
+
+#WAITING: Unificar las clases de utilities en un archivo global para todos los modulo, 
+# DELETEME: borrar esta parte
+class Utilities():
+    def calcular_fecha_fin(self, fecha_inicio, duracion):
+        fecha_inicio = parse(fecha_inicio) # Detecta el formato y convierte la cadena a objeto
+        fecha_fin = fecha_inicio + timedelta(days=duracion) # Suma la duración en días al objeto
+        fecha_fin_str = fecha_fin.strftime("%Y-%m-%dT%H:%M:%SZ") # Convierte el objeto a cadena con el formato deseado
+        return fecha_fin_str # Devuelve la cadena
+    
+    def buid_dto_from_validated_data(self, serializers):
+        data = serializers.validated_data
+        return Licencia(
+            customer_user_admin=data.get("customer_user_admin", None), # Si no hay customer_user_admin, se usa None
+            tipo_de_plan=data["tipo_de_plan"],
+            fecha_inicio=data.get("fecha_inicio", None),
+            cobro=data["cobro"],
+            duracion=data["duracion"],
+            status=data["status"],
+        )
+    
+    def create_licencia_DTO(self, data):
+        serializers = Licenciaserializers(data=data)
+        if not serializers.is_valid():
+            return False
+        utilities = Utilities()
+        dto = utilities.buid_dto_from_validated_data(serializers)
+        licenciaservices = Licenciaservices()
+
+        response = licenciaservices.createLicencia(dto)
+        return response
