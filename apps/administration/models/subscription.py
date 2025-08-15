@@ -1,7 +1,7 @@
 from datetime import date
 from django.db import models
 
-from administration.models import Currencies
+from .currencies import Currencies
 
 
 class Subscription(models.Model):

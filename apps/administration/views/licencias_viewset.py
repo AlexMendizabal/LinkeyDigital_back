@@ -20,6 +20,8 @@ import datetime
 
 class Licenciaserializers(serializers.ModelSerializer):
     fecha_fin = serializers.CharField (default="No definida")
+    # Ensure we accept a user id and can update the relation
+    customer_user_admin = serializers.PrimaryKeyRelatedField(queryset=CustomerUser.objects.all(), required=False, allow_null=True)
     class Meta:
         model = Licencia
         fields = (
@@ -27,6 +29,27 @@ class Licenciaserializers(serializers.ModelSerializer):
         extra_kwargs = {'cobro': {'required': True}, 
                         'duracion': {'required': True}}
         read_only_fields = ('fecha_fin',)
+    def update(self, instance, validated_data):
+        new_admin = validated_data.pop('customer_user_admin', None)
+        # Update simple fields
+        for field in ['tipo_de_plan', 'fecha_inicio', 'cobro', 'duracion', 'status']:
+            if field in validated_data:
+                setattr(instance, field, validated_data[field])
+        # Handle linking admin user to license and toggling flags
+        if new_admin is not None:
+            old_admin = instance.customer_user_admin
+            if old_admin and old_admin != new_admin:
+                old_admin.is_admin = False
+                old_admin.save()
+            if new_admin:
+                new_admin.is_admin = True
+                # link user to this license if not already
+                if getattr(new_admin, 'licencia_id_id', None) != instance.id:
+                    new_admin.licencia_id = instance
+                new_admin.save()
+            instance.customer_user_admin = new_admin
+        instance.save()
+        return instance
 
 class CustomerUserProfileserializersLow(serializers.ModelSerializer):
     class Meta:
@@ -223,20 +246,27 @@ class LicenciaSuperViewSet(APIView):
         if 'fecha_inicio' not in request.data :
             request.data["fecha_inicio"] = timezone.now()
 
-        serializers = Licenciaserializers(data=request.data)
+        # Map alias user/user_id to customer_user_admin
+        data = request.data.copy()
+        if 'customer_user_admin' not in data:
+            alias_user = data.get('user_id') or data.get('user')
+            if alias_user:
+                data['customer_user_admin'] = alias_user
+
+        serializers = Licenciaserializers(data=data)
         if not serializers.is_valid():
             return Response({"status": "error", "data": serializers.errors}, status=status.HTTP_400_BAD_REQUEST)
         utilities = Utilities()
         dto = utilities.buid_dto_from_validated_data(serializers)
         licenciaservices = Licenciaservices()
 
-        # Obtener el valor de customer_user_admin del request.data
-        customer_user_admin = request.data.get('customer_user_admin', None) 
+        # Obtener el valor de customer_user_admin del data
+        customer_user_admin = data.get('customer_user_admin', None) 
    
         try:
             response = licenciaservices.createLicencia(dto,customer_user_admin)
         except Exception as e:
-            return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         licencia_serializers = Licenciaserializers(response, many=False)
         return Response({"success": True, "data": licencia_serializers.data},
                         status=status.HTTP_200_OK)
@@ -244,25 +274,22 @@ class LicenciaSuperViewSet(APIView):
     def patch(self, request, pk=None):
         if request.user.is_superuser == False :
             return Response({"succes": False, "message": "Acceso denegado"}, status=status.HTTP_400_BAD_REQUEST)
-        licencia_services = Licenciaservices()
- 
-        type = request.data.get('tipo_de_plan', None)
-        cobro = request.data.get('cobro', None)
-        duracion = request.data.get('duracion', None)
-        estado = request.data.get('status', None)
-        customer_user_admin = request.data.get('customer_user_admin', None)
-
-        try:
-            licencia = licencia_services.updateLicencia(pk=pk, type=type, cobro=cobro, duracion=duracion, status=estado, customer_user_admin=customer_user_admin)
-            licenciaserializers = Licenciaserializers(licencia, many=False)
-            utilities = Utilities() 
-            # Crear un nuevo diccionario con los datos del serializador
-            data = licenciaserializers.data.copy ()
-            # Agregar el campo fecha_fin al diccionario
-            data ['fecha_fin'] = utilities.calcular_fecha_fin(licenciaserializers.data['fecha_inicio'], licenciaserializers.data['duracion'])
-        except Exception as e:
-            return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
-        return Response({"success": True, "data": data}, status=status.HTTP_200_OK)
+        # Load instance
+        licencia = get_object_or_404(Licencia, id=pk)
+        # Accept alias "custom_user_admin" as well
+        data = request.data.copy()
+        if 'custom_user_admin' in data and 'customer_user_admin' not in data:
+            data['customer_user_admin'] = data['custom_user_admin']
+        # Partial update via serializer (this will also link the user)
+        serializers = Licenciaserializers(instance=licencia, data=data, partial=True)
+        if not serializers.is_valid():
+            return Response({"status": "error", "data": serializers.errors}, status=status.HTTP_400_BAD_REQUEST)
+        licencia = serializers.save()
+        licenciaserializers = Licenciaserializers(licencia, many=False)
+        utilities = Utilities() 
+        data_resp = licenciaserializers.data.copy ()
+        data_resp ['fecha_fin'] = utilities.calcular_fecha_fin(licenciaserializers.data['fecha_inicio'], licenciaserializers.data['duracion'])
+        return Response({"success": True, "data": data_resp}, status=status.HTTP_200_OK)
     
 
     def delete(self, request, pk=None):
@@ -273,7 +300,7 @@ class LicenciaSuperViewSet(APIView):
         try:
             licencia_services.delete_licencia(licencia_id=pk)
         except Exception as e:
-            return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+            return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True}, status=status.HTTP_200_OK)
 
 class LicenciaCoonectViewSet(APIView):
@@ -284,7 +311,7 @@ class LicenciaCoonectViewSet(APIView):
             try :
                 usr=licencia_services.connectLicencia(pk,reg["id"] )
             except Exception as e:
-                return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
+                return Response({"success": False}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response({"success": True}, status=status.HTTP_200_OK)
     
 from dateutil.parser import parse

@@ -4,17 +4,16 @@ from apps.pay.models import Productos
 from apps.pay.serializers import Productsserializers
 
 class ProductosListCreateView(generics.ListCreateAPIView):
-    queryset = Productos.objects.all()
-    serializers_class = Productsserializers
+    queryset = Productos.objects.all().order_by('-id')
+    serializer_class = Productsserializers
     
 class ProductosRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
-    serializers_class = Productsserializers
+    serializer_class = Productsserializers
 
 class ProductosListView(generics.ListAPIView):
     permission_classes = []
     authentication_classes = []
-
-    queryset = Productos.objects.all()
-    serializers_class = Productsserializers
+    queryset = Productos.objects.all().order_by('-id')
+    serializer_class = Productsserializers
 

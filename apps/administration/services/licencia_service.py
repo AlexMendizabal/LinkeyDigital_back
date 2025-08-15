@@ -67,4 +67,3 @@ class Licenciaservices:
         licencia.save() # Guardar los cambios en la base de datos
         return licencia
 
-    

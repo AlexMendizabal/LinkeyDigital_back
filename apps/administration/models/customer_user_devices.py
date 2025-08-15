@@ -1,7 +1,7 @@
 from datetime import date
 from django.db import models
 
-from administration.models.devices import Devices
+from .devices import Devices
 #from authentication.models import CustomerUser
 
 

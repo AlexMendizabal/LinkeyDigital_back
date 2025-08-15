@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from apps.authentication.serializers import CustomerUserserializers
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
@@ -10,6 +11,8 @@ from django.db import transaction
 from apps.administration.UtilitiesAdministration import UtilitiesAdm
 from apps.booking.services import Bookingservices
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 #from firebase_admin import auth
 
 
@@ -29,9 +32,17 @@ class CustomerUserserializersWithBooking(CustomerUserserializers):
         return representation
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CustomerUserViewSet(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
-        customer_user_serializers = CustomerUserserializersWithBooking(request.user)
+        # Permitir obtener usuario por id o el propio
+        user_id = request.GET.get('user_id')
+        if user_id:
+            user = get_object_or_404(CustomerUser, id=user_id)
+        else:
+            user = request.user
+        customer_user_serializers = CustomerUserserializers(user)
         return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -46,6 +57,32 @@ class CustomerUserViewSet(APIView):
 
     def put(self, request):
         # si no se manda user por params... se usara el del user que lo solicite 
+        customer_user = request.GET.get('user_id', request.user)
+        try:
+            with transaction.atomic():
+                if isinstance(customer_user, int) or isinstance(customer_user, str):
+                    customer_user = get_object_or_404(CustomerUser, id=customer_user)
+
+                utilitiesAdm = UtilitiesAdm()
+                if not utilitiesAdm.hasPermision(request.user, customer_user):
+                    return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+                customer_user_serializers = CustomerUserserializers(instance=customer_user, data=request.data, partial=True)
+                customer_user_serializers.is_valid(raise_exception=True)
+                customer_user_serializers.save()
+
+                # Depuración para verificar los datos recibidos y enviados
+                print('Datos recibidos en la solicitud:', request.data)
+                print('Datos serializados antes de guardar:', customer_user_serializers.validated_data)
+                print('Datos serializados después de guardar:', customer_user_serializers.data)
+
+        except Exception as e:
+            return Response({"status": False, "error" : str(e)}, status=status.HTTP_503_service_unavailable)
+
+        return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        # Permitir actualización parcial del usuario autenticado o por id
         customer_user = request.GET.get('user_id', request.user)
         try:
             with transaction.atomic():
@@ -120,7 +157,8 @@ class CustomerAdminViewSet(APIView):
 
 
 class CustomerUserPutRubroViewSet(APIView):
-    
+    permission_classes = [IsAuthenticated]
+
     """ WAITING: ID Se debe poner la funcion de filtrar ids """
     def put(self, request):
         if not request.user.is_superuser and not request.user.is_admin:
@@ -147,8 +185,8 @@ class CustomerUserPutRubroViewSet(APIView):
                     return Response({"success": False}, status=status.HTTP_503_services_UNAVAILABLE)
         return Response({"success": True}, status=status.HTTP_200_OK)
 
-        
 
-        
+
+
 
 

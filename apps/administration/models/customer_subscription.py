@@ -1,7 +1,8 @@
 from datetime import date
 from django.db import models
 
-from administration.models import Customer, Subscription
+from .customer import Customer
+from .subscription import Subscription
 
 
 class CustomerSubscription(models.Model):

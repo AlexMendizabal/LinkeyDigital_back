@@ -1,3 +1,28 @@
+# Middleware para desactivar CSRF en métodos PUT (solo desarrollo)
+class DisableCSRFMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+    def __call__(self, request):
+        if request.method == 'PUT':
+            setattr(request, '_dont_enforce_csrf_checks', True)
+        return self.get_response(request)
+
+# Permitir CSRF en desarrollo para localhost y 127.0.0.1
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+# Opcional: para APIs y desarrollo, puedes desactivar la verificación CSRF en SessionAuthentication
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
 import os
 from pathlib import Path
 
@@ -25,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'apps.authentication',
     'apps.administration',
     'apps.profile',
@@ -34,6 +60,8 @@ INSTALLED_APPS = [
     'apps.booking',
     'apps.client_contact',
     'apps.ecommerce',
+    'soyyo_api',
+    'dj_rest_auth',
 
 
 ]
@@ -41,7 +69,9 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'authentication.CustomerUser'
 
 MIDDLEWARE = [
+'common.middleware.DisableCSRFMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -99,19 +129,34 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #FORCE_SCRIPT_NAME = '/backend'
 
 
+
+# Permitir solicitudes desde frontend local
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "https://api.linkey.digital",
     "https://www.api.linkey.digital",
     "https://www.linkey.digital",
 ]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = False
+
+# Configuración de cookies de sesión para desarrollo
+SESSION_COOKIE_HTTPONLY = False  # Permitir acceso desde JavaScript
+SESSION_COOKIE_SAMESITE = 'Lax'  # Permitir cookies cross-site en desarrollo
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
     ),
 }
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

@@ -7,13 +7,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 class DiscountView(viewsets.ModelViewSet):
-    serializers_class=Discountserializers
-    queryset=Discount.objects.all()
+    serializer_class=Discountserializers
+    queryset=Discount.objects.all().order_by('-id')
 
-    
-    
 class GetUserByDiscountView(generics.GenericAPIView):
-    serializers_class = Userserializers
+    serializer_class = Userserializers
 
     def get(self, request, discount_id):
         try:
@@ -24,11 +22,10 @@ class GetUserByDiscountView(generics.GenericAPIView):
             return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
         
 class UserDiscountsView(generics.GenericAPIView):
-    serializers_class = Discountserializers
+    serializer_class = Discountserializers
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-
         if self.request.user.is_superuser:
             userID = self.request.GET.get("userID", False) or self.request.user.id
             return Discount.objects.filter(customer_user__id=userID)
@@ -36,11 +33,11 @@ class UserDiscountsView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializers = self.get_serializers(queryset, many=True)
+        serializers = self.serializer_class(queryset, many=True)
         return Response(serializers.data)
     
 class GetDiscountByVerificationCodeView(APIView):
-    serializers_class = Discountserializers  # Use your Discount serializers here
+    serializer_class = Discountserializers  # Use your Discount serializers here
     permission_classes = []
     authentication_classes = []
 

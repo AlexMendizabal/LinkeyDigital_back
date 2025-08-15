@@ -36,18 +36,24 @@ class CustomerUserProfile(models.Model):
 
     def save(self, **kwargs):
         super().save()
-        img = Image.open(self.image.path)
-        bg = Image.open(self.background.path)
-
-        if img.height > 300 or img.width > 300:
-            new_img = (200, 200)
-            img.thumbnail(new_img)
-            img.save(self.image.path)
-
-        if bg.height > 1080 or bg.width > 1917:
-            new_bg = (1917, 1080)
-            bg.thumbnail(new_bg)
-            bg.save(self.background.path)
+        # Procesar imagen de perfil si existe
+        try:
+            img = Image.open(self.image.path)
+            if img.height > 300 or img.width > 300:
+                new_img = (200, 200)
+                img.thumbnail(new_img)
+                img.save(self.image.path)
+        except Exception:
+            pass
+        # Procesar background si existe
+        try:
+            bg = Image.open(self.background.path)
+            if bg.height > 1080 or bg.width > 1917:
+                new_bg = (1917, 1080)
+                bg.thumbnail(new_bg)
+                bg.save(self.background.path)
+        except Exception:
+            pass
 
 
 #WAITING: claro ejemplo de la tarea de receiver

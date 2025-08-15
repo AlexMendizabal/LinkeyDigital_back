@@ -32,4 +32,6 @@ urlpatterns = [
                   path('client_contact/', include('apps.client_contact.urls')),
                   path('ecommerce/', include('apps.ecommerce.urls')),
 
+                  path('accounts/', include('allauth.urls')),
+                  path('api/auth/', include('dj_rest_auth.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

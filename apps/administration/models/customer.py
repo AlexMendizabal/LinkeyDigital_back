@@ -1,7 +1,7 @@
 from datetime import date
 from django.db import models
 
-from administration.models import CustomerType
+from .customer_type import CustomerType
 
 
 class Customer(models.Model):
