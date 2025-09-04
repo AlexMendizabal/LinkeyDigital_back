@@ -37,6 +37,8 @@ class CustomerUser(AbstractUser):
 
     licencia_id = models.ForeignKey(Licencia, on_delete=models.SET_NULL, null=True)
     #history = HistoricalRecords()
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
 # este metodo es para bloquar cuando el usuario ya no tenga acceso por falta de licencia
     def has_access_to_protected_views(self):
