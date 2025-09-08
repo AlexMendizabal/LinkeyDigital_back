@@ -5,7 +5,10 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.authentication.models.customer_user import CustomerUser
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from apps.authentication.utils.email import send_confirmation_email
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 User = get_user_model()
 
@@ -25,6 +28,33 @@ class AuthenticatedView(APIView):
         except User.DoesNotExist:
             print("❌ No existe un usuario con ese email en la DB")
             return Response({"mensaje": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
+        # Aquí comprobamos si necesita migrar la contraseña
+        if not user.password or user.password.strip() == "":
+            
+
+            # Generar token seguro
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))  # para identificar al usuario
+
+            # Construir enlace seguro
+            reset_link = f"http://localhost:3000/restore-password?uid={uid}&token={token}"
+
+            # Enviar correo
+            subject = "Restablece tu contraseña en Linkey"
+            message = f"Hola,\n\nSe detectó tu correo {user.email} en nuestra plataforma.\n" \
+                    f"Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:\n\n" \
+                    f"{reset_link}\n\nGracias."
+
+            send_confirmation_email(user.email, subject, message)
+
+            return Response({
+                "email_exists": True,
+                "password_missing": True,
+                "email": user.email
+            }, status=status.HTTP_200_OK)
+
 
         user = authenticate(request, username=email, password=password)
         print("Resultado de authenticate():", user)

@@ -16,13 +16,15 @@ CSRF_TRUSTED_ORIGINS = [
 # Opcional: para APIs y desarrollo, puedes desactivar la verificación CSRF en SessionAuthentication
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',  # opcional
     ),
 }
+
+
+
 import os
 from pathlib import Path
 
@@ -159,14 +161,13 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',  # opcional
     ),
 }
+
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -178,12 +179,15 @@ STATICFILES_DIRS = (
 
 
 
-EMAIL_HOST = EMAIL_HOST
-EMAIL_PORT = EMAIL_PORT
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "linkey.digital"          # Outgoing Server (SMTP)
+EMAIL_PORT = 465                       # SSL
+EMAIL_USE_SSL = True                   # usamos SSL porque puerto = 465
+EMAIL_USE_TLS = False                  # (no activar TLS si usas SSL)
 
-EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "soporte@linkey.digital"
+EMAIL_HOST_PASSWORD = "LinkeyAxentis2025"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

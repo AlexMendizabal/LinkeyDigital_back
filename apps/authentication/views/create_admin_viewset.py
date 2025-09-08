@@ -4,14 +4,20 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
+from rest_framework.permissions import IsAuthenticated
 
 from apps.administration.views.licencias_viewset import Licenciaserializers, Utilities
 from apps.administration.services import Licenciaservices
 
 class CreateAdmin(APIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        print("DEBUG user:", request.user)
+        print("DEBUG is_authenticated:", request.user.is_authenticated)
+        print("DEBUG is_staff:", request.user.is_staff)
+        print("DEBUG is_superuser:", request.user.is_superuser)
+
         if not request.user.is_superuser:
             return Response({"error": "No autorizado"}, status=status.HTTP_403_FORBIDDEN)
         correo = request.data.get("correo")

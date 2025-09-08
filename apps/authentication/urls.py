@@ -5,6 +5,7 @@ from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, Custome
    ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyToken, AuthenticationSpecialViewset \
     , CustomerUserListViewSet
 from .views.list_sponsor_user_viewset import ListSponsorUsersView
+from .views.reset_password_viewset import ResetPasswordView
 
 router = routers.DefaultRouter()
 
@@ -33,5 +34,7 @@ urlpatterns = [
     # Metodo para reiniciar users
     path('reset', AuthenticationSpecialViewset.as_view(), name="reset_user"),
 
-    path('sponsors/', ListSponsorUsersView.as_view(), name='list_sponsor_users')
+    path('sponsors/', ListSponsorUsersView.as_view(), name='list_sponsor_users'),
+
+    path("reset-password/", ResetPasswordView.as_view(), name="reset-password"),
 ]
