@@ -36,7 +36,35 @@ class ResetPasswordView(APIView):
             return Response({"mensaje": "Token válido"}, status=status.HTTP_200_OK)
 
         # Si hay password → cambiarla
-        user.password = make_password(new_password)
+        user.set_password(new_password)
         user.save()
 
+
         return Response({"mensaje": "Contraseña restablecida correctamente"}, status=status.HTTP_200_OK)
+
+class ValidateResetTokenView(APIView):
+    permission_classes = []
+    authentication_classes = []
+
+    def post(self, request):
+        uidb64 = request.data.get("uid")
+        token = request.data.get("token")
+
+        if not uidb64 or not token:
+            return Response({"valid": False, "mensaje": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response({"valid": False, "mensaje": "Enlace inválido"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if default_token_generator.check_token(user, token):
+            return Response({
+                "valid": True,
+                "username": user.username,
+                "email": user.email,
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({"valid": False, "mensaje": "Token inválido o expirado"}, status=status.HTTP_400_BAD_REQUEST)
+

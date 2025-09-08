@@ -5,7 +5,7 @@ from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, Custome
    ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyToken, AuthenticationSpecialViewset \
     , CustomerUserListViewSet
 from .views.list_sponsor_user_viewset import ListSponsorUsersView
-from .views.reset_password_viewset import ResetPasswordView
+from .views.reset_password_viewset import ResetPasswordView, ValidateResetTokenView
 
 router = routers.DefaultRouter()
 
@@ -37,4 +37,6 @@ urlpatterns = [
     path('sponsors/', ListSponsorUsersView.as_view(), name='list_sponsor_users'),
 
     path("reset-password/", ResetPasswordView.as_view(), name="reset-password"),
+    path("validate-token/", ValidateResetTokenView.as_view(), name="validate-token"),
+    
 ]
