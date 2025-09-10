@@ -1,5 +1,6 @@
 from rest_framework import routers
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, CustomerUserPutRubroViewSet \
    ,CreateALotOfUsers, CreateAdmin, CustomerAdminViewSet, VerifyToken, AuthenticationSpecialViewset \
@@ -36,7 +37,11 @@ urlpatterns = [
 
     path('sponsors/', ListSponsorUsersView.as_view(), name='list_sponsor_users'),
 
+    # Enlaces para restablecer contraseña de cuentas existentes
     path("reset-password/", ResetPasswordView.as_view(), name="reset-password"),
     path("validate-token/", ValidateResetTokenView.as_view(), name="validate-token"),
-    
+
+    # refrescar token y mantener sesión activa
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 ]

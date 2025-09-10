@@ -6,7 +6,7 @@ class RegisterListCreateAPIView(generics.ListCreateAPIView):
     """
     View to list all registers or create a new one.
     """
-    serializers_class = Registerserializers
+    serializer_class = Registerserializers
 
     def get_queryset(self):
         # Obtener el ID del usuario cliente de los parámetros de la URL
@@ -19,4 +19,4 @@ class RegisterRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     View to retrieve, update or delete a register by its id.
     """
     queryset = Register.objects.all()
-    serializers_class = Registerserializers
+    serializer_class = Registerserializers

@@ -4,7 +4,6 @@ from rest_framework import status
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.authentication.models.customer_user import CustomerUser
-from rest_framework_simplejwt.tokens import RefreshToken
 from apps.authentication.utils.email import send_confirmation_email
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
@@ -20,13 +19,13 @@ class AuthenticatedView(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
 
-        print(f"🔍 Intentando login con: {email} / {password}")
+        print(f"Intentando login con: {email} / {password}")
 
         try:
             user = User.objects.get(email=email)
-            print(f"✅ Usuario encontrado en DB: {user.email}, activo={user.is_active}")
+            print(f"Usuario encontrado en DB: {user.email}, activo={user.is_active}")
         except User.DoesNotExist:
-            print("❌ No existe un usuario con ese email en la DB")
+            print("No existe un usuario con ese email en la DB")
             return Response({"mensaje": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 
