@@ -20,6 +20,7 @@ class CreateAdmin(APIView):
 
         if not request.user.is_superuser:
             return Response({"error": "No autorizado"}, status=status.HTTP_403_FORBIDDEN)
+        username = request.data.get("username")
         correo = request.data.get("correo")
         esEmpresa = request.data.get("esEmpresa", True)
         tipo_de_plan = request.data.get("tipo_de_plan")
@@ -39,15 +40,19 @@ class CreateAdmin(APIView):
         User = get_user_model()
         if User.objects.filter(email=correo).exists():
             return Response({"mensaje": "El email ya está registrado."}, status=status.HTTP_400_BAD_REQUEST)
+        # 🔹 Definir username dinámicamente
+        final_username = username if username else correo.split('@')[0]
         # Crear usuario empresa admin
         user = User.objects.create(
             email=correo,
-            username=correo.split('@')[0],
-            password=make_password(correo),
+            username=final_username,
+            password=make_password(request.data.get("password")) if request.data.get("password") else None,
             rubro=rubro,
-            is_staff=True,
+            # imagino que is_staff es para registrar consultores del sistema,
+            # por defecto que sea false, más adelante se lo puede habilitar
+            is_staff=False,
             is_superuser=False,
-            is_admin=True,
+            is_admin=esEmpresa, 
         )
         # Crear y enlazar licencia
         payload = {
@@ -64,7 +69,7 @@ class CreateAdmin(APIView):
         utilities = Utilities()
         dto = utilities.buid_dto_from_validated_data(serializer)
         licenciaservices = Licenciaservices()
-        licencia = licenciaservices.createLicencia(dto, customer_user_admin=user.id, admin=True)
+        licencia = licenciaservices.createLicencia(dto, customer_user_admin=user.id, admin=esEmpresa)
         # Respuesta
         licencia_data = Licenciaserializers(licencia).data
         licencia_data = licencia_data.copy()

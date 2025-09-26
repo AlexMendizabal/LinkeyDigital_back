@@ -16,6 +16,7 @@ class ResetPasswordView(APIView):
         uidb64 = request.data.get("uid")
         token = request.data.get("token")
         new_password = request.data.get("password", None)
+        new_email = request.data.get("new_email", None)
 
         if not uidb64 or not token:
             return Response({"mensaje": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
@@ -37,6 +38,12 @@ class ResetPasswordView(APIView):
 
         # Si hay password → cambiarla
         user.set_password(new_password)
+
+        if new_email and new_email != user.email:
+            if User.objects.filter(email=new_email).exists():
+                return Response({"mensaje": "El correo ya está registrado"}, status=status.HTTP_400_BAD_REQUEST)
+            user.email = new_email
+
         user.save()
 
 

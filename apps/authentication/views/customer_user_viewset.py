@@ -77,7 +77,7 @@ class CustomerUserViewSet(APIView):
                 print('Datos serializados después de guardar:', customer_user_serializers.data)
 
         except Exception as e:
-            return Response({"status": False, "error" : str(e)}, status=status.HTTP_503_service_unavailable)
+            return Response({"status": False, "error" : str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
 
@@ -98,7 +98,7 @@ class CustomerUserViewSet(APIView):
                 customer_user_serializers.save()
 
         except Exception as e:
-            return Response({"status": False, "error" : str(e)}, status=status.HTTP_503_service_unavailable)
+            return Response({"status": False, "error" : str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         return Response(customer_user_serializers.data, status=status.HTTP_200_OK)
 

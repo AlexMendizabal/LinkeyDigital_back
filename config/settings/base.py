@@ -1,4 +1,6 @@
 # Middleware para desactivar CSRF en métodos PUT (solo desarrollo)
+from datetime import timedelta
+
 class DisableCSRFMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -201,3 +203,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'  # O 'mandatory' si quieres forzar verif
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),  # puedes ajustar
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=60),     # ejemplo
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}

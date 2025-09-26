@@ -10,6 +10,6 @@ class VerifyToken(APIView):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return Response({"mensaje": "Token/sesión válida", "user_id": request.user.id, "email": request.user.email})
+            return Response({"mensaje": "Token/sesión válida", "user_id": request.user.id, "email": request.user.email, "username": request.user.username,})
         else:
             return Response({"mensaje": "Token o sesión inválida"}, status=status.HTTP_401_UNAUTHORIZED)

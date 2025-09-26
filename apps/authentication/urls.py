@@ -7,6 +7,7 @@ from .views import AuthenticatedView, RegisterUser, CustomerUserViewSet, Custome
     , CustomerUserListViewSet
 from .views.list_sponsor_user_viewset import ListSponsorUsersView
 from .views.reset_password_viewset import ResetPasswordView, ValidateResetTokenView
+from .views.verify_email_viewset import UpdatetemporalEmailView
 
 router = routers.DefaultRouter()
 
@@ -44,4 +45,6 @@ urlpatterns = [
     # refrescar token y mantener sesión activa
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+    #nuevo método para reemplazar correo temporal por definitivo y establecer contraseña
+    path('verify-email/', UpdatetemporalEmailView.as_view(), name='verify_email'),
 ]

@@ -41,9 +41,9 @@ class AuthenticatedView(APIView):
             reset_link = f"http://localhost:3000/restore-password?uid={uid}&token={token}"
 
             # Enviar correo
-            subject = "Restablece tu contraseña en Linkey"
-            message = f"Hola,\n\nSe detectó tu correo {user.email} en nuestra plataforma.\n" \
-                    f"Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:\n\n" \
+            subject = "Reestablecimieno de contraseña en Linkey.digital"
+            message = f"Saludos {user.username},\n\nSe confirmó su correo {user.email} hailitado en nuestra plataforma.\n" \
+                    f"Por favor, haga clic en el siguiente enlace para restablecer su contraseña:\n\n" \
                     f"{reset_link}\n\nGracias."
 
             send_confirmation_email(user.email, subject, message)
