@@ -81,9 +81,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -106,7 +106,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'linkbhxz_linkey',
@@ -115,8 +115,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
-} """
-DATABASES = {
+}
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'soyyo',
@@ -125,7 +125,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
-}
+} """
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -153,7 +153,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.linkey.digital",
 ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Configuración de cookies de sesión para desarrollo
 SESSION_COOKIE_HTTPONLY = False  # Permitir acceso desde JavaScript
