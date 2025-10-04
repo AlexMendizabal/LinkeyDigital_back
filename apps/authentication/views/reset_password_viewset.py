@@ -2,9 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.hashers import make_password
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.conf import settings
 
 User = get_user_model()
 
@@ -13,39 +15,54 @@ class ResetPasswordView(APIView):
     authentication_classes = []
 
     def post(self, request):
+        email = request.data.get("email")
         uidb64 = request.data.get("uid")
         token = request.data.get("token")
-        new_password = request.data.get("password", None)
-        new_email = request.data.get("new_email", None)
+        new_password = request.data.get("password")
 
+        # --- MODO 1: email → generar link de reset ---
+        if email:
+            try:
+                user = User.objects.get(email=email, is_active=True)
+            except User.DoesNotExist:
+                # No revelar si existe
+                return Response({"mensaje": "Si el correo existe, se enviará un enlace"}, status=status.HTTP_200_OK)
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            reset_link = f"{settings.FRONTEND_URL}/restore-password?uid={uid}&token={token}"
+
+
+            subject = "Reestablecimiento de contraseña en Linkey.digital"
+                       
+            message = (
+                f"Saludos {user.username},\n\n"
+                f"Se confirmó su correo para su cuenta en nuestra plataforma.\n"
+                f"Por favor, haga clic en el siguiente enlace para establecer su contraseña:\n\n"
+                f"{reset_link}\n\nGracias."
+            )
+
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+            return Response({"mensaje": "Correo de recuperación enviado"}, status=status.HTTP_200_OK)
+
+        # --- MODO 2: uid + token + password → reset real ---
         if not uidb64 or not token:
             return Response({"mensaje": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Decodificar UID
             uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             return Response({"mensaje": "Enlace inválido"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Verificar validez del token
         if not default_token_generator.check_token(user, token):
             return Response({"mensaje": "Token inválido o expirado"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Si no se mandó password → solo validar token
         if not new_password:
             return Response({"mensaje": "Token válido"}, status=status.HTTP_200_OK)
 
-        # Si hay password → cambiarla
         user.set_password(new_password)
-
-        if new_email and new_email != user.email:
-            if User.objects.filter(email=new_email).exists():
-                return Response({"mensaje": "El correo ya está registrado"}, status=status.HTTP_400_BAD_REQUEST)
-            user.email = new_email
-
         user.save()
-
 
         return Response({"mensaje": "Contraseña restablecida correctamente"}, status=status.HTTP_200_OK)
 

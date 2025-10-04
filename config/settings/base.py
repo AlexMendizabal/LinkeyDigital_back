@@ -210,3 +210,6 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+
+#FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = "https://linkey.digital"

@@ -8,6 +8,7 @@ from apps.authentication.utils.email import send_confirmation_email
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.conf import settings
 
 User = get_user_model()
 
@@ -38,7 +39,7 @@ class AuthenticatedView(APIView):
             uid = urlsafe_base64_encode(force_bytes(user.pk))  # para identificar al usuario
 
             # Construir enlace seguro
-            reset_link = f"http://localhost:3000/restore-password?uid={uid}&token={token}"
+            reset_link = f"{settings.FRONTEND_URL}/restore-password?uid={uid}&token={token}"
 
             # Enviar correo
             subject = "Reestablecimieno de contraseña en Linkey.digital"

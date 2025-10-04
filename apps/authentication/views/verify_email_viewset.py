@@ -8,11 +8,12 @@ from apps.authentication.utils.email import send_confirmation_email
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.conf import settings
 
 User = get_user_model()
 
 class UpdatetemporalEmailView(APIView):
-    permission_classes = []  # Ajusta según tus necesidades
+    permission_classes = [] 
 
     def post(self, request):
         linkey_email = request.data.get("linkey_email")
@@ -53,7 +54,7 @@ class UpdatetemporalEmailView(APIView):
 
         # Construir enlace seguro incluyendo el nuevo correo como query param
         reset_link = (
-            f"http://localhost:3000/restore-password?"
+            f"{settings.FRONTEND_URL}/restore-password?"
             f"uid={uid}&token={token}&new_email={new_email}"
         )
 
